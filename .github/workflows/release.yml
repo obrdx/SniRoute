@@ -1,13 +1,22 @@
-# 发布流程：推送 v* 标签即自动构建并创建 GitHub Release。
+# 发布流程：仅手动触发；版本必须与源码一致，重复版本直接报错。
 # 产物命名 sniroute_{os}_{arch} 与部署脚本的下载地址模板保持一致：
 #   https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_{os}_{arch}
 # 部署脚本（scripts/sniroute-{server,client}.sh）不指定 SR_BIN 时会获取最新 Release。
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "发布版本（须与源码一致，可带 v 前缀，例如 1.0.0）"
+        required: true
+        type: string
+        default: "1.0.0"
+
+# 串行发布，避免手动重复点击时两个任务同时通过版本检查。
+concurrency:
+  group: sniroute-release
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -15,8 +24,57 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+
+      - name: Validate version and reject existing tags or releases
+        id: version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          def fail(message):
+              print(f"::error::{message}")
+              sys.exit(1)
+
+          version = os.environ["RELEASE_VERSION"]
+          if not re.fullmatch(r"v?(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", version):
+              fail("正式版版本号必须为 X.Y.Z 或 vX.Y.Z，不支持预发布后缀。")
+          version = version.removeprefix("v")
+          source = Path("internal/version/version.go").read_text()
+          match = re.search(r'^const Application = "([^"]+)"$', source, re.MULTILINE)
+          if not match or version != match[1]:
+              fail("发布版本必须与 internal/version/version.go 中的 Application 一致；工作流不会修改应用版本。")
+
+          base = f'{os.environ["GITHUB_API_URL"]}/repos/{os.environ["GITHUB_REPOSITORY"]}'
+          headers = {"Authorization": f'Bearer {os.environ["GH_TOKEN"]}',
+                     "Accept": "application/vnd.github+json"}
+          for tag in (f"v{version}", version):
+              for endpoint in (f"git/ref/tags/{tag}", f"releases/tags/{tag}"):
+                  request = urllib.request.Request(f"{base}/{endpoint}", headers=headers)
+                  try:
+                      with urllib.request.urlopen(request, timeout=30):
+                          pass
+                  except urllib.error.HTTPError as error:
+                      if error.code == 404:
+                          continue
+                      fail(f"版本检查失败（HTTP {error.code}），请检查仓库权限和 GitHub 服务后重试。")
+                  except urllib.error.URLError:
+                      fail("无法连接 GitHub API，版本检查未完成，请稍后重试。")
+                  fail(f"版本 {tag} 已存在标签或 Release，禁止重复发布或覆盖。")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"version={version}\ntag=v{version}\n")
+          PY
 
       - uses: actions/setup-go@v5
         with:
@@ -26,7 +84,12 @@ jobs:
         run: go test -race ./...
 
       - name: Verify fixed application version
-        run: test "$(go run ./cmd/sniroute version)" = "1.0.0"
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: test "$(go run ./cmd/sniroute version)" = "$RELEASE_VERSION"
+
+      - name: Vet
+        run: go vet ./...
 
       - name: Build binaries
         run: |
@@ -47,8 +110,13 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/* \
+          gh release create "$RELEASE_TAG" dist/* \
             --repo "$GITHUB_REPOSITORY" \
-            --title "SniRoute $GITHUB_REF_NAME" \
+            --target "$GITHUB_SHA" \
+            --title "SniRoute $RELEASE_TAG" \
+            --draft=false \
+            --prerelease=false \
+            --latest \
             --generate-notes

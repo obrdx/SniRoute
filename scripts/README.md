@@ -19,9 +19,25 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/script
 两个脚本都是 POSIX sh，支持 Linux / macOS 的 amd64、arm64；服务端与客户端在
 Ubuntu、Debian、RHEL、CentOS、Alpine 上均可运行（Alpine 用 busybox wget 下载，
 二进制为静态编译，musl 直接可用）。默认从 `obrdx/SniRoute` 的最新 GitHub Release
-下载 `sniroute_{os}_{arch}` **裸二进制**；Release 由 GitHub Actions 在推送 `v*`
-标签时自动构建（见 `.github/workflows/release.yml`）。需要离线运行或使用自己
+下载 `sniroute_{os}_{arch}` **裸二进制**；Release 由 GitHub Actions 手动触发
+构建（见 `.github/workflows/release.yml`）。需要离线运行或使用自己
 编译的二进制时，用 `SR_BIN` 指向本地文件。
+
+### 手动发布正式版
+
+将工作流合入默认分支后，在 GitHub 仓库打开 **Actions → Release → Run workflow**，
+选择要发布的分支，填写版本号（例如 `1.0.0` 或 `v1.0.0`），再点击运行。
+版本号必须与所选提交的 `internal/version/version.go` 中 `Application` 一致；
+当前应用版本为 `1.0.0`，工作流不会升级版本或通过构建参数覆盖它。
+
+工作流先检查版本；对应版本的标签或 Release 已存在（带或不带 `v` 前缀均检查）
+就报错退出，不覆盖产物。检查 API 出错也会停止发布。测试、版本校验、`go vet`
+和四个平台构建全部通过后，才以所选提交创建 `v版本号` 标签及**正式 Release**
+（非草稿、非预发布），并设为 Latest。推送分支或标签不会自动发版。
+使用仓库自带的 `GITHUB_TOKEN`，无需额外配置 PAT；仓库须允许工作流写入 contents。
+
+附件为 `sniroute_linux_amd64`、`sniroute_linux_arm64`、`sniroute_darwin_amd64`、
+`sniroute_darwin_arm64` 和 `SHA256SUMS`，兼容部署脚本现有下载地址。
 
 默认下载的 Release 不保证与当前源码一致；发布前验收应使用下面的本地构建方式，并在部署机器执行 `sniroute version` 核对版本。交叉编译时用 `GOOS=linux GOARCH=amd64`（或 `arm64`），将二进制复制到对应被测机器和观测端，再通过 `SR_BIN` 部署。
 
