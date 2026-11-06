@@ -1,0 +1,18 @@
+# 18-restricted.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+pornhub.com	Adult	GLOBAL,web,access-restriction
+redtube.com	Adult	GLOBAL,web,access-restriction
+xhamster.com	Adult	GLOBAL,web,access-restriction
+xnxx.com	Adult	GLOBAL,web,access-restriction
+xvideos.com	Adult	GLOBAL,web,access-restriction
+1337x.to	BT/Trackers	GLOBAL,web,access-restriction
+nyaa.si	BT/Trackers	GLOBAL,web,access-restriction
+rutracker.org	BT/Trackers	GLOBAL,web,access-restriction
+thepiratebay.org	BT/Trackers	GLOBAL,web,access-restriction
+annas-archive.org	Copyright-disputed	GLOBAL,web,license-required,access-restriction
+annas-archive.se	Copyright-disputed	GLOBAL,web,license-required,access-restriction
+libgen.is	Copyright-disputed	GLOBAL,web,license-required,access-restriction
+libgen.rs	Copyright-disputed	GLOBAL,web,license-required,access-restriction
+sci-hub.se	Copyright-disputed	GLOBAL,web,license-required,access-restriction
+www.bet365.com	Gambling	GLOBAL,web,access-restriction
+www.pokerstars.com	Gambling	GLOBAL,web,access-restriction

@@ -1,0 +1,247 @@
+hostname,primary_category,all_original_categories,all_original_services
+163yun.com,music-audio,gaming|music-audio|news-media,gaming:NetEase Games|music-audio:NetEase Music|news-media:CN media
+2k.com,gaming,gaming|video-streaming,gaming:2K|video-streaming:category-games-!cn
+2kct.onl,gaming,gaming|video-streaming,gaming:2K|video-streaming:category-games-!cn
+6park.com,social,news-media|social|video-streaming,news-media:Other intl|social:6park|video-streaming:6park
+afp.com,video-streaming,news-media|video-streaming,news-media:AFP|video-streaming:afp
+aistudio.google.com,ai,ai|mail-office|search,ai:Google Gemini/AI Studio/NotebookLM|mail-office:Gmail/Google Workspace|search:Google Search
+alicdn.com,cloud-cdn,cloud-cdn|shopping,cloud-cdn:Alibaba Cloud|shopping:Taobao/Tmall
+alipay.cn,payment-finance,payment-finance|shopping,payment-finance:Alipay|shopping:Taobao/Tmall
+aljazeera.net,video-streaming,news-media|video-streaming,news-media:Al Jazeera|video-streaming:aljazeera
+amp.dev,search,developer|mail-office|search,developer:thelinuxfoundation|mail-office:Gmail/Google Workspace|search:Google Search
+android.com,search,developer|mail-office|search,developer:Android dev|mail-office:Gmail/Google Workspace|search:Google Search
+androidify.com,search,developer|mail-office|search,developer:Android dev|mail-office:Gmail/Google Workspace|search:Google Search
+api.alibabacloud.com,cloud-cdn,cloud-cdn|shopping,cloud-cdn:Alibaba Cloud|shopping:Taobao/Tmall
+api.github.com,developer,ai|developer,ai:GitHub Copilot|developer:GitHub
+applemusic.co,video-streaming,music-audio|software-download|video-streaming,music-audio:Apple Music|software-download:Apple updates|video-streaming:apple-music
+applemusic.com,video-streaming,music-audio|software-download|video-streaming,music-audio:Apple Music|software-download:Apple updates|video-streaming:apple-music
+appspot.com,search,cloud-cdn|mail-office|search,cloud-cdn:Google Cloud|mail-office:Gmail/Google Workspace|search:Google Search
+archlinux.de,developer,developer|software-download,developer:archlinux|software-download:Arch
+archlinux.org,developer,developer|software-download,developer:archlinux|software-download:Arch
+askdiandian.com,ai,ai|social,ai:askdiandian|social:Xiaohongshu
+aws.amazon.com,cloud-cdn,cloud-cdn|shopping,cloud-cdn:AWS|shopping:Amazon
+aws.com,cloud-cdn,cloud-cdn|shopping,cloud-cdn:AWS|shopping:Amazon
+azure.cn,cloud-cdn,cloud-cdn|mail-office|software-download,cloud-cdn:Azure|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+azure.com,cloud-cdn,cloud-cdn|mail-office|software-download,cloud-cdn:Azure|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+azure.microsoft.com,cloud-cdn,cloud-cdn|mail-office|software-download,cloud-cdn:Azure|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+bandcamp.com,video-streaming,music-audio|video-streaming,music-audio:Bandcamp|video-streaming:bandcamp
+battle.net,gaming,gaming|video-streaming,gaming:Battle.net|video-streaming:category-games-!cn
+bbc-reporting-api.app,video-streaming,news-media|video-streaming,news-media:BBC News|video-streaming:BBC iPlayer
+bbc.co,video-streaming,news-media|video-streaming,news-media:BBC News|video-streaming:BBC iPlayer
+bing.net,search,ai|mail-office|search|software-download,ai:Microsoft Copilot/Bing|mail-office:Outlook/M365|search:Bing|software-download:Microsoft/Windows Update
+bing123.com,search,ai|mail-office|search|software-download,ai:Microsoft Copilot/Bing|mail-office:Outlook/M365|search:Bing|software-download:Microsoft/Windows Update
+bloomberg.cn,video-streaming,news-media|video-streaming,news-media:Bloomberg|video-streaming:bloomberg
+bootcdn.cn,cloud-cdn,cloud-cdn|developer,cloud-cdn:bootcdn|developer:Others
+byspotify.com,video-streaming,music-audio|video-streaming,music-audio:Spotify|video-streaming:spotify
+canonical.com,developer,developer|software-download,developer:canonical|software-download:Ubuntu
+cdn.apple-mapkit.com,developer,developer|software-download,developer:apple-dev|software-download:Apple updates
+ceno.app,software-download,privacy-proxy|software-download,privacy-proxy:ceno|software-download:ceno
+check.torproject.org,privacy-proxy,baseline|privacy-proxy,baseline:IP echo / test|privacy-proxy:Tor Project
+cloudflare-dns.com,dns-security,cloud-cdn|dns-security,cloud-cdn:Cloudflare|dns-security:Cloudflare DNS
+clubhouse.com,social,messaging|social,messaging:clubhouse|social:Clubhouse
+clubhouseapi.com,social,messaging|social,messaging:clubhouse|social:Clubhouse
+cn.bing.com,search,ai|mail-office|search|software-download,ai:Microsoft Copilot/Bing|mail-office:Outlook/M365|search:Bing|software-download:Microsoft/Windows Update
+cnn.io,video-streaming,news-media|video-streaming,news-media:CNN|video-streaming:cnn
+cohere.com,ai,ai|messaging,ai:Cohere|messaging:talkatone
+connectivitycheck.gstatic.com,baseline,baseline|mail-office|search,baseline:Connectivity check|mail-office:Gmail/Google Workspace|search:Google Search
+consul.io,developer,cloud-cdn|developer,cloud-cdn:IBM Cloud|developer:HashiCorp
+copilot.com,ai,ai|mail-office|search|software-download,ai:Microsoft Copilot/Bing|mail-office:Outlook/M365|search:Bing|software-download:Microsoft/Windows Update
+copilot.microsoft.com,ai,ai|mail-office|search|software-download,ai:Microsoft Copilot/Bing|mail-office:Outlook/M365|search:Bing|software-download:Microsoft/Windows Update
+crates.io,developer,developer|software-download,developer:Rust|software-download:Mozilla
+cups.org,developer,developer|software-download,developer:Apple dev|software-download:Apple updates
+cygames.jp,gaming,gaming|video-streaming,gaming:Cygames|video-streaming:category-games-!cn
+dart.dev,developer,developer|mail-office|search,developer:dart|mail-office:Gmail/Google Workspace|search:Google Search
+ddo.jp,video-streaming,shopping|video-streaming,shopping:dmm|video-streaming:DMM
+debian.org,developer,developer|software-download,developer:debian|software-download:Debian
+deepin.cn,developer,developer|software-download,developer:deepin|software-download:Other Linux/mirrors
+deepin.io,developer,developer|software-download,developer:deepin|software-download:Other Linux/mirrors
+deezer.com,music-audio,music-audio|video-streaming,music-audio:Deezer|video-streaming:deezer
+deutschewelle.h-cdn.com,video-streaming,news-media|video-streaming,news-media:DW|video-streaming:dw
+developer.apple.com,developer,developer|software-download,developer:Apple dev|software-download:Apple updates
+dingtalk.cn,messaging,mail-office|messaging|shopping,mail-office:CN office|messaging:DingTalk|shopping:Taobao/Tmall
+dingtalk.com,messaging,mail-office|messaging|shopping,mail-office:CN office|messaging:DingTalk|shopping:Taobao/Tmall
+dl.delivery.mp.microsoft.com,software-download,gaming|mail-office|software-download,gaming:category-game-platforms-download|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+dl.google.com,software-download,developer|mail-office|search|software-download,developer:Maven/Gradle|mail-office:Gmail/Google Workspace|search:Google Search|software-download:Google/Chrome updates
+dmm.hk,video-streaming,shopping|video-streaming,shopping:dmm|video-streaming:DMM
+dns.pub,dns-security,cloud-cdn|dns-security,cloud-cdn:Tencent Cloud|dns-security:Others DoH
+doh.pub,dns-security,cloud-cdn|dns-security,cloud-cdn:Tencent Cloud|dns-security:Others DoH
+dotdeb.org,developer,developer|software-download,developer:debian|software-download:Debian
+download.microsoft.com,software-download,mail-office|software-download,mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+download.windowsupdate.com,software-download,mail-office|software-download,mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+dzen.ru,social,mail-office|social,mail-office:Other mail|social:dzen
+dzeninfra.ru,social,mail-office|social,mail-office:Other mail|social:dzen
+economistgroup.com,video-streaming,news-media|video-streaming,news-media:Economist|video-streaming:economist
+epicbrowser.com,software-download,privacy-proxy|software-download,privacy-proxy:epicbrowser|software-download:epicbrowser
+epicgames.dev,gaming,gaming|video-streaming,gaming:Epic Games|video-streaming:category-games-!cn
+esm.sh,developer,cloud-cdn|developer,cloud-cdn:category-cdn-!cn|developer:npm/JS
+fanfiction.net,social,social|video-streaming,social:fanfiction|video-streaming:fanfiction
+fast.com,video-streaming,baseline|video-streaming,baseline:IP echo / test|video-streaming:Netflix
+fastlane.ci,developer,developer|mail-office|search,developer:fastlane|mail-office:Gmail/Google Workspace|search:Google Search
+fbmessenger.com,messaging,messaging|social,messaging:Messenger|social:Facebook
+fedoraforum.org,developer,developer|software-download,developer:fedora|software-download:Fedora/RHEL
+feishu.cn,messaging,mail-office|messaging,mail-office:CN office|messaging:Lark/Feishu
+feishu.net,messaging,mail-office|messaging,mail-office:CN office|messaging:Lark/Feishu
+firebase.com,developer,developer|mail-office|search,developer:firebase|mail-office:Gmail/Google Workspace|search:Google Search
+firebase.io,developer,developer|mail-office|search,developer:firebase|mail-office:Gmail/Google Workspace|search:Google Search
+flickr.net,social,search|social,search:Yahoo|social:Flickr
+flutter.dev,developer,developer|mail-office|search,developer:flutter|mail-office:Gmail/Google Workspace|search:Google Search
+garena.my,gaming,gaming|video-streaming,gaming:Garena|video-streaming:category-games-!cn
+garena.ph,gaming,gaming|video-streaming,gaming:Garena|video-streaming:category-games-!cn
+gcr.io,search,developer|mail-office|search,developer:Container registries|mail-office:Gmail/Google Workspace|search:Google Search
+geforce.cn,gaming,gaming|software-download,gaming:GeForce Now|software-download:Other software
+geforce.com,gaming,gaming|software-download,gaming:GeForce Now|software-download:Other software
+gemini.google,ai,ai|mail-office|search,ai:Google Gemini/AI Studio/NotebookLM|mail-office:Gmail/Google Workspace|search:Google Search
+gemini.google.com,ai,ai|mail-office|search,ai:Google Gemini/AI Studio/NotebookLM|mail-office:Gmail/Google Workspace|search:Google Search
+getfedora.org,developer,developer|software-download,developer:fedora|software-download:Fedora/RHEL
+github.ai,ai,ai|developer|mail-office|software-download,ai:GitHub Copilot|developer:GitHub|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+github.com,developer,ai|developer|mail-office|software-download,ai:GitHub Copilot|developer:GitHub|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+github.io,ai,ai|developer|mail-office|software-download,ai:GitHub Copilot|developer:GitHub|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+githubassets.com,developer,ai|developer|mail-office|software-download,ai:GitHub Copilot|developer:GitHub|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+githubusercontent.com,developer,ai|developer|mail-office|software-download,ai:GitHub Copilot|developer:GitHub|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+gmail.com,mail-office,mail-office|search,mail-office:Gmail/Google Workspace|search:Google Search
+go.dev,search,developer|mail-office|search,developer:Go|mail-office:Gmail/Google Workspace|search:Google Search
+godoc.org,search,developer|mail-office|search,developer:Go|mail-office:Gmail/Google Workspace|search:Google Search
+gog.com,gaming,gaming|video-streaming,gaming:GOG|video-streaming:category-games-!cn
+gogalaxy.com,gaming,gaming|video-streaming,gaming:GOG|video-streaming:category-games-!cn
+golang.com,search,developer|mail-office|search,developer:Go|mail-office:Gmail/Google Workspace|search:Google Search
+googleplay.com,search,mail-office|search|software-download,mail-office:Gmail/Google Workspace|search:Google Search|software-download:Google/Chrome updates
+grok.com,ai,ai|social,ai:xAI/Grok|social:X/Twitter
+grokipedia.com,ai,ai|social,ai:xAI/Grok|social:X/Twitter
+hashicorp.com,developer,cloud-cdn|developer,cloud-cdn:IBM Cloud|developer:HashiCorp
+haveibeenpwned.com,privacy-proxy,dns-security|privacy-proxy,dns-security:Security tools|privacy-proxy:haveibeenpwned
+heroku.co,cloud-cdn,cloud-cdn|developer,cloud-cdn:Heroku|developer:Others
+heroku.me,cloud-cdn,cloud-cdn|developer,cloud-cdn:Heroku|developer:Others
+hkgolden.com,social,news-media|social,news-media:Other intl|social:hkgolden
+hoyoverse.com,gaming,gaming|video-streaming,gaming:HoYoverse|video-streaming:category-games-!cn
+huaweicloud.com,cloud-cdn,cloud-cdn|software-download,cloud-cdn:Huawei Cloud|software-download:Other software
+huaweisre.cn,cloud-cdn,cloud-cdn|software-download,cloud-cdn:Huawei Cloud|software-download:Other software
+huggingface.co,ai,ai|gaming|software-download,ai:Hugging Face|gaming:GeForce Now|software-download:Other software
+intercom.com,messaging,mail-office|messaging,mail-office:Collab tools|messaging:intercom
+intercom.io,messaging,ai|mail-office|messaging|video-streaming,ai:OpenAI/ChatGPT/Sora|mail-office:Collab tools|messaging:intercom|video-streaming:DAZN
+ip-api.com,baseline,baseline|messaging,baseline:IP echo / test|messaging:talkatone
+irc-ws.chat.twitch.tv,social,social|video-streaming,social:Twitch Chat/IRC|video-streaming:Twitch
+is1-ssl.mzstatic.com,video-streaming,software-download|video-streaming,software-download:Apple updates|video-streaming:Apple TV+
+itch.io,gaming,gaming|video-streaming,gaming:Itch.io|video-streaming:category-games-!cn
+java.com,developer,cloud-cdn|developer,cloud-cdn:Oracle Cloud|developer:java
+jetbrains.ai,developer,ai|developer,ai:Other AI|developer:JetBrains
+joox.com,music-audio,music-audio|video-streaming,music-audio:JOOX|video-streaming:category-entertainment
+jsdelivr.com,cloud-cdn,cloud-cdn|developer,cloud-cdn:jsdelivr|developer:Others
+k.sohu,video-streaming,news-media|video-streaming,news-media:CN media|video-streaming:Sohu Video
+kkbox-prime.com,video-streaming,music-audio|video-streaming,music-audio:KKBOX|video-streaming:kkbox
+last.fm,music-audio,music-audio|video-streaming,music-audio:Last.fm|video-streaming:lastfm
+lastfm.cn,video-streaming,music-audio|video-streaming,music-audio:Last.fm|video-streaming:lastfm
+line-cdn.net,messaging,messaging|search|video-streaming,messaging:LINE|search:Naver|video-streaming:LINE TV
+line.biz,messaging,messaging|search,messaging:LINE|search:Naver
+line.me,messaging,messaging|search,messaging:LINE|search:Naver
+linux.org,software-download,developer|software-download,developer:thelinuxfoundation|software-download:Other Linux/mirrors
+login.microsoftonline.com,mail-office,cloud-cdn|mail-office,cloud-cdn:Azure|mail-office:Outlook/M365
+m.sohu,video-streaming,news-media|video-streaming,news-media:CN media|video-streaming:Sohu Video
+medium.com,social,news-media|social|video-streaming,news-media:Other intl|social:Medium|video-streaming:medium
+minecraft.net,gaming,gaming|mail-office|software-download|video-streaming,gaming:Xbox|mail-office:Outlook/M365|software-download:Microsoft/Windows Update|video-streaming:category-games-!cn
+moov.hk,music-audio,music-audio|video-streaming,music-audio:MOOV|video-streaming:PCCW
+music.apple.com,music-audio,music-audio|software-download|video-streaming,music-audio:Apple Music|software-download:Apple updates|video-streaming:apple-music
+musickit.net,video-streaming,music-audio|software-download|video-streaming,music-audio:Apple Music|software-download:Apple updates|video-streaming:apple-music
+naver.jp,search,messaging|search,messaging:LINE|search:Naver
+netease.com,gaming,gaming|news-media,gaming:NetEase Games|news-media:CN media
+netease.im,gaming,gaming|news-media,gaming:NetEase Games|news-media:CN media
+nexon.com,gaming,gaming|video-streaming,gaming:Nexon|video-streaming:category-games-!cn
+nexon.io,gaming,gaming|video-streaming,gaming:Nexon|video-streaming:category-games-!cn
+nhk.jp,news-media,news-media|video-streaming,news-media:NHK|video-streaming:NHK+
+nhkworld.jp,video-streaming,news-media|video-streaming,news-media:NHK|video-streaming:NHK+
+nintendo.at,gaming,gaming|video-streaming,gaming:Nintendo|video-streaming:category-games-!cn
+nixos.org,developer,developer|software-download,developer:nixos|software-download:Other Linux/mirrors
+nixos.wiki,developer,developer|software-download,developer:nixos|software-download:Other Linux/mirrors
+notebooklm.google,ai,ai|mail-office|search,ai:Google Gemini/AI Studio/NotebookLM|mail-office:Gmail/Google Workspace|search:Google Search
+notebooklm.google.com,ai,ai|mail-office|search,ai:Google Gemini/AI Studio/NotebookLM|mail-office:Gmail/Google Workspace|search:Google Search
+nuget.org,developer,developer|mail-office|software-download,developer:microsoft-dev|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+nyt.com,video-streaming,news-media|video-streaming,news-media:NYTimes|video-streaming:nytimes
+ok.me,social,mail-office|social,mail-office:Other mail|social:OK.ru
+ok.ru,social,mail-office|social,mail-office:Other mail|social:OK.ru
+one.one.one.one,dns-security,baseline|dns-security,baseline:IP echo / test|dns-security:Cloudflare DNS
+outlook.com,mail-office,mail-office|software-download,mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+overcast.fm,music-audio,music-audio|video-streaming,music-audio:Podcasts|video-streaming:category-entertainment
+parkvv.com,social,news-media|social|video-streaming,news-media:Other intl|social:6park|video-streaming:6park
+pca.st,video-streaming,music-audio|video-streaming,music-audio:Podcasts|video-streaming:pocketcasts
+pixiv.me,social,social|video-streaming,social:Pixiv|video-streaming:pixiv
+pixiv.net,social,social|video-streaming,social:Pixiv|video-streaming:pixiv
+playstation.net,gaming,gaming|video-streaming,gaming:PlayStation|video-streaming:category-games-!cn
+playstationnetwork.com,gaming,gaming|video-streaming,gaming:PlayStation|video-streaming:category-games-!cn
+poe.com,ai,ai|social,ai:Poe|social:Quora
+polymerproject.org,developer,developer|mail-office|search,developer:polymer|mail-office:Gmail/Google Workspace|search:Google Search
+primevideo.cc,video-streaming,cloud-cdn|shopping|video-streaming,cloud-cdn:AWS|shopping:Amazon|video-streaming:Prime Video
+primevideo.tv,video-streaming,cloud-cdn|shopping|video-streaming,cloud-cdn:AWS|shopping:Amazon|video-streaming:Prime Video
+proton.me,mail-office,mail-office|messaging,mail-office:Proton|messaging:protonmail
+protonmail.com,messaging,mail-office|messaging,mail-office:Proton|messaging:protonmail
+protonvpn.com,privacy-proxy,mail-office|messaging|privacy-proxy,mail-office:Proton|messaging:protonmail|privacy-proxy:Proton VPN
+pub.dev,search,developer|mail-office|search,developer:Other registries|mail-office:Gmail/Google Workspace|search:Google Search
+qwen.ai,ai,ai|shopping,ai:Qwen/Tongyi|shopping:Taobao/Tmall
+radiko.jp,music-audio,music-audio|video-streaming,music-audio:Radiko|video-streaming:radiko
+redhat.com,developer,developer|software-download,developer:redhat|software-download:Fedora/RHEL
+reuters.tv,news-media,news-media|video-streaming,news-media:Reuters|video-streaming:thomsonreuters
+riot.com,gaming,gaming|video-streaming,gaming:Riot|video-streaming:category-games-!cn
+roblox.ca,gaming,gaming|video-streaming,gaming:Roblox|video-streaming:category-games-!cn
+rockstargames.com,gaming,gaming|video-streaming,gaming:Rockstar|video-streaming:category-games-!cn
+rockstarnorth.com,gaming,gaming|video-streaming,gaming:Rockstar|video-streaming:category-games-!cn
+run.app,search,cloud-cdn|mail-office|search,cloud-cdn:Google Cloud|mail-office:Gmail/Google Workspace|search:Google Search
+rust-lang.org,developer,developer|software-download,developer:Rust|software-download:Mozilla
+rustup.rs,developer,developer|software-download,developer:Rust|software-download:Mozilla
+rutracker.org,restricted,restricted|social,restricted:BT/Trackers|social:rutracker
+scdn.co,music-audio,music-audio|video-streaming,music-audio:Spotify|video-streaming:spotify
+scholar.google.com,wiki-academic,mail-office|search|wiki-academic,mail-office:Gmail/Google Workspace|search:Google Search|wiki-academic:Google Scholar
+slack.com,mail-office,mail-office|messaging,mail-office:Slack|messaging:slack
+slackb.com,messaging,mail-office|messaging,mail-office:Slack|messaging:slack
+sm.cn,search,search|shopping,search:Shenma|shopping:Taobao/Tmall
+sogou.cn,search,news-media|search|video-streaming,news-media:CN media|search:Sogou|video-streaming:Sohu Video
+soundcloud.cloud,video-streaming,music-audio|video-streaming,music-audio:SoundCloud|video-streaming:soundcloud
+soundcloud.com,music-audio,music-audio|video-streaming,music-audio:SoundCloud|video-streaming:soundcloud
+spotify.com,music-audio,music-audio|video-streaming,music-audio:Spotify|video-streaming:spotify
+spotify.link,video-streaming,music-audio|video-streaming,music-audio:Spotify|video-streaming:spotify
+steamcommunity.com,gaming,gaming|video-streaming,gaming:Steam|video-streaming:category-games-!cn
+steamstatic.com,gaming,gaming|video-streaming,gaming:Steam|video-streaming:category-games-!cn
+store.steampowered.com,gaming,gaming|shopping,gaming:Steam|shopping:Steam store
+stripe.com,payment-finance,ai|payment-finance,ai:OpenAI/ChatGPT/Sora|payment-finance:Stripe
+supercell.com,gaming,gaming|video-streaming,gaming:Supercell|video-streaming:category-games-!cn
+supercell.net,gaming,gaming|video-streaming,gaming:Supercell|video-streaming:category-games-!cn
+swift.org,developer,developer|software-download,developer:Apple dev|software-download:Apple updates
+teams.cdn.live.net,messaging,mail-office|messaging,mail-office:Outlook/M365|messaging:Teams
+teams.live.com,messaging,mail-office|messaging,mail-office:Outlook/M365|messaging:Teams
+teams.microsoft.com,messaging,mail-office|messaging,mail-office:Outlook/M365|messaging:Teams
+teamviewer.cn,mail-office,mail-office|software-download,mail-office:teamviewer|software-download:Other software
+teamviewer.us,mail-office,mail-office|software-download,mail-office:teamviewer|software-download:Other software
+tidal.com,music-audio,music-audio|video-streaming,music-audio:Tidal|video-streaming:tidal
+tiktokv.eu,social,social|video-streaming,social:TikTok|video-streaming:tiktok
+tiktokv.us,social,social|video-streaming,social:TikTok|video-streaming:tiktok
+tv.apple.com,video-streaming,software-download|video-streaming,software-download:Apple updates|video-streaming:Apple TV+
+ubisoftconnect.com,gaming,gaming|video-streaming,gaming:Ubisoft|video-streaming:category-games-!cn
+ubuntu.com,software-download,developer|software-download,developer:canonical|software-download:Ubuntu
+unity.cn,gaming,developer|gaming,developer:unity|gaming:Unity
+unity.com,gaming,developer|gaming,developer:unity|gaming:Unity
+unity3dcloud.cn,developer,developer|mail-office|software-download,developer:unitychina|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+uo.com,gaming,gaming|video-streaming,gaming:EA|video-streaming:category-games-!cn
+update.googleapis.com,software-download,mail-office|search|software-download,mail-office:Gmail/Google Workspace|search:Google Search|software-download:Google/Chrome updates
+uts-api.itunes.apple.com,video-streaming,software-download|video-streaming,software-download:Apple updates|video-streaming:Apple TV+
+v8.dev,search,developer|mail-office|search,developer:v8|mail-office:Gmail/Google Workspace|search:Google Search
+viber.co,messaging,messaging|shopping,messaging:Viber|shopping:Rakuten
+viber.me,messaging,messaging|shopping,messaging:Viber|shopping:Rakuten
+viki.com,video-streaming,shopping|video-streaming,shopping:Rakuten|video-streaming:Viki
+vk.cc,social,mail-office|social,mail-office:Other mail|social:VK
+vk.com,social,mail-office|social,mail-office:Other mail|social:VK
+vk.me,social,mail-office|social,mail-office:Other mail|social:VK
+vscode.dev,developer,developer|mail-office|software-download,developer:VS Code|mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+web.app,search,cloud-cdn|mail-office|search,cloud-cdn:Google Cloud|mail-office:Gmail/Google Workspace|search:Google Search
+weibo.cn,social,news-media|social,news-media:CN media|social:Weibo
+weibo.com,social,news-media|social,news-media:CN media|social:Weibo
+whatsapp.net,messaging,messaging|social,messaging:WhatsApp|social:Facebook
+windows.com,software-download,mail-office|software-download,mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+windowsupdate.com,software-download,mail-office|software-download,mail-office:Outlook/M365|software-download:Microsoft/Windows Update
+worldflipper.jp,gaming,gaming|video-streaming,gaming:Cygames|video-streaming:category-games-!cn
+wsj.net,video-streaming,news-media|video-streaming,news-media:WSJ|video-streaming:newscorp
+www.amazon.com,shopping,shopping|video-streaming,shopping:Amazon|video-streaming:Prime Video
+www.bing.com,search,ai|search,ai:Microsoft Copilot/Bing|search:Bing
+www.notion.so,mail-office,ai|mail-office,ai:Other AI|mail-office:Notion
+x.ai,ai,ai|social,ai:xAI/Grok|social:X/Twitter
+xbox.co,gaming,gaming|mail-office|software-download|video-streaming,gaming:Xbox|mail-office:Outlook/M365|software-download:Microsoft/Windows Update|video-streaming:category-games-!cn
+xbox.eu,gaming,gaming|mail-office|software-download|video-streaming,gaming:Xbox|mail-office:Outlook/M365|software-download:Microsoft/Windows Update|video-streaming:category-games-!cn
+xiaomimimo.com,ai,ai|software-download,ai:xiaomi-ai|software-download:Other software
+youku.tv,video-streaming,shopping|video-streaming,shopping:Taobao/Tmall|video-streaming:Youku
+yun-app.net,music-audio,gaming|music-audio|news-media,gaming:NetEase Games|music-audio:NetEase Music|news-media:CN media

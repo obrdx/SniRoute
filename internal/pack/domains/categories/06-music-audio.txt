@@ -1,0 +1,41 @@
+# 06-music-audio.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+music.amazon.com	Amazon Music	GLOBAL,region-availability
+music.apple.com	Apple Music	GLOBAL,region-availability
+api.deezer.com	Deezer	GLOBAL,api,geo-restricted,region-availability
+deezer.com	Deezer	GLOBAL,web,geo-restricted,region-availability
+www.genie.co.kr	Genie/Bugs/FLO	KR,web,geo-restricted,region-availability
+www.iheart.com	iHeartRadio	US,web,geo-restricted,region-availability
+joox.com	JOOX	HK,web,geo-restricted,region-availability
+www.kkbox.com	KKBOX	TW,web,geo-restricted,region-availability
+kugou.com	Kugou/Kuwo	CN,web,geo-restricted,region-availability
+kuwo.cn	Kugou/Kuwo	CN,web,geo-restricted,region-availability
+last.fm	Last.fm	GLOBAL,web,region-availability
+music.line.me	LINE Music	JP,geo-restricted,region-availability
+www.melon.com	Melon	KR,web,geo-restricted,region-availability
+moov.hk	MOOV	HK,web,geo-restricted,region-availability
+163yun.com	NetEase Music	CN,web,geo-restricted,region-availability
+music.163.com	NetEase Music	CN,geo-restricted,region-availability
+yun-app.net	NetEase Music	CN,web,geo-restricted,region-availability
+www.pandora.com	Pandora	US,web,geo-restricted,region-availability
+overcast.fm	Podcasts	GLOBAL,web,region-availability
+qobuz.at	Qobuz	GLOBAL,web,geo-restricted,region-availability
+qobuz.be	Qobuz	GLOBAL,web,geo-restricted,region-availability
+dl.stream.qqmusic.qq.com	QQ Music	CN,download,geo-restricted,region-availability
+y.qq.com	QQ Music	CN,geo-restricted,region-availability
+api.radiko.jp	Radiko	JP,api,geo-restricted,region-availability
+radiko.jp	Radiko	JP,web,geo-restricted,region-availability
+soundcloud.com	SoundCloud	GLOBAL,web,region-availability
+accounts.spotify.com	Spotify	GLOBAL,auth,geo-restricted,region-availability
+api.spotify.com	Spotify	GLOBAL,api,geo-restricted,region-availability
+open.spotify.com	Spotify	GLOBAL,geo-restricted,region-availability
+scdn.co	Spotify	GLOBAL,static,geo-restricted,region-availability
+spotify.com	Spotify	GLOBAL,web,geo-restricted,region-availability
+api.tidal.com	Tidal	GLOBAL,api,geo-restricted,region-availability
+listen.tidal.com	Tidal	GLOBAL,geo-restricted,region-availability
+tidal.com	Tidal	GLOBAL,web,geo-restricted,region-availability
+tunein.com	TuneIn	GLOBAL,web,region-availability
+ximalaya.fm	Ximalaya	CN,web,region-availability
+ximalaya.tv	Ximalaya	CN,web,region-availability
+music.yandex.ru	Yandex Music	RU,geo-restricted,region-availability
+music.youtube.com	YouTube Music	GLOBAL,region-availability

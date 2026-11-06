@@ -1,0 +1,26 @@
+# 13-news-media.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+www.aljazeera.com	Al Jazeera	GLOBAL,web,access-restriction
+www.ap.org	AP	GLOBAL,web,access-restriction
+www.bbc.com	BBC News	GLOBAL,web,access-restriction
+www.bloomberg.com	Bloomberg	GLOBAL,web,access-restriction
+www.people.com.cn	CN media	CN,web,access-restriction
+www.xinhuanet.com	CN media	CN,web,access-restriction
+www.cnn.com	CNN	GLOBAL,web,access-restriction
+www.dw.com	DW	GLOBAL,web,access-restriction
+www.economist.com	Economist	GLOBAL,web,access-restriction
+www.ft.com	FT	GLOBAL,web,access-restriction
+www.ftchinese.com	FT	GLOBAL,web,access-restriction
+assets.guim.co.uk	Guardian	GLOBAL,static,access-restriction
+www.theguardian.com	Guardian	GLOBAL,web,access-restriction
+nhk.jp	NHK	JP,web,access-restriction
+www3.nhk.or.jp	NHK	JP,access-restriction
+www.nytimes.com	NYTimes	GLOBAL,web,access-restriction
+reuters.tv	Reuters	GLOBAL,web,access-restriction
+www.reuters.com	Reuters	GLOBAL,web,access-restriction
+www.rfa.org	RFA	GLOBAL,web,access-restriction
+www.france24.com	RFI/France24	GLOBAL,web,access-restriction
+www.voachinese.com	VOA	GLOBAL,web,access-restriction
+www.voanews.com	VOA	GLOBAL,web,access-restriction
+www.washingtonpost.com	Washington Post	GLOBAL,web,access-restriction
+www.wsj.com	WSJ	GLOBAL,web,access-restriction

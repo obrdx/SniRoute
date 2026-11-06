@@ -1,0 +1,28 @@
+# 11-dns-security.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+adguard.app	AdGuard DNS	GLOBAL,web,dns-control
+adguard.io	AdGuard DNS	GLOBAL,web,dns-control
+dns.adguard-dns.com	AdGuard DNS	GLOBAL,dns-control
+doh.cleanbrowsing.org	CleanBrowsing	GLOBAL,dns-control
+chrome.cloudflare-dns.com	Cloudflare DNS	GLOBAL,dns-control
+cloudflare-dns.com	Cloudflare DNS	GLOBAL,web,dns-control
+one.one.one.one	Cloudflare DNS	GLOBAL,dns-control
+security.cloudflare-dns.com	Cloudflare DNS	GLOBAL,dns-control
+dns.controld.com	Control D	GLOBAL,dns-control
+dns.sb	DNS.SB	GLOBAL,web,dns-control
+dns.google	Google DNS	GLOBAL,web,dns-control
+dns.google.com	Google DNS	GLOBAL,dns-control
+dns.weixin.qq.com	HTTPDNS CN	CN,dns-control
+dns.mullvad.net	Mullvad DNS	GLOBAL,dns-control
+api.nextdns.io	NextDNS	GLOBAL,api,dns-control
+dns.nextdns.io	NextDNS	GLOBAL,dns-control
+my.nextdns.io	NextDNS	GLOBAL,dns-control
+dns.opendns.com	OpenDNS	GLOBAL,dns-control
+dns.umbrella.com	OpenDNS	GLOBAL,dns-control
+doh.opendns.com	OpenDNS	GLOBAL,dns-control
+dns.alidns.com	Others DoH	GLOBAL,dns-control
+dns.pub	Others DoH	GLOBAL,web,dns-control
+dns.twnic.tw	Others DoH	GLOBAL,dns-control
+doh.pub	Others DoH	GLOBAL,web,dns-control
+dns.quad9.net	Quad9	GLOBAL,dns-control
+www.quad9.net	Quad9	GLOBAL,web,dns-control

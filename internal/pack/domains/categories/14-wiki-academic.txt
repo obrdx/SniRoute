@@ -1,0 +1,22 @@
+# 14-wiki-academic.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+arxiv.org	arXiv	GLOBAL,web,access-restriction
+scholar.google.com	Google Scholar	GLOBAL,access-restriction
+scholarpedia.org	Google Scholar	GLOBAL,web,access-restriction
+jstor.org	JSTOR	GLOBAL,web,access-restriction
+www.coursera.org	Publishers/MOOC	GLOBAL,web,access-restriction
+www.edx.org	Publishers/MOOC	GLOBAL,web,access-restriction
+www.semanticscholar.org	Publishers/MOOC	GLOBAL,web,access-restriction
+www.researchgate.net	ResearchGate	GLOBAL,web,access-restriction
+sci-hub.st	Sci-Hub/LibGen/Anna (mirrors change)	GLOBAL,web,license-required,access-restriction
+archive.fo	Web archive	GLOBAL,download,access-restriction
+archive.is	Web archive	GLOBAL,download,access-restriction
+archive.org	Web archive	GLOBAL,download,access-restriction
+web.archive.org	Web archive	GLOBAL,download,access-restriction
+api.wikimedia.org	Wikipedia/Wikimedia	GLOBAL,api,access-restriction
+commons.wikimedia.org	Wikipedia/Wikimedia	GLOBAL,media,access-restriction
+en.wikipedia.org	Wikipedia/Wikimedia	GLOBAL,access-restriction
+wikimedia.org	Wikipedia/Wikimedia	GLOBAL,media,access-restriction
+wikipedia.com	Wikipedia/Wikimedia	GLOBAL,web,access-restriction
+www.wikipedia.org	Wikipedia/Wikimedia	GLOBAL,web,access-restriction
+zh.wikipedia.org	Wikipedia/Wikimedia	GLOBAL,access-restriction

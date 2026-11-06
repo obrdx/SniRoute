@@ -1,0 +1,78 @@
+# 12-payment-finance.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+www.adyen.com	Adyen	GLOBAL,web
+alipay.cn	Alipay	CN,web
+www.alipay.com	Alipay	CN,web
+www.americanexpress.com	Amex	GLOBAL,web
+apple-pay-gateway.apple.com	Apple Pay	GLOBAL,api
+bestchange.ru	bestchange	GLOBAL,web
+www.binance.com	Binance	GLOBAL,web
+www.binance.us	Binance	GLOBAL,web
+www.affirm.com	BNPL	GLOBAL,web
+www.klarna.com	BNPL	GLOBAL,web
+boc.cn	boc	CN,web
+www.bybit.com	Bybit	GLOBAL,web
+ccb.cn	ccb	CN,web
+ccb.com	ccb	CN,web
+www.checkout.com	Checkout.com	GLOBAL,web
+citicsf.com	citic	CN,web
+ecitic.com	citic	CN,web
+cmbchina.com	cmb	CN,web
+api.coinbase.com	Coinbase	GLOBAL,api
+www.coinbase.com	Coinbase	GLOBAL,web
+deribit.com	deribit	GLOBAL,web
+fibank.bg	fibank	GLOBAL,web
+futu.cn	futu	GLOBAL,web
+futu.link	futu	GLOBAL,web
+pay.google.com	Google Pay	GLOBAL
+hsbc.ae	hsbc	GLOBAL,web
+hsbc.am	hsbc	GLOBAL,web
+www.hsbc.com	HSBC	GLOBAL,web
+ibkr.ca	ibkr	GLOBAL,web
+ibkr.eu	ibkr	GLOBAL,web
+icbc.ae	icbc	CN,web
+icbc.de	icbc	CN,web
+ifastgb.com	ifast	GLOBAL,web
+ifastgp.com	ifast	GLOBAL,web
+itigergrowth.com	itiger	GLOBAL,web
+kraken.onl	Kraken	GLOBAL,web
+www.kraken.com	Kraken	GLOBAL,web
+lighter.xyz	lighter	GLOBAL,web
+longbridge.cn	longbridge	GLOBAL,web
+longbridge.hk	longbridge	GLOBAL,web
+mastercard.ae	Mastercard	GLOBAL,web
+www.mastercard.com	Mastercard	GLOBAL,web
+n26.com	n26	GLOBAL,web
+nexo.io	nexo	GLOBAL,web
+www.okx.com	OKX	GLOBAL,web
+onekey.so	onekey	GLOBAL,web
+www.interactivebrokers.com	Other gateways/banks/brokers	GLOBAL,web
+www.payoneer.com	Payoneer	GLOBAL,web
+paypal.hk	PayPal/Venmo/Braintree	GLOBAL,web
+www.paypal.com	PayPal/Venmo/Braintree	GLOBAL,web
+www.paypalobjects.com	PayPal/Venmo/Braintree	GLOBAL,web
+redotpay.com	redotpay	GLOBAL,web
+redotpay.zendesk.com	redotpay	GLOBAL
+www.revolut.com	Revolut	GLOBAL,web
+safepal.com	safepal	GLOBAL,web
+schwab.com	schwab	GLOBAL,web
+schwabplan.com	schwab	GLOBAL,web
+www.skrill.com	Skrill/Neteller	GLOBAL,web
+cash.app	Square/Cash App	GLOBAL,web
+standardchartered.com	standardchartered	GLOBAL,web
+straitsx.com	straitsx	GLOBAL,web
+api.stripe.com	Stripe	GLOBAL,api
+stripe.com	Stripe	GLOBAL,web
+stripe.dev	Stripe	GLOBAL,web
+stripe.events	Stripe	GLOBAL,web
+itiger.com	Tiger Fintech	GLOBAL,web
+tigerbbs.cn	Tiger Fintech	GLOBAL,web
+trustwallet.com	trustwallet	GLOBAL,web
+unionpay.com	UnionPay	CN,web
+unionpay.net	UnionPay	CN,web
+visa.be	Visa/CyberSource	GLOBAL,web
+www.visa.com	Visa/CyberSource	GLOBAL,web
+api.mch.weixin.qq.com	WeChat Pay	CN,api
+wise.com	Wise	GLOBAL,web
+wisekey.com	wisekey	GLOBAL,web
+wyndlabs.ai	wynd	GLOBAL,web

@@ -1,0 +1,52 @@
+# 09-cloud-cdn.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+akamai.com	Akamai	GLOBAL,static
+akamaistream.net	Akamai	GLOBAL,media
+alicdn.com	Alibaba Cloud	CN,static
+api.alibabacloud.com	Alibaba Cloud	CN,api
+www.alibabacloud.com	Alibaba Cloud	CN,web
+www.aliyun.com	Alibaba Cloud	CN,web
+aws.amazon.com	AWS	GLOBAL
+aws.com	AWS	GLOBAL,web
+console.aws.amazon.com	AWS	GLOBAL
+s3.amazonaws.com	AWS	GLOBAL
+azure.cn	Azure	GLOBAL,web
+azure.com	Azure	GLOBAL,web
+azure.microsoft.com	Azure	GLOBAL
+portal.azure.com	Azure	GLOBAL
+bootcdn.cn	bootcdn	CN,static
+cdnjs.cloudflare.com	Cloudflare	GLOBAL,static
+cloudflare.com	Cloudflare	GLOBAL,web
+dash.cloudflare.com	Cloudflare	GLOBAL,media
+digitalocean.com	DigitalOcean	GLOBAL,web
+ondigitalocean.com	DigitalOcean	GLOBAL,web
+fastly.com	Fastly	GLOBAL,static
+fastly.io	Fastly	GLOBAL,static
+cloud.google.com	Google Cloud	GLOBAL
+console.cloud.google.com	Google Cloud	GLOBAL
+heroku.co	Heroku	GLOBAL,web
+heroku.me	Heroku	GLOBAL,web
+huaweicloud.com	Huawei Cloud	CN,web
+huaweisre.cn	Huawei Cloud	CN,web
+ibm.eu	IBM Cloud	GLOBAL,web
+ibm.us	IBM Cloud	GLOBAL,web
+imgix.com	imgix	GLOBAL,static
+jsdelivr.com	jsdelivr	GLOBAL,web
+limelight.com	Limelight/Edgio	GLOBAL,web
+llnw.com	Limelight/Edgio	GLOBAL,web
+netlify.app	Netlify	GLOBAL,web
+netlify.com	Netlify	GLOBAL,web
+oracle.com	Oracle Cloud	GLOBAL,web
+oraclecloud.com	Oracle Cloud	GLOBAL,web
+pagecdn.io	pagecdn	GLOBAL,static
+staticfile.net	qiniu	CN,static
+stackpath.com	stackpath	GLOBAL,web
+cloud.tencent.com	Tencent Cloud	CN
+vercel.app	Vercel	GLOBAL,web
+vercel.com	Vercel	GLOBAL,web
+vercel.sh	Vercel	GLOBAL,web
+vrcdn.video	vrcdn	GLOBAL,media
+www.hetzner.com	Vultr/Hetzner/OVH	GLOBAL,web
+www.ovhcloud.com	Vultr/Hetzner/OVH	GLOBAL,web
+www.vultr.com	Vultr/Hetzner/OVH	GLOBAL,web
+lxdns.cn	wangsu	CN,web

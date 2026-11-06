@@ -1,0 +1,119 @@
+# 部署与临时运行
+
+## 一行命令
+
+```sh
+# 观测端（服务端）：交互选择临时运行 / 永久安装 / 卸载 / 查看状态
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/scripts/sniroute-server.sh)"
+
+# 被测端（客户端）：首次粘贴注册链接，之后进入主菜单
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/scripts/sniroute-client.sh)"
+```
+
+服务端交互里选「永久安装」但当前不是 root 时，脚本会询问是否下载自身并用
+`sudo` 重新运行安装（临时文件随退出清理）。两个脚本都支持 `curl | sh`：
+菜单输入会自动接回终端。
+
+## 脚本说明
+
+两个脚本都是 POSIX sh，支持 Linux / macOS 的 amd64、arm64；服务端与客户端在
+Ubuntu、Debian、RHEL、CentOS、Alpine 上均可运行（Alpine 用 busybox wget 下载，
+二进制为静态编译，musl 直接可用）。默认从 `obrdx/SniRoute` 的最新 GitHub Release
+下载 `sniroute_{os}_{arch}` **裸二进制**；Release 由 GitHub Actions 在推送 `v*`
+标签时自动构建（见 `.github/workflows/release.yml`）。需要离线运行或使用自己
+编译的二进制时，用 `SR_BIN` 指向本地文件。
+
+默认下载的 Release 不保证与当前源码一致；发布前验收应使用下面的本地构建方式，并在部署机器执行 `sniroute version` 核对版本。交叉编译时用 `GOOS=linux GOARCH=amd64`（或 `arm64`），将二进制复制到对应被测机器和观测端，再通过 `SR_BIN` 部署。
+
+## 使用本地构建的二进制（离线 / 发布前）
+
+```sh
+go build -o /tmp/sniroute ./cmd/sniroute
+
+# 服务端：选择临时运行或永久安装
+SR_BIN=/tmp/sniroute sh scripts/sniroute-server.sh
+
+# 客户端：在被测机器上运行；第一次粘贴注册链接
+SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh
+```
+
+二进制必须匹配运行机器的系统与架构。客户端在线时可复用节点身份；离线满 15 分钟后，观测端清理客户端及其测试数据并使节点密钥失效，需获取新的注册链接。
+
+## 服务端
+
+```sh
+# 临时：自动启动服务并打开菜单，退出时停止本次服务、清理临时程序
+SR_BIN=/tmp/sniroute sh scripts/sniroute-server.sh --temp
+
+# 永久（Linux）：systemd 发行版写 systemd 单元，Alpine 写 OpenRC 服务；
+# 输入 sniroute 即启动服务并打开菜单
+sudo env SR_BIN=/tmp/sniroute sh scripts/sniroute-server.sh --install
+sniroute
+sniroute status
+sniroute logs
+
+# 卸载保留配置与数据；加 --purge 会询问是否删除全部配置与历史数据
+sudo sh scripts/sniroute-server.sh --uninstall
+```
+
+永久模式安装启动器到 `/usr/local/bin/sniroute`，程序到 `/usr/local/lib/sniroute/`，
+配置在 `/etc/sniroute/server.yaml`，数据在 `/var/lib/sniroute/`。
+systemd 发行版写 `/etc/systemd/system/sniroute.service`；Alpine（OpenRC）写
+`/etc/init.d/sniroute`（supervise-daemon 守护，崩溃自动重启）。启动器与
+服务单元内容保存在脚本的 `LAUNCHER_TEMPLATE`、`UNIT_TEMPLATE`、
+`OPENRC_TEMPLATE` 变量中。确保 `/usr/local/bin` 在 `PATH` 中。
+systemd / OpenRC 负责开机自启和崩溃重启；退出管理菜单不停止永久服务。
+
+两者都没有的环境（容器等）使用 `SR_NO_SYSTEMD=1` 只安装文件，`sniroute` 会用
+程序自带的 pid 文件模式启动后台服务；没有开机自启和崩溃重启。
+
+临时模式的配置和数据库保留在 `~/.sniroute`（可设 `SR_STATE_DIR`）。已有运行中的
+同配置服务时拒绝临时启动，避免影响原服务。临时模式退出会停止该模式的服务，
+与直接运行二进制的后台模式不同。非 root 默认探测端口 `8444`，root 为 `443`，
+控制端口为 `8443`；客户端自动发现探测端口。探测入口必须直连，不能经 CDN 或改写来源的反代。
+
+## 客户端（始终临时）
+
+```sh
+SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh
+SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh --probe -sni example.com
+SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh --reports list
+```
+
+本次运行的程序副本只放在临时目录。正常结束、错误退出、Ctrl+C、SIGHUP、SIGTERM
+都会清理临时目录。第一次中断等待程序保存部分报告；第二次强制退出，可能来不及生成报告。
+`SIGKILL`、断电等无法执行退出清理的情况不在此保证内。
+
+报告默认保留在启动脚本的当前目录，文件名为 `<任务>-report.md`；若在客户端设置了
+报告目录，则按该设置保存。节点密钥、配置和本地待补交队列保留在 `~/.sniroute/`
+（`client.yaml` / `client.db`）；测试证据和历史报告同时保存在客户端本地 SQLite。观测端离线保留窗口为 15 分钟，窗口结束后旧密钥不能再补交，已保存的本地报告仍可查看和导出。
+已有的脚本源文件与 `SR_BIN` 指定的原始程序不会被删除；清理只针对本次创建的临时内容。
+
+## 下载及参数
+
+不指定 `SR_BIN` 时会下载 Release 文件。可通过 `SR_BIN_URL` 指向其他地址，
+其中 `{os}`、`{arch}` 会替换为平台值。`SR_SHA256` 可提供预期 SHA-256 校验和。
+下载失败时退出并清理，可使用 `SR_BIN` 离线运行。
+
+服务端可覆盖 `SR_PREFIX`、`SR_ETC`、`SR_DATA`、`SR_UNIT_DIR`、`SR_INIT_DIR`、
+`SR_STATE_DIR`，这些目录需为不含空格、引号和路径回退段的绝对路径。
+新配置的监听可用 `SR_PROBE_ADDR` / `SR_CONTROL_ADDR` 覆盖；已有配置保持原值。
+
+两个脚本的 `--dry-run` 仅显示计划，不下载、不写配置、不启停服务。
+
+```sh
+sh scripts/sniroute-server.sh --help
+sh scripts/sniroute-client.sh --help
+python3 -m unittest discover -s scripts/tests -v
+```
+
+## 配置、指纹与报告
+
+直接运行二进制时，`sniroute server -config /path/server.yaml` 与
+`sniroute client -config /path/client.yaml` 可打开指定配置的菜单；`-h` 查看角色帮助。
+
+配置中的 `probe_pin` 是注册时的缓存。每次任务使用**已验证的控制连接**下发的最新探测公钥指纹；二者不一致会显示提示。仅修改本地缓存不会导致探测身份校验失败。测试身份拒绝行为须让控制接口下发的任务指纹与探测端实际公钥不一致：应记录 `identity_mismatch`，且不发送探测凭证。
+
+客户端自动 Markdown 报告、历史菜单导出和 `reports export` 默认使用同一个 `report_dir`（未设置则为当前工作目录）。`-dir` 可覆盖命令行导出目录；导出后显示绝对路径。
+
+中断后可在节点仍有效的 15 分钟窗口内补交本地待发送证据，并查看本地部分报告；目前没有继续执行原任务未测项的入口，重新测试会创建新任务。

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SniRoute 外置域名清单",
+  "description": "结构校验；域名另按 README 中的 hostname 规则校验。实际导入会逐条跳过不合规条目。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "domains"],
+  "properties": {
+    "version": {"const": "v1"},
+    "name": {"type": "string", "maxLength": 80},
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["domain"],
+        "properties": {
+          "domain": {"type": "string", "minLength": 1, "maxLength": 254},
+          "category": {"type": "string", "maxLength": 64}
+        }
+      }
+    }
+  }
+}

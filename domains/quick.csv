@@ -1,0 +1,232 @@
+category_id,category,hostname,service,region,role,restriction,purpose,is_suffix
+0,baseline,captive.apple.com,Connectivity check,GLOBAL,,,baseline,0
+0,baseline,connectivitycheck.gstatic.com,Connectivity check,GLOBAL,static,,baseline,0
+0,baseline,detectportal.firefox.com,Connectivity check,GLOBAL,,,baseline,0
+0,baseline,www.msftconnecttest.com,Connectivity check,GLOBAL,web,,baseline,0
+0,baseline,api.ipify.org,IP echo / test,GLOBAL,api,,baseline,0
+0,baseline,ident.me,IP echo / test,GLOBAL,web,,baseline,0
+0,baseline,ifconfig.me,IP echo / test,GLOBAL,web,,baseline,0
+0,baseline,ip.sb,IP echo / test,GLOBAL,web,,baseline,0
+0,baseline,ipinfo.io,IP echo / test,GLOBAL,web,,baseline,0
+1,search,www.baidu.com,Baidu,CN,web,,egress-diff,0
+1,search,cn.bing.com,Bing,GLOBAL,,,egress-diff,0
+1,search,www.bing.com,Bing,GLOBAL,web,,egress-diff,0
+1,search,duckduckgo.com,DuckDuckGo,GLOBAL,web,,egress-diff,0
+1,search,www.google.co.jp,Google Search,GLOBAL,web,,egress-diff,0
+1,search,www.google.com,Google Search,GLOBAL,web,,egress-diff,0
+1,search,www.google.com.hk,Google Search,GLOBAL,web,,egress-diff,0
+1,search,www.naver.com,Naver,KR,web,,egress-diff,0
+1,search,www.sogou.com,Sogou,CN,web,,egress-diff,0
+1,search,search.yahoo.com,Yahoo,GLOBAL,,,egress-diff,0
+2,ai,api.anthropic.com,Anthropic/Claude,GLOBAL,api,,egress-diff,0
+2,ai,claude.ai,Anthropic/Claude,GLOBAL,web,,egress-diff,0
+2,ai,cursor.com,Cursor,GLOBAL,web,,egress-diff,0
+2,ai,api.deepseek.com,DeepSeek,GLOBAL,api,,egress-diff,0
+2,ai,deepseek.com,DeepSeek,GLOBAL,web,,egress-diff,0
+2,ai,www.doubao.com,Doubao,GLOBAL,web,,egress-diff,0
+2,ai,aistudio.google.com,Google Gemini/AI Studio/NotebookLM,GLOBAL,,,egress-diff,0
+2,ai,gemini.google.com,Google Gemini/AI Studio/NotebookLM,GLOBAL,,,egress-diff,0
+2,ai,huggingface.co,Hugging Face,GLOBAL,web,,egress-diff,0
+2,ai,kimi.moonshot.cn,Kimi/Moonshot,GLOBAL,,,egress-diff,0
+2,ai,copilot.microsoft.com,Microsoft Copilot/Bing,GLOBAL,,,egress-diff,0
+2,ai,api.openai.com,OpenAI/ChatGPT/Sora,GLOBAL,api,,egress-diff,0
+2,ai,chatgpt.com,OpenAI/ChatGPT/Sora,GLOBAL,web,,egress-diff,0
+2,ai,sora.com,OpenAI/ChatGPT/Sora,GLOBAL,web,,egress-diff,0
+2,ai,perplexity.ai,Perplexity,GLOBAL,web,,egress-diff,0
+2,ai,qwen.ai,Qwen/Tongyi,GLOBAL,web,,egress-diff,0
+2,ai,grok.com,xAI/Grok,GLOBAL,web,,egress-diff,0
+3,social,bsky.app,Bluesky,GLOBAL,web,,access-restriction,0
+3,social,www.dcard.tw,Dcard,GLOBAL,web,,access-restriction,0
+3,social,www.facebook.com,Facebook,GLOBAL,web,,access-restriction,0
+3,social,www.instagram.com,Instagram,GLOBAL,web,,access-restriction,0
+3,social,mastodon.social,Mastodon,GLOBAL,web,,access-restriction,0
+3,social,pixiv.net,Pixiv,JP,web,,access-restriction,0
+3,social,www.reddit.com,Reddit,GLOBAL,web,,access-restriction,0
+3,social,threads.net,Threads,GLOBAL,web,,access-restriction,0
+3,social,www.tiktok.com,TikTok,GLOBAL,web,,access-restriction,0
+3,social,weibo.com,Weibo,GLOBAL,web,,access-restriction,0
+3,social,twitter.com,X/Twitter,GLOBAL,web,,access-restriction,0
+3,social,x.com,X/Twitter,GLOBAL,web,,access-restriction,0
+3,social,www.xiaohongshu.com,Xiaohongshu,GLOBAL,web,,access-restriction,0
+4,messaging,discord.com,Discord,GLOBAL,web,,access-restriction,0
+4,messaging,kakao.com,Kakao,GLOBAL,web,,access-restriction,0
+4,messaging,feishu.cn,Lark/Feishu,GLOBAL,web,,access-restriction,0
+4,messaging,line.me,LINE,GLOBAL,web,,access-restriction,0
+4,messaging,signal.org,Signal,GLOBAL,web,,access-restriction,0
+4,messaging,teams.microsoft.com,Teams,GLOBAL,,,access-restriction,0
+4,messaging,t.me,Telegram,GLOBAL,web,,access-restriction,0
+4,messaging,telegram.org,Telegram,GLOBAL,web,,access-restriction,0
+4,messaging,web.telegram.org,Telegram,GLOBAL,,,access-restriction,0
+4,messaging,wechat.com,WeChat,GLOBAL,web,,access-restriction,0
+4,messaging,weixin.qq.com,WeChat,GLOBAL,,,access-restriction,0
+4,messaging,web.whatsapp.com,WhatsApp,GLOBAL,,,access-restriction,0
+5,video-streaming,api.bilibili.com,Bilibili,CN,api,geo-restricted,egress-diff,0
+5,video-streaming,www.bilibili.com,Bilibili,CN,web,geo-restricted,egress-diff,0
+5,video-streaming,dazn-api.com,DAZN,GLOBAL,api,geo-restricted,egress-diff,0
+5,video-streaming,www.dazn.com,DAZN,GLOBAL,web,geo-restricted,egress-diff,0
+5,video-streaming,www.disneyplus.com,Disney+,GLOBAL,web,geo-restricted,egress-diff,0
+5,video-streaming,www.douyin.com,Douyin,CN,web,,egress-diff,0
+5,video-streaming,www.hulu.com,Hulu,US,web,geo-restricted,egress-diff,0
+5,video-streaming,www.iqiyi.com,iQIYI,CN,web,geo-restricted,egress-diff,0
+5,video-streaming,www.max.com,Max/HBO,GLOBAL,web,geo-restricted,egress-diff,0
+5,video-streaming,api-global.netflix.com,Netflix,GLOBAL,api,geo-restricted,egress-diff,0
+5,video-streaming,www.netflix.com,Netflix,GLOBAL,web,geo-restricted,egress-diff,0
+5,video-streaming,www.primevideo.com,Prime Video,GLOBAL,media,geo-restricted,egress-diff,0
+5,video-streaming,www.afreecatv.com,SOOP/Afreeca,KR,web,geo-restricted,egress-diff,0
+5,video-streaming,usher.ttvnw.net,Twitch,GLOBAL,,,egress-diff,0
+5,video-streaming,www.twitch.tv,Twitch,GLOBAL,web,,egress-diff,0
+5,video-streaming,i.ytimg.com,YouTube,GLOBAL,static,geo-restricted,egress-diff,0
+5,video-streaming,manifest.googlevideo.com,YouTube,GLOBAL,media,geo-restricted,egress-diff,0
+5,video-streaming,www.youtube.com,YouTube,GLOBAL,web,geo-restricted,egress-diff,0
+6,music-audio,music.amazon.com,Amazon Music,GLOBAL,,,region-availability,0
+6,music-audio,music.apple.com,Apple Music,GLOBAL,,,region-availability,0
+6,music-audio,deezer.com,Deezer,GLOBAL,web,geo-restricted,region-availability,0
+6,music-audio,music.163.com,NetEase Music,CN,,geo-restricted,region-availability,0
+6,music-audio,y.qq.com,QQ Music,CN,,geo-restricted,region-availability,0
+6,music-audio,soundcloud.com,SoundCloud,GLOBAL,web,,region-availability,0
+6,music-audio,api.spotify.com,Spotify,GLOBAL,api,geo-restricted,region-availability,0
+6,music-audio,open.spotify.com,Spotify,GLOBAL,,geo-restricted,region-availability,0
+6,music-audio,tidal.com,Tidal,GLOBAL,web,geo-restricted,region-availability,0
+6,music-audio,music.youtube.com,YouTube Music,GLOBAL,,,region-availability,0
+7,gaming,www.ea.com,EA,GLOBAL,web,,region-availability,0
+7,gaming,store.epicgames.com,Epic Games,GLOBAL,static,,region-availability,0
+7,gaming,www.hoyolab.com,HoYoverse,GLOBAL,web,,region-availability,0
+7,gaming,www.nintendo.com,Nintendo,GLOBAL,web,,region-availability,0
+7,gaming,www.playstation.com,PlayStation,GLOBAL,web,,region-availability,0
+7,gaming,www.riotgames.com,Riot,GLOBAL,web,,region-availability,0
+7,gaming,www.roblox.com,Roblox,GLOBAL,web,,region-availability,0
+7,gaming,steamcommunity.com,Steam,GLOBAL,web,,region-availability,0
+7,gaming,store.steampowered.com,Steam,GLOBAL,,,region-availability,0
+7,gaming,www.ubisoft.com,Ubisoft,GLOBAL,web,,region-availability,0
+7,gaming,www.xbox.com,Xbox,GLOBAL,web,,region-availability,0
+8,developer,bitbucket.org,Bitbucket/Atlassian,GLOBAL,web,,,0
+8,developer,codeberg.org,codeberg,GLOBAL,web,,,0
+8,developer,auth.docker.io,Docker,GLOBAL,auth,,,0
+8,developer,registry-1.docker.io,Docker,GLOBAL,,,,0
+8,developer,api.github.com,GitHub,GLOBAL,api,,,0
+8,developer,github.com,GitHub,GLOBAL,web,,,0
+8,developer,raw.githubusercontent.com,GitHub,GLOBAL,,,,0
+8,developer,gitlab.com,GitLab,GLOBAL,web,,,0
+8,developer,pkg.go.dev,Go,GLOBAL,,,,0
+8,developer,proxy.golang.org,Go,GLOBAL,,,,0
+8,developer,repo.maven.apache.org,Maven/Gradle,GLOBAL,,,,0
+8,developer,registry.npmjs.org,npm/JS,GLOBAL,,,,0
+8,developer,files.pythonhosted.org,PyPI/Python,GLOBAL,,,,0
+8,developer,pypi.org,PyPI/Python,GLOBAL,web,,,0
+8,developer,crates.io,Rust,GLOBAL,web,,,0
+8,developer,stackoverflow.com,Stack Overflow,GLOBAL,web,,,0
+9,cloud-cdn,akamai.com,Akamai,GLOBAL,static,,,0
+9,cloud-cdn,aws.amazon.com,AWS,GLOBAL,,,,0
+9,cloud-cdn,s3.amazonaws.com,AWS,GLOBAL,,,,0
+9,cloud-cdn,portal.azure.com,Azure,GLOBAL,,,,0
+9,cloud-cdn,cdnjs.cloudflare.com,Cloudflare,GLOBAL,static,,,0
+9,cloud-cdn,cloudflare.com,Cloudflare,GLOBAL,web,,,0
+9,cloud-cdn,digitalocean.com,DigitalOcean,GLOBAL,web,,,0
+9,cloud-cdn,fastly.com,Fastly,GLOBAL,static,,,0
+9,cloud-cdn,cloud.google.com,Google Cloud,GLOBAL,,,,0
+9,cloud-cdn,huaweicloud.com,Huawei Cloud,CN,web,,,0
+9,cloud-cdn,netlify.com,Netlify,GLOBAL,web,,,0
+9,cloud-cdn,cloud.tencent.com,Tencent Cloud,CN,,,,0
+9,cloud-cdn,vercel.com,Vercel,GLOBAL,web,,,0
+10,software-download,mesu.apple.com,Apple updates,GLOBAL,,,,0
+10,software-download,swcdn.apple.com,Apple updates,GLOBAL,static,,,0
+10,software-download,deb.debian.org,Debian,GLOBAL,,,,0
+10,software-download,security.debian.org,Debian,GLOBAL,,,,0
+10,software-download,dl.google.com,Google/Chrome updates,GLOBAL,download,,,0
+10,software-download,update.googleapis.com,Google/Chrome updates,GLOBAL,download,,,0
+10,software-download,dl.delivery.mp.microsoft.com,Microsoft/Windows Update,GLOBAL,download,,,0
+10,software-download,download.microsoft.com,Microsoft/Windows Update,GLOBAL,download,,,0
+10,software-download,download.mozilla.org,Mozilla,GLOBAL,download,,,0
+10,software-download,mirrors.kernel.org,Other Linux/mirrors,GLOBAL,,,,0
+10,software-download,archive.ubuntu.com,Ubuntu,GLOBAL,download,,,0
+10,software-download,security.ubuntu.com,Ubuntu,GLOBAL,,,,0
+11,dns-security,dns.adguard-dns.com,AdGuard DNS,GLOBAL,,,dns-control,0
+11,dns-security,cloudflare-dns.com,Cloudflare DNS,GLOBAL,web,,dns-control,0
+11,dns-security,dns.controld.com,Control D,GLOBAL,,,dns-control,0
+11,dns-security,dns.sb,DNS.SB,GLOBAL,web,,dns-control,0
+11,dns-security,dns.google,Google DNS,GLOBAL,web,,dns-control,0
+11,dns-security,dns.mullvad.net,Mullvad DNS,GLOBAL,,,dns-control,0
+11,dns-security,dns.nextdns.io,NextDNS,GLOBAL,,,dns-control,0
+11,dns-security,doh.opendns.com,OpenDNS,GLOBAL,,,dns-control,0
+11,dns-security,dns.quad9.net,Quad9,GLOBAL,,,dns-control,0
+12,payment-finance,www.alipay.com,Alipay,CN,web,,,0
+12,payment-finance,www.binance.com,Binance,GLOBAL,web,,,0
+12,payment-finance,www.bybit.com,Bybit,GLOBAL,web,,,0
+12,payment-finance,www.coinbase.com,Coinbase,GLOBAL,web,,,0
+12,payment-finance,www.hsbc.com,HSBC,GLOBAL,web,,,0
+12,payment-finance,www.mastercard.com,Mastercard,GLOBAL,web,,,0
+12,payment-finance,www.okx.com,OKX,GLOBAL,web,,,0
+12,payment-finance,www.paypal.com,PayPal/Venmo/Braintree,GLOBAL,web,,,0
+12,payment-finance,www.revolut.com,Revolut,GLOBAL,web,,,0
+12,payment-finance,api.stripe.com,Stripe,GLOBAL,api,,,0
+12,payment-finance,www.visa.com,Visa/CyberSource,GLOBAL,web,,,0
+12,payment-finance,wise.com,Wise,GLOBAL,web,,,0
+13,news-media,www.bbc.com,BBC News,GLOBAL,web,,access-restriction,0
+13,news-media,www.bloomberg.com,Bloomberg,GLOBAL,web,,access-restriction,0
+13,news-media,www.people.com.cn,CN media,CN,web,,access-restriction,0
+13,news-media,www.xinhuanet.com,CN media,CN,web,,access-restriction,0
+13,news-media,www.cnn.com,CNN,GLOBAL,web,,access-restriction,0
+13,news-media,www.dw.com,DW,GLOBAL,web,,access-restriction,0
+13,news-media,www.theguardian.com,Guardian,GLOBAL,web,,access-restriction,0
+13,news-media,www3.nhk.or.jp,NHK,JP,,,access-restriction,0
+13,news-media,www.nytimes.com,NYTimes,GLOBAL,web,,access-restriction,0
+13,news-media,www.reuters.com,Reuters,GLOBAL,web,,access-restriction,0
+13,news-media,www.rfa.org,RFA,GLOBAL,web,,access-restriction,0
+13,news-media,www.voanews.com,VOA,GLOBAL,web,,access-restriction,0
+13,news-media,www.wsj.com,WSJ,GLOBAL,web,,access-restriction,0
+14,wiki-academic,arxiv.org,arXiv,GLOBAL,web,,access-restriction,0
+14,wiki-academic,scholar.google.com,Google Scholar,GLOBAL,,,access-restriction,0
+14,wiki-academic,jstor.org,JSTOR,GLOBAL,web,,access-restriction,0
+14,wiki-academic,www.coursera.org,Publishers/MOOC,GLOBAL,web,,access-restriction,0
+14,wiki-academic,www.researchgate.net,ResearchGate,GLOBAL,web,,access-restriction,0
+14,wiki-academic,archive.org,Web archive,GLOBAL,download,,access-restriction,0
+14,wiki-academic,commons.wikimedia.org,Wikipedia/Wikimedia,GLOBAL,media,,access-restriction,0
+14,wiki-academic,en.wikipedia.org,Wikipedia/Wikimedia,GLOBAL,,,access-restriction,0
+14,wiki-academic,www.wikipedia.org,Wikipedia/Wikimedia,GLOBAL,web,,access-restriction,0
+14,wiki-academic,zh.wikipedia.org,Wikipedia/Wikimedia,GLOBAL,,,access-restriction,0
+15,shopping,www.aliexpress.com,AliExpress,GLOBAL,web,,region-availability,0
+15,shopping,www.amazon.cn,Amazon,GLOBAL,web,,region-availability,0
+15,shopping,www.amazon.co.jp,Amazon,GLOBAL,web,,region-availability,0
+15,shopping,www.amazon.com,Amazon,GLOBAL,web,,region-availability,0
+15,shopping,www.ebay.com,eBay,GLOBAL,web,,region-availability,0
+15,shopping,www.jd.com,JD,CN,web,,region-availability,0
+15,shopping,www.mercari.com,Mercari,JP,web,,region-availability,0
+15,shopping,www.rakuten.co.jp,Rakuten,JP,web,,region-availability,0
+15,shopping,www.shein.com,Shein,GLOBAL,web,,region-availability,0
+15,shopping,shopee.co.th,Shopee,SEA,,,region-availability,0
+15,shopping,www.taobao.com,Taobao/Tmall,CN,web,,region-availability,0
+15,shopping,www.tmall.com,Taobao/Tmall,CN,web,,region-availability,0
+15,shopping,www.temu.com,Temu,GLOBAL,web,,region-availability,0
+16,mail-office,www.dropbox.com,Dropbox,GLOBAL,web,,,0
+16,mail-office,docs.google.com,Gmail/Google Workspace,GLOBAL,,,,0
+16,mail-office,drive.google.com,Gmail/Google Workspace,GLOBAL,,,,0
+16,mail-office,mail.google.com,Gmail/Google Workspace,GLOBAL,,,,0
+16,mail-office,www.notion.so,Notion,GLOBAL,web,,,0
+16,mail-office,login.microsoftonline.com,Outlook/M365,GLOBAL,auth,,,0
+16,mail-office,outlook.live.com,Outlook/M365,GLOBAL,,,,0
+16,mail-office,outlook.office.com,Outlook/M365,GLOBAL,,,,0
+16,mail-office,www.microsoft365.com,Outlook/M365,GLOBAL,web,,,0
+16,mail-office,www.office.com,Outlook/M365,GLOBAL,web,,,0
+16,mail-office,mail.proton.me,Proton,GLOBAL,,,,0
+16,mail-office,app.slack.com,Slack,GLOBAL,,,,0
+17,privacy-proxy,www.expressvpn.com,ExpressVPN,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,getlantern.org,Lantern,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,mullvad.net,Mullvad,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,protonvpn.com,Proton VPN,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,psiphon.ca,Psiphon,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,bridges.torproject.org,Tor Project,GLOBAL,,,access-restriction,0
+17,privacy-proxy,check.torproject.org,Tor Project,GLOBAL,,,access-restriction,0
+17,privacy-proxy,www.torproject.org,Tor Project,GLOBAL,web,,access-restriction,0
+17,privacy-proxy,v2fly.org,v2ray,GLOBAL,media,,access-restriction,0
+18,restricted,pornhub.com,Adult,GLOBAL,web,,access-restriction,0
+18,restricted,1337x.to,BT/Trackers,GLOBAL,web,,access-restriction,0
+18,restricted,nyaa.si,BT/Trackers,GLOBAL,web,,access-restriction,0
+18,restricted,rutracker.org,BT/Trackers,GLOBAL,web,,access-restriction,0
+18,restricted,thepiratebay.org,BT/Trackers,GLOBAL,web,,access-restriction,0
+18,restricted,annas-archive.org,Copyright-disputed,GLOBAL,web,license-required,access-restriction,0
+18,restricted,annas-archive.se,Copyright-disputed,GLOBAL,web,license-required,access-restriction,0
+18,restricted,libgen.is,Copyright-disputed,GLOBAL,web,license-required,access-restriction,0
+18,restricted,libgen.rs,Copyright-disputed,GLOBAL,web,license-required,access-restriction,0
+18,restricted,sci-hub.se,Copyright-disputed,GLOBAL,web,license-required,access-restriction,0
+18,restricted,www.bet365.com,Gambling,GLOBAL,web,,access-restriction,0
+18,restricted,www.pokerstars.com,Gambling,GLOBAL,web,,access-restriction,0

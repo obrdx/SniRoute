@@ -1,0 +1,56 @@
+# 17-privacy-proxy.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+928.plus	928plus	GLOBAL,web,access-restriction
+boslife.biz	boslife	GLOBAL,web,access-restriction
+www.eff.org	Censorship research / digital rights	GLOBAL,web,access-restriction
+www.whonix.org	Censorship research / digital rights	GLOBAL,web,access-restriction
+citizenlab.org	citizenlab	GLOBAL,web,access-restriction
+cylink.pro	cylink	GLOBAL,web,access-restriction
+dlercloud.com	dlercloud	GLOBAL,web,access-restriction
+dlercloud.me	dlercloud	GLOBAL,web,access-restriction
+duyaoss.com	duyaoss	GLOBAL,web,access-restriction
+www.expressvpn.com	ExpressVPN	GLOBAL,web,access-restriction
+greatfirevpn.com	greatfire	GLOBAL,web,access-restriction
+pao-pao.net	greatfire	GLOBAL,web,access-restriction
+haveibeenpwned.com	haveibeenpwned	GLOBAL,web,access-restriction
+hitun.io	hitun	GLOBAL,web,access-restriction
+justmysocks.net	justmysocks	GLOBAL,web,access-restriction
+justmysocks1.net	justmysocks	GLOBAL,web,access-restriction
+getlantern.org	Lantern	GLOBAL,web,access-restriction
+lantern.io	Lantern	GLOBAL,web,access-restriction
+api.mullvad.net	Mullvad	GLOBAL,api,access-restriction
+mullvad.net	Mullvad	GLOBAL,web,access-restriction
+n3ro.lol	n3ro	GLOBAL,web,access-restriction
+n3ro.net	n3ro	GLOBAL,web,access-restriction
+nexitally.com	nexitally	GLOBAL,web,access-restriction
+nexitallysafe.com	nexitally	GLOBAL,web,access-restriction
+ngrok.app	ngrok	GLOBAL,web,access-restriction
+ngrok.io	ngrok	GLOBAL,web,access-restriction
+api.nordvpn.com	NordVPN	GLOBAL,api,access-restriction
+nordvpn.com	NordVPN	GLOBAL,web,access-restriction
+paofuyun.me	paofuyun	GLOBAL,web,access-restriction
+paskoocheh.com	paskoocheh	GLOBAL,web,access-restriction
+pinggy.io	pinggy	GLOBAL,web,access-restriction
+api.protonvpn.ch	Proton VPN	GLOBAL,api,access-restriction
+protonvpn.com	Proton VPN	GLOBAL,web,access-restriction
+psiphon.ca	Psiphon	GLOBAL,web,access-restriction
+docs.rw	remnawave	GLOBAL,web,access-restriction
+try.rw	remnawave	GLOBAL,web,access-restriction
+shadowsocks.nl	shadowsockscom	GLOBAL,web,access-restriction
+softether-download.com	softether	GLOBAL,download,access-restriction
+softether.org	softether	GLOBAL,web,access-restriction
+squirrelvpn.com	squirrelvpn	GLOBAL,web,access-restriction
+airport-gov-cn.com	ssrcloud	GLOBAL,web,access-restriction
+cnix-gov-cn.com	ssrcloud	GLOBAL,web,access-restriction
+surflite.co	surflite	GLOBAL,web,access-restriction
+archive.torproject.org	Tor Project	GLOBAL,download,access-restriction
+bridges.torproject.org	Tor Project	GLOBAL,access-restriction
+check.torproject.org	Tor Project	GLOBAL,access-restriction
+snowflake-broker.torproject.net	Tor Project	GLOBAL,access-restriction
+www.torproject.org	Tor Project	GLOBAL,web,access-restriction
+v2fly.org	v2ray	GLOBAL,media,access-restriction
+v2ray.com	v2ray	GLOBAL,media,access-restriction
+vilavpn.com	vilavpn	GLOBAL,web,access-restriction
+vilavpn.xyz	vilavpn	GLOBAL,web,access-restriction
+vpngate.jp	vpngate	GLOBAL,web,access-restriction
+vpngate.net	vpngate	GLOBAL,web,access-restriction

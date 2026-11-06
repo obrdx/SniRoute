@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "name": "我的自定义探测清单",
+  "domains": [
+    {
+      "domain": "chat.example",
+      "category": "AI 服务"
+    },
+    {
+      "domain": "api.example",
+      "category": "AI 服务"
+    },
+    {
+      "domain": "code.example",
+      "category": "开发工具"
+    },
+    {
+      "domain": "assets.example"
+    }
+  ]
+}

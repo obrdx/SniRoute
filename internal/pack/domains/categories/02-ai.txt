@@ -1,0 +1,66 @@
+# 02-ai.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+api.anthropic.com	Anthropic/Claude	GLOBAL,api,egress-diff
+claude.ai	Anthropic/Claude	GLOBAL,web,egress-diff
+claude.com	Anthropic/Claude	GLOBAL,web,egress-diff
+askdiandian.com	askdiandian	CN,web,egress-diff
+character.ai	Character.ai	GLOBAL,web,egress-diff
+characterai.io	Character.ai	GLOBAL,web,egress-diff
+api.cohere.ai	Cohere	GLOBAL,api,egress-diff
+cohere.com	Cohere	GLOBAL,web,egress-diff
+cursor.com	Cursor	GLOBAL,web,egress-diff
+cursor.sh	Cursor	GLOBAL,web,egress-diff
+api.deepseek.com	DeepSeek	GLOBAL,api,egress-diff
+deepseek.com	DeepSeek	GLOBAL,web,egress-diff
+doubao-dev.com	Doubao	GLOBAL,web,egress-diff
+www.doubao.com	Doubao	GLOBAL,web,egress-diff
+elevenlabs.io	ElevenLabs	GLOBAL,web,egress-diff
+github.ai	GitHub Copilot	GLOBAL,web,egress-diff
+github.io	GitHub Copilot	GLOBAL,web,egress-diff
+aistudio.google.com	Google Gemini/AI Studio/NotebookLM	GLOBAL,egress-diff
+gemini.google	Google Gemini/AI Studio/NotebookLM	GLOBAL,web,egress-diff
+gemini.google.com	Google Gemini/AI Studio/NotebookLM	GLOBAL,egress-diff
+notebooklm.google	Google Gemini/AI Studio/NotebookLM	GLOBAL,web,egress-diff
+notebooklm.google.com	Google Gemini/AI Studio/NotebookLM	GLOBAL,egress-diff
+api.groq.com	Groq	GLOBAL,api,egress-diff
+groq.com	Groq	GLOBAL,web,egress-diff
+api-inference.huggingface.co	Hugging Face	GLOBAL,api,egress-diff
+huggingface.co	Hugging Face	GLOBAL,web,egress-diff
+api.moonshot.ai	Kimi/Moonshot	GLOBAL,api,egress-diff
+api.moonshot.cn	Kimi/Moonshot	GLOBAL,api,egress-diff
+kimi.moonshot.cn	Kimi/Moonshot	GLOBAL,egress-diff
+www.kimi.com	Kimi/Moonshot	GLOBAL,web,egress-diff
+liveperson.com	liveperson	GLOBAL,web,egress-diff
+www.llama.com	Meta AI	GLOBAL,web,egress-diff
+www.meta.ai	Meta AI	GLOBAL,web,egress-diff
+copilot.com	Microsoft Copilot/Bing	GLOBAL,web,egress-diff
+copilot.microsoft.com	Microsoft Copilot/Bing	GLOBAL,egress-diff
+api.mistral.ai	Mistral	GLOBAL,api,egress-diff
+mistral.ai	Mistral	GLOBAL,web,egress-diff
+ai.com	OpenAI/ChatGPT/Sora	GLOBAL,web,egress-diff
+api.openai.com	OpenAI/ChatGPT/Sora	GLOBAL,api,egress-diff
+auth.openai.com	OpenAI/ChatGPT/Sora	GLOBAL,auth,egress-diff
+chat.openai.com	OpenAI/ChatGPT/Sora	GLOBAL,egress-diff
+chatgpt.com	OpenAI/ChatGPT/Sora	GLOBAL,web,egress-diff
+openai.com	OpenAI/ChatGPT/Sora	GLOBAL,web,egress-diff
+platform.openai.com	OpenAI/ChatGPT/Sora	GLOBAL,egress-diff
+sora.com	OpenAI/ChatGPT/Sora	GLOBAL,web,egress-diff
+midjourney.com	Other AI	GLOBAL,web,egress-diff
+api.perplexity.ai	Perplexity	GLOBAL,api,egress-diff
+perplexity.ai	Perplexity	GLOBAL,web,egress-diff
+perplexity.com	Perplexity	GLOBAL,web,egress-diff
+poe.com	Poe	GLOBAL,web,egress-diff
+qwen.ai	Qwen/Tongyi	GLOBAL,web,egress-diff
+tongyi.aliyun.com	Qwen/Tongyi	GLOBAL,egress-diff
+runwayml.com	Runway	GLOBAL,web,egress-diff
+suno.ai	Suno	GLOBAL,web,egress-diff
+suno.com	Suno	GLOBAL,web,egress-diff
+trae.cn	trae	CN,web,egress-diff
+trae.guru	trae	CN,web,egress-diff
+api.x.ai	xAI/Grok	GLOBAL,api,egress-diff
+grok.com	xAI/Grok	GLOBAL,web,egress-diff
+grokipedia.com	xAI/Grok	GLOBAL,web,egress-diff
+x.ai	xAI/Grok	GLOBAL,web,egress-diff
+xiaomimimo.com	xiaomi-ai	CN,web,egress-diff
+chatglm.cn	Zhipu/ChatGLM	GLOBAL,web,egress-diff
+z.ai	Zhipu/ChatGLM	GLOBAL,web,egress-diff

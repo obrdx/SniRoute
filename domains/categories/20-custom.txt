@@ -1,0 +1,3 @@
+# 20-custom.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+# Add your own domain, then re-run the deduplication process.

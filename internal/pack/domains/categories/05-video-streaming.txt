@@ -1,0 +1,203 @@
+# 05-video-streaming.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+10play.com.au	10play	AU,geo-restricted,egress-diff
+www.4gtv.tv	4GTV	TW,web,geo-restricted,egress-diff
+7plus.com.au	7plus	AU,geo-restricted,egress-diff
+ninemediaroom.com.au	9Now	AU,media,geo-restricted,egress-diff
+www.9now.com.au	9Now	AU,web,geo-restricted,egress-diff
+abema.io	AbemaTV	JP,web,geo-restricted,egress-diff
+abema.tv	AbemaTV	JP,web,geo-restricted,egress-diff
+afp.com	afp	GLOBAL,web,egress-diff
+aljazeera.net	aljazeera	GLOBAL,web,egress-diff
+is1-ssl.mzstatic.com	Apple TV+	GLOBAL,static,geo-restricted,egress-diff
+tv.apple.com	Apple TV+	GLOBAL,geo-restricted,egress-diff
+uts-api.itunes.apple.com	Apple TV+	GLOBAL,api,geo-restricted,egress-diff
+applemusic.co	apple-music	GLOBAL,web,egress-diff
+applemusic.com	apple-music	GLOBAL,web,egress-diff
+musickit.net	apple-music	GLOBAL,web,egress-diff
+api.zdf.de	ARD/ZDF	EU,api,geo-restricted,egress-diff
+www.zdf.de	ARD/ZDF	EU,web,geo-restricted,egress-diff
+www.arte.tv	Arte	EU,web,geo-restricted,egress-diff
+www.astro.com.my	Astro/sooka	SEA,web,geo-restricted,egress-diff
+hinet.net	Bahamut	TW,web,geo-restricted,egress-diff
+www.gamer.com.tw	Bahamut	TW,web,geo-restricted,egress-diff
+bandcamp.com	bandcamp	GLOBAL,web,egress-diff
+bbc-reporting-api.app	BBC iPlayer	UK,api,geo-restricted,egress-diff
+bbc.co	BBC iPlayer	UK,web,geo-restricted,egress-diff
+www.bbc.co.uk	BBC iPlayer	UK,web,geo-restricted,egress-diff
+api.bilibili.com	Bilibili	CN,api,geo-restricted,egress-diff
+bilibili.cc	Bilibili	CN,web,geo-restricted,egress-diff
+bilibili.cn	Bilibili	CN,web,geo-restricted,egress-diff
+www.bilibili.com	Bilibili	CN,web,geo-restricted,egress-diff
+biliintl.com	Bilibili intl	SG,web,geo-restricted,egress-diff
+www.bilibili.tv	Bilibili intl	SG,web,geo-restricted,egress-diff
+binge.com.au	Binge/Kayo/Foxtel	AU,geo-restricted,egress-diff
+www.foxtel.com.au	Binge/Kayo/Foxtel	AU,web,geo-restricted,egress-diff
+bloomberg.cn	bloomberg	GLOBAL,web,egress-diff
+www.britbox.co.uk	BritBox	UK,web,geo-restricted,egress-diff
+www.britbox.com	BritBox	UK,web,geo-restricted,egress-diff
+www.canalplus.com	Canal+	EU,web,geo-restricted,egress-diff
+www.catchplay.com	CatchPlay	TW,web,geo-restricted,egress-diff
+www.cbc.ca	CBC Gem	CA,web,geo-restricted,egress-diff
+amlg.io	CBS	US,web,geo-restricted,egress-diff
+cbs.com	CBS	US,web,geo-restricted,egress-diff
+cctv.cn	CCTV	CN,web,geo-restricted,egress-diff
+cctv.com	CCTV	CN,web,geo-restricted,egress-diff
+api.channel4.com	Channel 4	UK,api,geo-restricted,egress-diff
+www.channel4.com	Channel 4	UK,web,geo-restricted,egress-diff
+cnn.io	cnn	GLOBAL,web,egress-diff
+beta-api.crunchyroll.com	Crunchyroll	GLOBAL,api,geo-restricted,egress-diff
+www.crunchyroll.com	Crunchyroll	GLOBAL,web,geo-restricted,egress-diff
+dai.ly	Dailymotion	GLOBAL,web,egress-diff
+dailymotion.com	Dailymotion	GLOBAL,web,egress-diff
+dazn-api.com	DAZN	GLOBAL,api,geo-restricted,egress-diff
+www.dazn.com	DAZN	GLOBAL,web,geo-restricted,egress-diff
+discovery.com	Discovery+	GLOBAL,web,geo-restricted,egress-diff
+discoveryplus.in	Discovery+	GLOBAL,web,geo-restricted,egress-diff
+www.disneyplus.com	Disney+	GLOBAL,web,geo-restricted,egress-diff
+ddo.jp	DMM	JP,web,geo-restricted,egress-diff
+dmm.hk	DMM	JP,web,geo-restricted,egress-diff
+www.dmm.co.jp	DMM	JP,web,geo-restricted,egress-diff
+www.dmm.com	DMM	JP,web,geo-restricted,egress-diff
+douyinec.com	Douyin	CN,web,egress-diff
+douyinfe.com	Douyin	CN,web,egress-diff
+www.douyin.com	Douyin	CN,web,egress-diff
+douyu.com	Douyu	CN,web,egress-diff
+douyu.tv	Douyu	CN,web,egress-diff
+deutschewelle.h-cdn.com	dw	GLOBAL,static,egress-diff
+economistgroup.com	economist	GLOBAL,web,egress-diff
+emby.ml	Emby	GLOBAL,web,egress-diff
+emby.run	Emby	GLOBAL,web,egress-diff
+plus.espn.com	ESPN+	US,geo-restricted,egress-diff
+fod.fujitv.co.jp	FOD	JP,geo-restricted,egress-diff
+i.fod.fujitv.co.jp	FOD	JP,geo-restricted,egress-diff
+www.france.tv	France TV	EU,web,geo-restricted,egress-diff
+fetnet.net	friDay	TW,web,geo-restricted,egress-diff
+friday.tw	friDay	TW,web,geo-restricted,egress-diff
+fubotv.com	Fubo	US,web,geo-restricted,egress-diff
+www.fubo.tv	Fubo	US,web,geo-restricted,egress-diff
+hamivideo.hinet.net	Hami Video	TW,media,geo-restricted,egress-diff
+ott.hinet.net	Hami Video	TW,geo-restricted,egress-diff
+www.hotstar.com	Hotstar/JioCinema	IN,web,geo-restricted,egress-diff
+auth.hulu.com	Hulu	US,auth,geo-restricted,egress-diff
+www.hulu.com	Hulu	US,web,geo-restricted,egress-diff
+id.hulu.jp	Hulu JP	JP,auth,geo-restricted,egress-diff
+www.hulu.jp	Hulu JP	JP,web,geo-restricted,egress-diff
+huya.com	Huya	CN,web,egress-diff
+huyagame.cn	Huya	CN,web,egress-diff
+iqiyiedge.com	iQIYI	CN,web,geo-restricted,egress-diff
+iqiyiedge.net	iQIYI	CN,web,geo-restricted,egress-diff
+www.iqiyi.com	iQIYI	CN,web,geo-restricted,egress-diff
+pcw-api.iq.com	iQIYI intl	SG,api,geo-restricted,egress-diff
+www.iq.com	iQIYI intl	SG,web,geo-restricted,egress-diff
+itvstatic.com	ITVX	UK,static,geo-restricted,egress-diff
+www.itv.com	ITVX	UK,web,geo-restricted,egress-diff
+www.joyn.de	Joyn/RTL+	EU,web,geo-restricted,egress-diff
+tv.kakao.com	Kakao TV	KR,geo-restricted,egress-diff
+kick.com	Kick	GLOBAL,web,egress-diff
+kkbox-prime.com	kkbox	GLOBAL,web,egress-diff
+api.kktv.me	KKTV	TW,api,geo-restricted,egress-diff
+www.kktv.me	KKTV	TW,web,geo-restricted,egress-diff
+kuaishou.cn	Kuaishou	CN,web,egress-diff
+kuaishou.com	Kuaishou	CN,web,egress-diff
+lastfm.cn	lastfm	GLOBAL,web,egress-diff
+www.linetv.tw	LINE TV	TW,web,geo-restricted,egress-diff
+ofiii.com	LiTV	TW,web,geo-restricted,egress-diff
+www.litv.tv	LiTV	TW,web,geo-restricted,egress-diff
+hitv.com	Mango TV	CN,web,geo-restricted,egress-diff
+www.mgtv.com	Mango TV	CN,web,geo-restricted,egress-diff
+www.hbogo.asia	Max/HBO	GLOBAL,web,geo-restricted,egress-diff
+www.hbomax.com	Max/HBO	GLOBAL,web,geo-restricted,egress-diff
+www.max.com	Max/HBO	GLOBAL,web,geo-restricted,egress-diff
+www.mewatch.sg	MeWatch	SG,web,geo-restricted,egress-diff
+www.molotov.tv	Molotov	EU,web,geo-restricted,egress-diff
+my5.tv	My5	UK,web,geo-restricted,egress-diff
+www.channel5.com	My5	UK,web,geo-restricted,egress-diff
+api.mytvsuper.com	myTV SUPER	HK,api,geo-restricted,egress-diff
+www.mytvsuper.com	myTV SUPER	HK,web,geo-restricted,egress-diff
+api.chzzk.naver.com	Naver TV/Chzzk	KR,api,geo-restricted,egress-diff
+nbc.co	NBC	US,web,geo-restricted,egress-diff
+nbc.com	NBC	US,web,geo-restricted,egress-diff
+api-global.netflix.com	Netflix	GLOBAL,api,geo-restricted,egress-diff
+fast.com	Netflix	GLOBAL,web,geo-restricted,egress-diff
+www.netflix.com	Netflix	GLOBAL,web,geo-restricted,egress-diff
+wsj.net	newscorp	GLOBAL,web,egress-diff
+nhkworld.jp	NHK+	JP,web,geo-restricted,egress-diff
+www.nhk.or.jp	NHK+	JP,web,geo-restricted,egress-diff
+nico.ms	Niconico	JP,web,geo-restricted,egress-diff
+niconico.com	Niconico	JP,web,geo-restricted,egress-diff
+www.now.com	Now E	HK,web,geo-restricted,egress-diff
+www.nowe.com	Now E	HK,web,geo-restricted,egress-diff
+www.nowtv.com	NOW/Sky	UK,web,geo-restricted,egress-diff
+www.sky.com	NOW/Sky	UK,web,geo-restricted,egress-diff
+nyt.com	nytimes	GLOBAL,web,egress-diff
+cbsi.com	Paramount+	US,web,geo-restricted,egress-diff
+www.paramountplus.com	Paramount+	US,web,geo-restricted,egress-diff
+pbs.org	PBS	US,web,geo-restricted,egress-diff
+pccw.com	PCCW	HK,web,egress-diff
+pccwglobal.com	PCCW	HK,web,egress-diff
+www.peacocktv.com	Peacock	US,web,geo-restricted,egress-diff
+plex.com	Plex	GLOBAL,web,egress-diff
+plex.tv	Plex	GLOBAL,web,egress-diff
+pluto.tv	Pluto TV	US,web,geo-restricted,egress-diff
+plutotv.net	Pluto TV	US,web,geo-restricted,egress-diff
+pca.st	pocketcasts	GLOBAL,web,egress-diff
+atv-ps.amazon.com	Prime Video	GLOBAL,geo-restricted,egress-diff
+primevideo.cc	Prime Video	GLOBAL,media,geo-restricted,egress-diff
+primevideo.tv	Prime Video	GLOBAL,media,geo-restricted,egress-diff
+www.primevideo.com	Prime Video	GLOBAL,media,geo-restricted,egress-diff
+www.raiplay.it	RaiPlay	EU,web,geo-restricted,egress-diff
+roku.com	Roku	US,web,geo-restricted,egress-diff
+rokutime.com	Roku	US,web,geo-restricted,egress-diff
+etvonline.hk	RTHK	HK,web,geo-restricted,egress-diff
+rthk.hk	RTHK	HK,web,geo-restricted,egress-diff
+rumble.com	Rumble	GLOBAL,web,egress-diff
+shahid.mbc.net	Shahid	ME,geo-restricted,egress-diff
+slinginternational.com	Sling	US,web,geo-restricted,egress-diff
+www.sling.com	Sling	US,web,geo-restricted,egress-diff
+k.sohu	Sohu Video	CN,web,geo-restricted,egress-diff
+m.sohu	Sohu Video	CN,web,geo-restricted,egress-diff
+www.sonyliv.com	SonyLIV	IN,web,geo-restricted,egress-diff
+www.afreecatv.com	SOOP/Afreeca	KR,web,geo-restricted,egress-diff
+www.sooplive.co.kr	SOOP/Afreeca	KR,web,geo-restricted,egress-diff
+soundcloud.cloud	soundcloud	GLOBAL,web,egress-diff
+byspotify.com	spotify	GLOBAL,web,egress-diff
+spotify.link	spotify	GLOBAL,web,egress-diff
+www.stan.com.au	Stan	AU,web,geo-restricted,egress-diff
+www.starz.com	Starz	US,web,geo-restricted,egress-diff
+apd-pcdnvodstat.teg.tencent-cloud.net	Tencent Video	CN,media,geo-restricted,egress-diff
+video.qq.com	Tencent Video	CN,media,geo-restricted,egress-diff
+www.tf1.fr	TF1+	EU,web,geo-restricted,egress-diff
+www.tubitv.com	Tubi	US,web,geo-restricted,egress-diff
+tvbusa.com	TVB	HK,web,geo-restricted,egress-diff
+www.tvb.com	TVB	HK,web,geo-restricted,egress-diff
+platform-api.tver.jp	TVer	JP,api,geo-restricted,egress-diff
+tver.jp	TVer	JP,web,geo-restricted,egress-diff
+api.tving.com	TVING	KR,api,geo-restricted,egress-diff
+www.tving.com	TVING	KR,web,geo-restricted,egress-diff
+api.twitch.tv	Twitch	GLOBAL,api,egress-diff
+ext-twitch.tv	Twitch	GLOBAL,web,egress-diff
+usher.ttvnw.net	Twitch	GLOBAL,egress-diff
+www.twitch.tv	Twitch	GLOBAL,web,egress-diff
+unext-info.jp	U-NEXT	JP,web,geo-restricted,egress-diff
+unext.jp	U-NEXT	JP,web,geo-restricted,egress-diff
+www.vidio.com	Vidio	SEA,web,geo-restricted,egress-diff
+viki.com	Viki	GLOBAL,web,egress-diff
+viki.io	Viki	GLOBAL,web,egress-diff
+vimeo.com	Vimeo	GLOBAL,web,egress-diff
+vimeo.fr	Vimeo	GLOBAL,web,egress-diff
+api-gateway-global.viu.com	Viu	SG,api,geo-restricted,egress-diff
+www.viu.com	Viu	SG,web,geo-restricted,egress-diff
+www.viu.tv	ViuTV	HK,web,geo-restricted,egress-diff
+image.wavve.com	Wavve	KR,static,geo-restricted,egress-diff
+www.wavve.com	Wavve	KR,web,geo-restricted,egress-diff
+wetv.vip	WeTV	SG,web,geo-restricted,egress-diff
+wetvinfo.com	WeTV	SG,web,geo-restricted,egress-diff
+www.wowow.co.jp	WOWOW	JP,web,geo-restricted,egress-diff
+www.youku.com	Youku	CN,web,geo-restricted,egress-diff
+youku.tv	Youku	CN,web,geo-restricted,egress-diff
+i.ytimg.com	YouTube	GLOBAL,static,geo-restricted,egress-diff
+manifest.googlevideo.com	YouTube	GLOBAL,media,geo-restricted,egress-diff
+www.youtube-nocookie.com	YouTube	GLOBAL,web,geo-restricted,egress-diff
+www.youtube.com	YouTube	GLOBAL,web,geo-restricted,egress-diff
+tv.youtube.com	YouTube TV	US,geo-restricted,egress-diff

@@ -1,0 +1,14 @@
+# 00-baseline.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+captive.apple.com	Connectivity check	GLOBAL,baseline
+connectivitycheck.gstatic.com	Connectivity check	GLOBAL,static,baseline
+detectportal.firefox.com	Connectivity check	GLOBAL,baseline
+www.msftconnecttest.com	Connectivity check	GLOBAL,web,baseline
+www.iana.org	IANA example	GLOBAL,web,baseline
+api.ipify.org	IP echo / test	GLOBAL,api,baseline
+icanhazip.com	IP echo / test	GLOBAL,web,baseline
+ident.me	IP echo / test	GLOBAL,web,baseline
+ifconfig.me	IP echo / test	GLOBAL,web,baseline
+ip-api.com	IP echo / test	GLOBAL,api,baseline
+ip.sb	IP echo / test	GLOBAL,web,baseline
+ipinfo.io	IP echo / test	GLOBAL,web,baseline

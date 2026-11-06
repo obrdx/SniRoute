@@ -1,0 +1,59 @@
+# 07-gaming.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+2k.com	2K	GLOBAL,web,region-availability
+2kct.onl	2K	GLOBAL,web,region-availability
+battle.net	Battle.net	GLOBAL,web,region-availability
+battlenet.com	Battle.net	GLOBAL,web,region-availability
+cygames.jp	Cygames	JP,web,region-availability
+worldflipper.jp	Cygames	JP,web,region-availability
+games.dmm.com	DMM Games	JP,geo-restricted,region-availability
+uo.com	EA	GLOBAL,web,region-availability
+www.ea.com	EA	GLOBAL,web,region-availability
+download.epicgames.com	Epic Games	GLOBAL,download,region-availability
+epicgames.dev	Epic Games	GLOBAL,static,region-availability
+store.epicgames.com	Epic Games	GLOBAL,static,region-availability
+www.epicgames.com	Epic Games	GLOBAL,static,region-availability
+garena.my	Garena	SEA,web,region-availability
+garena.ph	Garena	SEA,web,region-availability
+geforce.cn	GeForce Now	GLOBAL,web,region-availability
+geforce.com	GeForce Now	GLOBAL,web,region-availability
+gog.com	GOG	GLOBAL,web,region-availability
+gogalaxy.com	GOG	GLOBAL,web,region-availability
+hoyoverse.com	HoYoverse	GLOBAL,web,region-availability
+www.hoyolab.com	HoYoverse	GLOBAL,web,region-availability
+www.humblebundle.com	Humble	GLOBAL,web,region-availability
+itch.io	Itch.io	GLOBAL,web,region-availability
+api.minecraftservices.com	Minecraft	GLOBAL,api,region-availability
+netease.com	NetEase Games	CN,web,region-availability
+netease.im	NetEase Games	CN,web,region-availability
+nexon.com	Nexon	KR,web,region-availability
+nexon.io	Nexon	KR,web,region-availability
+accounts.nintendo.com	Nintendo	GLOBAL,auth,region-availability
+nintendo.at	Nintendo	GLOBAL,web,region-availability
+www.nintendo.com	Nintendo	GLOBAL,web,region-availability
+playstation.net	PlayStation	GLOBAL,web,region-availability
+playstationnetwork.com	PlayStation	GLOBAL,web,region-availability
+store.playstation.com	PlayStation	GLOBAL,region-availability
+www.playstation.com	PlayStation	GLOBAL,web,region-availability
+riot.com	Riot	GLOBAL,web,region-availability
+www.riotgames.com	Riot	GLOBAL,web,region-availability
+roblox.ca	Roblox	GLOBAL,web,region-availability
+www.roblox.com	Roblox	GLOBAL,web,region-availability
+rockstargames.com	Rockstar	GLOBAL,web,region-availability
+rockstarnorth.com	Rockstar	GLOBAL,web,region-availability
+api.steampowered.com	Steam	GLOBAL,api,region-availability
+steamcommunity.com	Steam	GLOBAL,web,region-availability
+steamstatic.com	Steam	GLOBAL,static,region-availability
+store.steampowered.com	Steam	GLOBAL,region-availability
+supercell.com	Supercell	GLOBAL,web,region-availability
+supercell.net	Supercell	GLOBAL,web,region-availability
+taptap.cn	TapTap	CN,web,region-availability
+taptap.io	TapTap	CN,web,region-availability
+ubisoftconnect.com	Ubisoft	GLOBAL,web,region-availability
+www.ubisoft.com	Ubisoft	GLOBAL,web,region-availability
+unity.cn	Unity	GLOBAL,web,region-availability
+unity.com	Unity	GLOBAL,web,region-availability
+minecraft.net	Xbox	GLOBAL,web,region-availability
+www.xbox.com	Xbox	GLOBAL,web,region-availability
+xbox.co	Xbox	GLOBAL,web,region-availability
+xbox.eu	Xbox	GLOBAL,web,region-availability

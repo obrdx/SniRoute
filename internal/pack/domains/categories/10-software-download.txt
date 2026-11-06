@@ -1,0 +1,30 @@
+# 10-software-download.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+apkmirror.com	apkmirror	GLOBAL,web
+apkpure.net	apkpure	GLOBAL,web
+gdmf.apple.com	Apple updates	GLOBAL
+mesu.apple.com	Apple updates	GLOBAL
+swcdn.apple.com	Apple updates	GLOBAL,static
+ceno.app	ceno	GLOBAL,web
+deb.debian.org	Debian	GLOBAL
+security.debian.org	Debian	GLOBAL
+epicbrowser.com	epicbrowser	GLOBAL,static
+download.fedoraproject.org	Fedora/RHEL	GLOBAL,download
+dl.google.com	Google/Chrome updates	GLOBAL,download
+update.googleapis.com	Google/Chrome updates	GLOBAL,download
+librewolf.dev	librewolf	GLOBAL,web
+dl.delivery.mp.microsoft.com	Microsoft/Windows Update	GLOBAL,download
+download.microsoft.com	Microsoft/Windows Update	GLOBAL,download
+download.windowsupdate.com	Microsoft/Windows Update	GLOBAL,download
+windows.com	Microsoft/Windows Update	GLOBAL,web
+windowsupdate.com	Microsoft/Windows Update	GLOBAL,web
+download.mozilla.org	Mozilla	GLOBAL,download
+www.mozilla.org	Mozilla	GLOBAL,web
+linux.org	Other Linux/mirrors	GLOBAL,web
+mirrors.aliyun.com	Other Linux/mirrors	GLOBAL
+mirrors.kernel.org	Other Linux/mirrors	GLOBAL
+www.kernel.org	Other Linux/mirrors	GLOBAL,web
+archive.ubuntu.com	Ubuntu	GLOBAL,download
+releases.ubuntu.com	Ubuntu	GLOBAL,download
+security.ubuntu.com	Ubuntu	GLOBAL
+ubuntu.com	Ubuntu	GLOBAL,web

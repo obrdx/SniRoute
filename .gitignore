@@ -1,0 +1,44 @@
+/sniroute
+/dist/
+*.db
+*.db-shm
+*.db-wal
+config.yaml
+*.local.yaml
+.DS_Store
+*-report.md
+
+/scripts/tests/__pycache__/
+
+# Caches
+.build-cache/
+.cache/
+__pycache__/
+*.py[cod]
+
+# Temporary builds and files
+/build/
+/bin/
+/tmp/
+/temp/
+*.test
+*.out
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Local project instructions
+AGENTS.md
+CLAUDE.md
+
+# Runtime identity, deployment addresses and logs
+server.yaml
+client.yaml
+client.json
+.sniroute/
+*.pem
+*.key
+*.log
+*.pid

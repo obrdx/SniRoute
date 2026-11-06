@@ -1,0 +1,53 @@
+# 01-search.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+360-api.cn	360 Search	CN,api,egress-diff
+qh-dl.com	360 Search	CN,download,egress-diff
+baidu.cn	Baidu	CN,web,egress-diff
+baidu.hk	Baidu	CN,web,egress-diff
+www.baidu.com	Baidu	CN,web,egress-diff
+bing.net	Bing	GLOBAL,web,egress-diff
+bing123.com	Bing	GLOBAL,web,egress-diff
+cn.bing.com	Bing	GLOBAL,egress-diff
+www.bing.com	Bing	GLOBAL,web,egress-diff
+search.brave.com	Brave Search	GLOBAL,egress-diff
+www.daum.net	Daum	KR,web,egress-diff
+duckduckgo.com	DuckDuckGo	GLOBAL,web,egress-diff
+www.ecosia.org	Ecosia	GLOBAL,web,egress-diff
+amp.dev	Google Search	GLOBAL,web,egress-diff
+android.com	Google Search	GLOBAL,web,egress-diff
+androidify.com	Google Search	GLOBAL,web,egress-diff
+appspot.com	Google Search	GLOBAL,web,egress-diff
+gcr.io	Google Search	GLOBAL,web,egress-diff
+go.dev	Google Search	GLOBAL,web,egress-diff
+godoc.org	Google Search	GLOBAL,web,egress-diff
+golang.com	Google Search	GLOBAL,web,egress-diff
+googleplay.com	Google Search	GLOBAL,web,egress-diff
+pub.dev	Google Search	GLOBAL,web,egress-diff
+run.app	Google Search	GLOBAL,web,egress-diff
+v8.dev	Google Search	GLOBAL,media,egress-diff
+web.app	Google Search	GLOBAL,web,egress-diff
+www.google.co.jp	Google Search	GLOBAL,web,egress-diff
+www.google.co.kr	Google Search	GLOBAL,web,egress-diff
+www.google.co.uk	Google Search	GLOBAL,web,egress-diff
+www.google.com	Google Search	GLOBAL,web,egress-diff
+www.google.com.hk	Google Search	GLOBAL,web,egress-diff
+www.google.com.sg	Google Search	GLOBAL,web,egress-diff
+www.google.com.tw	Google Search	GLOBAL,web,egress-diff
+www.google.de	Google Search	GLOBAL,web,egress-diff
+kagi.com	Kagi	GLOBAL,web,egress-diff
+www.mojeek.com	Mojeek	GLOBAL,web,egress-diff
+naver.jp	Naver	KR,web,egress-diff
+www.naver.com	Naver	KR,web,egress-diff
+www.qwant.com	Qwant	GLOBAL,web,egress-diff
+www.seznam.cz	Seznam	EU,web,egress-diff
+shenma-inc.com	Shenma	CN,web,egress-diff
+sm.cn	Shenma	CN,web,egress-diff
+sogou.cn	Sogou	CN,web,egress-diff
+www.sogou.com	Sogou	CN,web,egress-diff
+www.startpage.com	Startpage	GLOBAL,web,egress-diff
+search.yahoo.com	Yahoo	GLOBAL,egress-diff
+www.yahoo.co.jp	Yahoo	GLOBAL,web,egress-diff
+yahoo.com	Yahoo	GLOBAL,web,egress-diff
+yandex.az	Yandex	RU,web,egress-diff
+yandex.by	Yandex	RU,web,egress-diff
+yandex.ru	Yandex	RU,web,egress-diff

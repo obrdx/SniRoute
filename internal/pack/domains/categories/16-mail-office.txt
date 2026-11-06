@@ -1,0 +1,30 @@
+# 16-mail-office.txt  hostname<TAB>service<TAB>tags
+# Cleaned: concrete hostnames only; no suffix-rule duplicates
+mega.io	Box/WeTransfer/MEGA	GLOBAL,web
+mega.nz	Box/WeTransfer/MEGA	GLOBAL,web
+dropbox.tech	Dropbox	GLOBAL,web
+www.dropbox.com	Dropbox	GLOBAL,web
+accounts.google.com	Gmail/Google Workspace	GLOBAL,auth
+docs.google.com	Gmail/Google Workspace	GLOBAL
+drive.google.com	Gmail/Google Workspace	GLOBAL
+gmail.com	Gmail/Google Workspace	GLOBAL,web
+mail.google.com	Gmail/Google Workspace	GLOBAL
+workspace.google.com	Gmail/Google Workspace	GLOBAL
+notion.com	Notion	GLOBAL,web
+www.notion.so	Notion	GLOBAL,web
+login.microsoftonline.com	Outlook/M365	GLOBAL,auth
+outlook.com	Outlook/M365	GLOBAL,web
+outlook.live.com	Outlook/M365	GLOBAL
+outlook.office.com	Outlook/M365	GLOBAL
+www.microsoft365.com	Outlook/M365	GLOBAL,web
+www.office.com	Outlook/M365	GLOBAL,web
+mail.proton.me	Proton	GLOBAL
+proton.me	Proton	GLOBAL,web
+app.slack.com	Slack	GLOBAL
+slack.com	Slack	GLOBAL,web
+teamviewer.cn	teamviewer	GLOBAL,web
+teamviewer.us	teamviewer	GLOBAL,web
+usersdrive.com	usersdrive	GLOBAL,web
+app.zoom.us	Zoom	GLOBAL
+zoom.com	Zoom	GLOBAL,web
+zoom.us	Zoom	GLOBAL,web
