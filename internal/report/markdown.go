@@ -143,6 +143,9 @@ func WriteMarkdown(w io.Writer, r Report) error {
 	if identityMismatchCount(r) > 0 {
 		fmt.Fprintf(w, "> **端点身份异常提示**：%s\n\n", mdText(analysis.EndpointIdentityNotice))
 	}
+	if tcpWriteExperiment(r) {
+		fmt.Fprintf(w, "> %s\n\n", mdText(TCPWriteExperimentNotice))
+	}
 	if fragmentExperiment(r) {
 		fmt.Fprintf(w, "> %s\n\n", mdText(FragmentExperimentNotice))
 	}

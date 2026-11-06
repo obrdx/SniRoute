@@ -139,6 +139,8 @@ func clientProbe(args []string) error {
 		sniFile     = fs.String("sni-file", "", "file with one SNI per line (default: the domain list saved by the menu)")
 		recordSplit = fs.Bool("tls-record-split", false, "experimental: split the first ClientHello into TLS records inside SNI; results do not prove the ordinary connection's egress")
 		splitAt     = fs.String("tls-record-split-at", "", "experimental position: standard, before-sni, inside-sni, after-sni (enables splitting except standard)")
+		tcpAt       = fs.String("tcp-write-split-at", "", "实验：保持 TLS records 原样，分两次发送；before-sni、inside-sni、after-sni")
+		tcpDelay    = fs.Duration("tcp-write-delay", 0, "实验：两次 TCP 写入之间的间隔（0..1s），需搭配 -tcp-write-split-at")
 		showFullIP  = fs.Bool("show-full-ip", false, "show complete egress IPs in terminal and exports (default: masked)")
 		noBase      = fs.Bool("no-baseline", false, "skip the baseline")
 		rounds      = fs.Int("rounds", 0, "independent connections per domain (default: config, else 3)")
@@ -159,7 +161,10 @@ func clientProbe(args []string) error {
 	if err != nil {
 		return err
 	}
-	if position != client.SplitStandard && len(snis) == 0 && *sniFile == "" {
+	if err := client.ValidateTCPWriteSplit(position, *tcpAt, *tcpDelay); err != nil {
+		return err
+	}
+	if (position != client.SplitStandard || *tcpAt != "") && len(snis) == 0 && *sniFile == "" {
 		return errors.New("分片实验请用 -sni 或 -sni-file 显式选择域名，避免直接测试整个默认清单")
 	}
 	cfg, err := client.LoadConfig(*cfgPath)
@@ -221,7 +226,7 @@ func clientProbe(args []string) error {
 		Plan:        client.PlanSpec{ShowFullIP: showFullIP, Targets: tg, Domains: domains, Categories: selectedLib.ReportCategories(domains), Baseline: base, Rounds: firstNonZero(*rounds, cfg.Rounds), Seed: *seed},
 		Concurrency: firstNonZero(*conc, cfg.Concurrency), Timeout: cfg.Timeout(),
 		ProviderLabel: cfg.ProviderLabel, EnvNote: firstNonEmpty(*envNote, cfg.EnvNote), Version: version,
-		TLSRecordSplitAt: position,
+		TLSRecordSplitAt: position, TCPWriteSplitAt: *tcpAt, TCPWriteDelay: *tcpDelay,
 	}
 	if *timeout > 0 {
 		opt.Timeout = *timeout
@@ -313,6 +318,10 @@ func runTask(ui *tui.UI, sess *clientSession, opt client.RunOptions) (server.Tas
 	if position != client.SplitStandard {
 		ui.Styled("warning", report.FragmentExperimentNotice)
 		ui.Printf("实验位置：%s\n", position)
+	}
+	if opt.TCPWriteSplitAt != "" {
+		ui.Styled("warning", report.TCPWriteExperimentNotice)
+		ui.Printf("TCP 写入位置：%s；间隔：%s\n", opt.TCPWriteSplitAt, opt.TCPWriteDelay)
 	}
 	ui.Println("开始测试…（Ctrl+C 停止并保留已有结果，再按一次强制退出）")
 	var identityNotice sync.Once

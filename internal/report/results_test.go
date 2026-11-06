@@ -177,3 +177,31 @@ func TestResultsPropagatesOutputError(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestTCPWriteReportsPreservePositionDelayAndScope(t *testing.T) {
+	v := sample()
+	v.Params = json.RawMessage(`{"client_hello_variant":"tcp-write-split","tcp_write_split_at":"after-sni","tcp_write_delay_ms":20}`)
+	r := Build(v, t0)
+	var output bytes.Buffer
+	if err := WriteResults(&output, r); err != nil {
+		t.Fatal(err)
+	}
+	for _, text := range []string{output.String(), mdOf(t, r)} {
+		for _, want := range []string{"TCP 分次写入", "after-sni", "20ms", TCPWriteExperimentNotice} {
+			if !strings.Contains(strings.ReplaceAll(text, "\n", ""), want) {
+				t.Fatalf("missing %s", want)
+			}
+		}
+		if strings.Contains(text, FragmentExperimentNotice) {
+			t.Fatal("TCP experiment mislabelled as record splitting")
+		}
+	}
+	if r.Notes[len(r.Notes)-1] != TCPWriteExperimentNotice {
+		t.Fatal("JSON lacks experiment scope")
+	}
+	for _, note := range Build(sample(), t0).Notes {
+		if note == TCPWriteExperimentNotice {
+			t.Fatal("default report changed")
+		}
+	}
+}

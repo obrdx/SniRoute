@@ -36,6 +36,8 @@ type ProbeSpec struct {
 	Timeout          time.Duration
 	TLSRecordSplit   bool   // experimental: split the first ClientHello inside SNI
 	TLSRecordSplitAt string // explicit experiment position; empty keeps boolean compatibility
+	TCPWriteSplitAt  string
+	TCPWriteDelay    time.Duration
 }
 
 // Probe outcomes reported to the observer as client events.
@@ -79,6 +81,9 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 		}
 	}()
 	position, positionErr := ResolveSplitPosition(spec.TLSRecordSplit, spec.TLSRecordSplitAt)
+	if positionErr == nil {
+		positionErr = ValidateTCPWriteSplit(position, spec.TCPWriteSplitAt, spec.TCPWriteDelay)
+	}
 	if positionErr != nil {
 		res.Stage, res.Outcome, res.Error = "tls", OutcomeTLSFailed, positionErr.Error()
 		return res
@@ -121,6 +126,14 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 	var tlsConn net.Conn = rec
 	if position != SplitStandard {
 		tlsConn = &helloSplitConn{Conn: rec, position: position}
+	}
+	if spec.TCPWriteSplitAt != "" {
+		if tcp, ok := conn.(*net.TCPConn); ok {
+			if err := tcp.SetNoDelay(true); err != nil {
+				return fail(OutcomeTLSFailed, err)
+			}
+		}
+		tlsConn = &helloTCPWriteConn{Conn: rec, ctx: ctx, position: spec.TCPWriteSplitAt, delay: spec.TCPWriteDelay}
 	}
 	tc := tls.Client(tlsConn, &tls.Config{
 		ServerName:         spec.SNI,

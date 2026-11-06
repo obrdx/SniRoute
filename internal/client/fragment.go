@@ -113,13 +113,38 @@ func splitHelloAt(raw []byte, position string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if ch.SNI == "" {
-		return nil, errors.New("TLS record split requires a nonempty SNI")
+	cut, err := helloCut(ch.Raw, ch.SNI, position)
+	if err != nil {
+		return nil, err
+	}
+	// Split the original record containing this handshake offset. Preserve
+	// every other record and any bytes following the first ClientHello.
+	offset := 0
+	for pos := 0; pos < len(ch.Raw); {
+		n := int(binary.BigEndian.Uint16(raw[pos+3 : pos+5]))
+		if cut > offset && cut < offset+n {
+			first := cut - offset
+			wire := append([]byte(nil), raw[:pos]...)
+			for _, part := range [][]byte{raw[pos+5 : pos+5+first], raw[pos+5+first : pos+5+n]} {
+				wire = append(wire, raw[pos], raw[pos+1], raw[pos+2], byte(len(part)>>8), byte(len(part)))
+				wire = append(wire, part...)
+			}
+			return append(wire, raw[pos+5+n:]...), nil
+		}
+		offset += n
+		pos += 5 + n
+	}
+	return nil, errors.New("SNI split point is already a TLS record boundary")
+}
+
+func helloCut(raw []byte, sni, position string) (int, error) {
+	if sni == "" {
+		return 0, errors.New("TLS record split requires a nonempty SNI")
 	}
 	var hello []byte
-	for pos := 0; pos < len(ch.Raw); {
-		n := int(binary.BigEndian.Uint16(ch.Raw[pos+3 : pos+5]))
-		hello = append(hello, ch.Raw[pos+5:pos+5+n]...)
+	for pos := 0; pos < len(raw); {
+		n := int(binary.BigEndian.Uint16(raw[pos+3 : pos+5]))
+		hello = append(hello, raw[pos+5:pos+5+n]...)
 		pos += 5 + n
 	}
 	// ReadClientHello has validated these length-prefixed structures. Locate
@@ -161,28 +186,11 @@ func splitHelloAt(raw []byte, position string) ([]byte, error) {
 		pos += n
 	}
 	if cut < 0 {
-		return nil, errors.New("cannot locate SNI record split")
+		return 0, errors.New("cannot locate SNI record split")
 	}
 	helloEnd := 4 + (int(hello[1])<<16 | int(hello[2])<<8 | int(hello[3]))
 	if cut >= helloEnd {
-		return nil, errors.New("SNI 扩展后没有可分片的握手字节，不能生成 after-sni 变体")
+		return 0, errors.New("SNI 扩展后没有可分片的握手字节，不能生成 after-sni 变体")
 	}
-	// Split the original record containing this handshake offset. Preserve
-	// every other record and any bytes following the first ClientHello.
-	offset := 0
-	for pos = 0; pos < len(ch.Raw); {
-		n := int(binary.BigEndian.Uint16(raw[pos+3 : pos+5]))
-		if cut > offset && cut < offset+n {
-			first := cut - offset
-			wire := append([]byte(nil), raw[:pos]...)
-			for _, part := range [][]byte{raw[pos+5 : pos+5+first], raw[pos+5+first : pos+5+n]} {
-				wire = append(wire, raw[pos], raw[pos+1], raw[pos+2], byte(len(part)>>8), byte(len(part)))
-				wire = append(wire, part...)
-			}
-			return append(wire, raw[pos+5+n:]...), nil
-		}
-		offset += n
-		pos += 5 + n
-	}
-	return nil, errors.New("SNI split point is already a TLS record boundary")
+	return cut, nil
 }

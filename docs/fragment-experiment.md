@@ -109,3 +109,34 @@ done
 即使分片后取得出口，也可能是中间设备识别失败后选择了默认出口；不能宣称它就是普通访问
 `chatgpt.com` 时的实际出口。报告会在明显位置和说明中保留这一限制。
 观测端没有匹配记录不等于网卡没收到 TCP SYN；需要判断 SYN 是否到达时，仍应结合两端抓包。
+
+## TCP 分次写入与间隔对照
+
+新增 `-tcp-write-split-at before-sni|inside-sni|after-sni` 与
+`-tcp-write-delay 0ms|20ms|100ms`。这项实验保留 TLS wire stream 的全部字节及
+record 边界，只在首个 ClientHello 的指定位置分两次写入，中间等待指定时间；
+后续握手原样发送。间隔只允许 0..1s 的整毫秒，计入每次探测超时，取消会立即中止等待。
+显式设置 TCP_NODELAY；它并不保证两个 Write 对应两个 TCP 包，实际分段需要抓包确认。
+这项实验不能与 TLS record 分片同时启用，也不会保存为菜单默认设置。
+
+```sh
+./sniroute client probe \
+  -config "$HOME/.sniroute/client.yaml" \
+  -target 198.51.100.10:443 \
+  -baseline probe.your-domain.tld \
+  -sni www.google.com -sni github.com \
+  -rounds 3 -concurrency 1 -seed 7 -timeout 8s -show-full-ip \
+  -tcp-write-split-at inside-sni -tcp-write-delay 20ms
+```
+
+替换示例目标和基线后，在相邻实验任务之间穿插不带这两个开关的普通任务。
+建议先测试 inside-sni 和 after-sni，分别使用 0ms、20ms、100ms；不直接运行整个域名库。
+基线也使用该任务的写入方式。
+
+快照记录 `client_hello_variant: tcp-write-split`、`tcp_write_split_at`、
+`tcp_write_delay_ms` 和 `tcp_nodelay`，报告明确标记 TCP 分次写入及其限制。
+摘要仍只根据实际写出的完整 ClientHello 计算；中途取消、只写出一部分时不声称完整消息已发送。
+公钥固定校验、凭证发送条件与认证回执验证不变。
+
+这项实验检验发送方式是否影响端点身份或出口，不能据此确认透明设备的位置、实现或意图。
+即使认证成功，出口也仅属于该发送方式下的受控连接，不代表普通网站访问出口。

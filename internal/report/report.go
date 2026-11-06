@@ -21,6 +21,16 @@ const Version = "report-v3"
 
 const FragmentExperimentNotice = "分片实验：仅调整首个 ClientHello 的 TLS record 边界，完整握手内容不变，后续握手不改写。分片可能改变上游识别及出口选择；本结果只代表该握手变体，不能证明与普通访问同一域名的出口等价。"
 
+const TCPWriteExperimentNotice = "TCP 分次写入实验：首个 ClientHello 的 TLS record 字节及边界保持原样，仅改变写入位置和间隔；不保证网络包边界。本结果只代表该发送方式，不能证明与普通访问同一域名的出口等价。"
+
+func tcpWriteExperiment(r Report) bool {
+	return paramsOf(r)["client_hello_variant"] == "tcp-write-split"
+}
+func tcpWriteLabel(r Report) string {
+	p := paramsOf(r)
+	return fmt.Sprintf("实验：TCP 分次写入（%v，%vms）", p["tcp_write_split_at"], p["tcp_write_delay_ms"])
+}
+
 // ASNNote is shown when no egress-network lookup has been made for the task.
 const ASNNote = "未查询（尚未执行出口网络归属查询）"
 
@@ -181,6 +191,9 @@ func Build(v server.TaskView, now time.Time) Report {
 	r.Categories = buildCategories(r)
 	if fragmentExperiment(r) {
 		r.Notes = append(append([]string(nil), r.Notes...), FragmentExperimentNotice)
+	}
+	if tcpWriteExperiment(r) {
+		r.Notes = append(append([]string(nil), r.Notes...), TCPWriteExperimentNotice)
 	}
 	return redactEgress(r)
 }

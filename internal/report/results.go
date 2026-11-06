@@ -87,6 +87,9 @@ func conditionLine(r Report) string {
 		privacy = "IP 脱敏"
 	}
 	parts := []string{familyList(r.Overview.Targets)}
+	if tcpWriteExperiment(r) {
+		parts = append(parts, tcpWriteLabel(r))
+	}
 	if fragmentExperiment(r) {
 		parts = append(parts, "实验：TLS record 分片（"+fragmentPosition(r)+"）")
 	}
@@ -223,6 +226,9 @@ func WriteResults(w io.Writer, r Report) error {
 	l.line(conditionLine(r), "muted")
 	if fragmentExperiment(r) {
 		l.line(FragmentExperimentNotice, "warning")
+	}
+	if tcpWriteExperiment(r) {
+		l.line(TCPWriteExperimentNotice, "warning")
 	}
 	if identityMismatchCount(r) > 0 {
 		l.section("端点身份异常提示")

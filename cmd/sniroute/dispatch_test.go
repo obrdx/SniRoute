@@ -61,3 +61,19 @@ func TestFragmentExperimentNeedsExplicitDomainSelection(t *testing.T) {
 		}
 	}
 }
+
+func TestTCPWriteCLIValidatesBeforeOpeningConfig(t *testing.T) {
+	if err := runClient([]string{"probe", "-tcp-write-split-at", "inside-sni"}); err == nil || !strings.Contains(err.Error(), "显式选择域名") {
+		t.Fatal(err)
+	}
+	for _, args := range [][]string{
+		{"probe", "-tcp-write-delay", "20ms"},
+		{"probe", "-tcp-write-split-at", "unknown"},
+		{"probe", "-tcp-write-split-at", "inside-sni", "-tls-record-split"},
+		{"probe", "-tcp-write-split-at", "inside-sni", "-tcp-write-delay", "2s"},
+	} {
+		if err := runClient(args); err == nil || strings.Contains(err.Error(), "not enrolled") {
+			t.Fatal(err)
+		}
+	}
+}

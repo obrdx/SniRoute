@@ -20,6 +20,8 @@ type RunOptions struct {
 	Timeout          time.Duration
 	TLSRecordSplit   bool // applies to this task only; never persisted as a default
 	TLSRecordSplitAt string
+	TCPWriteSplitAt  string
+	TCPWriteDelay    time.Duration
 	// OnASN reports the outcome of the egress-network lookup the observer runs
 	// at the end of a task. Failure here never fails the run.
 	// OnProbePinRefresh explains when the authenticated task pin replaces the cached enrolment pin.
@@ -164,6 +166,9 @@ func (r *Runner) Run(ctx context.Context, opt RunOptions, progress func(AttemptR
 	if err != nil {
 		return server.TaskView{}, err
 	}
+	if err := ValidateTCPWriteSplit(position, opt.TCPWriteSplitAt, opt.TCPWriteDelay); err != nil {
+		return server.TaskView{}, err
+	}
 	opt.TLSRecordSplitAt = position
 	opt.TLSRecordSplit = false // position is now authoritative
 	if opt.Concurrency <= 0 {
@@ -245,6 +250,7 @@ func (r *Runner) Run(ctx context.Context, opt RunOptions, progress func(AttemptR
 			AttemptID: a.ID, Credential: a.Credential, Timeout: opt.Timeout,
 			TLSRecordSplit:   opt.TLSRecordSplit,
 			TLSRecordSplitAt: opt.TLSRecordSplitAt,
+			TCPWriteSplitAt:  opt.TCPWriteSplitAt, TCPWriteDelay: opt.TCPWriteDelay,
 		})
 		// Reporting must survive cancellation of the run itself, and
 		// survive a dropped connection (outbox).
