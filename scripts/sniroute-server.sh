@@ -450,14 +450,24 @@ run_temp() {
 	say "临时运行（不安装、不常驻）"
 	say "  配置：$cfg"
 	say "  数据：$STATE_DIR/data"
-	say "  退出菜单即清理 ${TMP_DIR}，配置与数据保留。"
+	say "  退出菜单清理本次下载；配置与数据保留。"
 	rule
+	# Old temporary sessions can leave a dead/zombie/reused PID behind.
+	# Remove only stale records, never signal a process based on a stale PID.
+	prune_config_pid "$cfg"
 	state=$("$BIN" server status -config "$cfg") || die "无法读取服务状态"
-	if [ "$state" != "stopped" ]; then
-		die "此配置已有运行中的服务；请使用原有安装管理，或用 SR_STATE_DIR 指定独立临时目录。"
-	fi
-	TEMP_CONFIG="$cfg"
-	"$BIN" server start -config "$cfg" || die "临时服务启动失败，请检查日志"
+	case "$state" in
+	stopped)
+		TEMP_CONFIG="$cfg"
+		"$BIN" server start -config "$cfg" || die "临时服务启动失败，请检查日志"
+		say "已启动本次临时服务；退出菜单时自动停止。"
+		;;
+	running\ \(pid\ *\))
+		say "检测到此配置的服务已运行，直接进入管理菜单。"
+		say "退出只清理本次下载，已有服务继续运行；需要停止时请选择菜单中的停止服务。"
+		;;
+	*) die "无法识别服务状态：$state" ;;
+	esac
 	run "$BIN" server menu -config "$cfg"
 	rc=$?
 	[ "$rc" = "0" ] || warn "菜单以状态 $rc 退出"
@@ -598,6 +608,51 @@ cfg_value() {
 	sed -n "s/^$2:[[:space:]]*//p" "$1" | sed -e 's/^"//' -e 's/"$//' | head -n 1
 }
 
+# Resolve data_dir the same way as the binary: relative to the config file.
+config_pid_file() {
+	sr_pid_dir=$(cfg_value "$1" data_dir) || return 1
+	[ -n "$sr_pid_dir" ] || return 1
+	case "$sr_pid_dir" in
+	/*) ;;
+	*) sr_pid_dir="$(dirname "$1")/$sr_pid_dir" ;;
+	esac
+	printf '%s/server.pid\n' "$sr_pid_dir"
+}
+
+prune_config_pid() {
+	sr_pid_file=$(config_pid_file "$1") || return 0
+	[ -f "$sr_pid_file" ] || return 0
+	sr_old_pid=$(cat "$sr_pid_file" 2>/dev/null) || return 0
+	sr_pid_stale=0
+	case "$sr_old_pid" in
+	''|*[!0-9]*|0|1) sr_pid_stale=1 ;;
+	*)
+		if ! kill -0 "$sr_old_pid" 2>/dev/null; then
+			# EPERM must not be mistaken for a dead process.
+			if [ -d /proc ]; then
+				[ -d "/proc/$sr_old_pid" ] || sr_pid_stale=1
+			elif have ps && [ -z "$(ps -p "$sr_old_pid" -o pid= 2>/dev/null)" ]; then
+				sr_pid_stale=1
+			fi
+		elif [ -r "/proc/$sr_old_pid/stat" ]; then
+			sr_proc_state=$(sed 's/^.*) //' "/proc/$sr_old_pid/stat" | cut -d ' ' -f 1)
+			case "$sr_proc_state" in Z|X) sr_pid_stale=1 ;; esac
+			if [ "$sr_pid_stale" = 0 ] && [ -r "/proc/$sr_old_pid/cmdline" ]; then
+				sr_proc_args=$(tr '\000' '\n' <"/proc/$sr_old_pid/cmdline" | tail -n 4)
+				sr_expected_args=$(printf 'server\nrun\n-config\n%s' "$1")
+				[ "$sr_proc_args" = "$sr_expected_args" ] || sr_pid_stale=1
+			fi
+		fi
+		;;
+	esac
+	if [ "$sr_pid_stale" = 1 ]; then
+		# Do not remove a PID record changed by another launcher in the meantime.
+		if [ "$(cat "$sr_pid_file" 2>/dev/null)" = "$sr_old_pid" ]; then
+			rm -f "$sr_pid_file" || die "无法清理失效的服务记录：$sr_pid_file"
+		fi
+	fi
+}
+
 show_status() {
 	rule
 	say "SniRoute 观测端状态"
@@ -608,7 +663,13 @@ show_status() {
 		say "  永久安装：无"
 	fi
 	pid=""
-	[ -f "$DATA_DIR/server.pid" ] && pid=$(cat "$DATA_DIR/server.pid" 2>/dev/null)
+	status_cfg="$CFG_PERM"
+	[ -f "$status_cfg" ] || status_cfg="$STATE_DIR/server.yaml"
+	if [ -f "$status_cfg" ]; then
+		prune_config_pid "$status_cfg"
+		status_pid_file=$(config_pid_file "$status_cfg") || status_pid_file=""
+		[ ! -f "$status_pid_file" ] || pid=$(cat "$status_pid_file" 2>/dev/null)
+	fi
 	if [ -f "$UNIT_DIR/$UNIT_NAME" ] && have systemctl; then
 		a=$(systemctl is-active "$UNIT_NAME" 2>/dev/null || true)
 		e=$(systemctl is-enabled "$UNIT_NAME" 2>/dev/null || true)

@@ -22,6 +22,8 @@ state = Path(os.environ['FAKE_STATE'])
 with open(os.environ['FAKE_LOG'], 'a') as f:
     f.write(json.dumps(args) + '\n')
 if args[:2] == ['server', 'status']:
+    if os.environ.get('FAKE_PID_STATE') == '1':
+        state = Path(os.environ['FAKE_PID_FILE'])
     print('running (pid 1)' if state.exists() else 'stopped'); sys.exit(0)
 if args[:2] == ['server', 'start']:
     state.touch(); sys.exit(0)
@@ -198,6 +200,122 @@ esac
         commands = [c[:2] for c in self.calls()]
         self.assertIn(['server', 'start'], commands)
         self.assertEqual(commands[-1], ['server', 'stop'])
+
+    def temp_config(self, pid=None, data_dir='data'):
+        state_dir = self.base / 'state'
+        state_dir.mkdir(exist_ok=True)
+        cfg = state_dir / 'server.yaml'
+        cfg.write_text(f'data_dir: "{data_dir}"\nprobe_addr: ":443"\ncontrol_addr: ":8443"\n')
+        cfg.chmod(0o600)
+        data = Path(data_dir)
+        if not data.is_absolute():
+            data = state_dir / data
+        data.mkdir(parents=True, exist_ok=True)
+        pidfile = data / 'server.pid'
+        if pid is not None:
+            pidfile.write_text(str(pid) + '\n')
+        return cfg, pidfile
+
+    def test_temp_server_repeated_runs(self):
+        for _ in range(3):
+            result = self.run_script('server', '--temp')
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertFalse((self.base / 'running').exists())
+            self.assert_clean()
+        commands = [c[:2] for c in self.calls()]
+        self.assertEqual(commands.count(['server', 'start']), 3)
+        self.assertEqual(commands.count(['server', 'stop']), 3)
+
+    def test_temp_server_reuses_running_service_without_stopping_it(self):
+        self.temp_config()
+        (self.base / 'running').touch()
+        result = self.run_script('server', '--temp')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('直接进入管理菜单', result.stdout)
+        self.assertTrue((self.base / 'running').exists())
+        commands = [c[:2] for c in self.calls()]
+        self.assertIn(['server', 'menu'], commands)
+        self.assertNotIn(['server', 'start'], commands)
+        self.assertNotIn(['server', 'stop'], commands)
+        self.assert_clean()
+
+    def test_temp_existing_service_survives_menu_error(self):
+        self.temp_config()
+        (self.base / 'running').touch()
+        self.env['FAKE_EXIT'] = '7'
+        result = self.run_script('server', '--temp')
+        self.assertEqual(result.returncode, 7, result.stdout + result.stderr)
+        self.assertTrue((self.base / 'running').exists())
+        self.assertNotIn(['server', 'stop'], [c[:2] for c in self.calls()])
+        self.assert_clean()
+
+    def test_temp_server_recovers_stale_pid_records(self):
+        for stale_pid in ('invalid', '0', '99999999'):
+            with self.subTest(pid=stale_pid):
+                _, pidfile = self.temp_config(stale_pid, 'relative data')
+                self.env.update(FAKE_PID_STATE='1', FAKE_PID_FILE=str(pidfile))
+                result = self.run_script('server', '--temp')
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertFalse(pidfile.exists())
+                self.assertIn('已启动本次临时服务', result.stdout)
+                self.assert_clean()
+
+    @unittest.skipUnless(Path('/proc/self/cmdline').exists(), 'Linux process inspection')
+    def test_temp_server_preserves_matching_live_process(self):
+        cfg, pidfile = self.temp_config()
+        env = dict(self.env, FAKE_WAIT='1')
+        proc = subprocess.Popen([str(self.binary), 'server', 'run', '-config', str(cfg)],
+                                env=env, cwd=self.base, start_new_session=True)
+        try:
+            deadline = time.monotonic() + 5
+            while not (self.base / 'ready').exists() and time.monotonic() < deadline:
+                time.sleep(.02)
+            self.assertTrue((self.base / 'ready').exists())
+            pidfile.write_text(str(proc.pid) + '\n')
+            (self.base / 'running').touch()
+            result = self.run_script('server', '--temp')
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(pidfile.read_text().strip(), str(proc.pid))
+            self.assertIsNone(proc.poll())
+            self.assertNotIn(['server', 'stop'], [c[:2] for c in self.calls()])
+        finally:
+            proc.kill()
+            proc.wait(timeout=5)
+
+    @unittest.skipUnless(Path('/proc/self/stat').exists(), 'Linux zombie inspection')
+    def test_temp_server_recovers_zombie_without_signalling_it(self):
+        proc = subprocess.Popen(['sh', '-c', 'exit 0'])
+        try:
+            deadline = time.monotonic() + 5
+            statfile = Path(f'/proc/{proc.pid}/stat')
+            while time.monotonic() < deadline:
+                if statfile.read_text().rsplit(') ', 1)[1].startswith('Z '):
+                    break
+                time.sleep(.02)
+            else:
+                self.fail('child did not become a zombie')
+            _, pidfile = self.temp_config(proc.pid)
+            self.env.update(FAKE_PID_STATE='1', FAKE_PID_FILE=str(pidfile))
+            result = self.run_script('server', '--temp')
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertFalse(pidfile.exists())
+            self.assertIn('已启动本次临时服务', result.stdout)
+            self.assertTrue(statfile.exists())
+            self.assert_clean()
+        finally:
+            proc.wait(timeout=5)
+
+    def test_status_reads_temporary_config_data_dir(self):
+        _, pidfile = self.temp_config(os.getpid(), 'custom data')
+        result = self.run_script('server', '--status')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        # Linux correctly rejects the test runner's PID as an unrelated process.
+        if Path('/proc/self/cmdline').exists():
+            self.assertFalse(pidfile.exists())
+            self.assertIn('未运行', result.stdout)
+        else:
+            self.assertIn(f'pid {os.getpid()}', result.stdout)
+        self.assert_clean()
 
     def test_install_launcher_and_uninstall(self):
         result = self.run_script('server', '--install')
