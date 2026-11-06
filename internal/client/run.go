@@ -15,9 +15,10 @@ import (
 
 // RunOptions configures one task run.
 type RunOptions struct {
-	Plan        PlanSpec
-	Concurrency int // default 6
-	Timeout     time.Duration
+	Plan           PlanSpec
+	Concurrency    int // default 6
+	Timeout        time.Duration
+	TLSRecordSplit bool // applies to this task only; never persisted as a default
 	// OnASN reports the outcome of the egress-network lookup the observer runs
 	// at the end of a task. Failure here never fails the run.
 	// OnProbePinRefresh explains when the authenticated task pin replaces the cached enrolment pin.
@@ -235,6 +236,7 @@ func (r *Runner) Run(ctx context.Context, opt RunOptions, progress func(AttemptR
 		res := Probe(ctx, ProbeSpec{
 			Target: a.Target, SNI: a.SNI, Pin: created.ProbePin, Path: r.State.Path,
 			AttemptID: a.ID, Credential: a.Credential, Timeout: opt.Timeout,
+			TLSRecordSplit: opt.TLSRecordSplit,
 		})
 		// Reporting must survive cancellation of the run itself, and
 		// survive a dropped connection (outbox).

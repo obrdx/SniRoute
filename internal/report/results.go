@@ -87,6 +87,9 @@ func conditionLine(r Report) string {
 		privacy = "IP 脱敏"
 	}
 	parts := []string{familyList(r.Overview.Targets)}
+	if fragmentExperiment(r) {
+		parts = append(parts, "实验：TLS record 分片")
+	}
 	p := paramsOf(r)
 	if proxy, ok := p["proxy"].(string); ok && strings.HasPrefix(proxy, "none") {
 		parts = append(parts, "无显式代理")
@@ -218,6 +221,9 @@ func WriteResults(w io.Writer, r Report) error {
 	l.centered("https://github.com/obrdx/SniRoute", "muted")
 	l.printf("\n")
 	l.line(conditionLine(r), "muted")
+	if fragmentExperiment(r) {
+		l.line(FragmentExperimentNotice, "warning")
+	}
 	if identityMismatchCount(r) > 0 {
 		l.section("端点身份异常提示")
 		l.line(analysis.EndpointIdentityNotice, "warning")

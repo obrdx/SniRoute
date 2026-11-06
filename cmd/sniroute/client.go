@@ -136,22 +136,26 @@ func clientProbe(args []string) error {
 	fs := flag.NewFlagSet("client probe", flag.ContinueOnError)
 	var targets, snis, baseline multiFlag
 	var (
-		sniFile    = fs.String("sni-file", "", "file with one SNI per line (default: the domain list saved by the menu)")
-		showFullIP = fs.Bool("show-full-ip", false, "show complete egress IPs in terminal and exports (default: masked)")
-		noBase     = fs.Bool("no-baseline", false, "skip the baseline")
-		rounds     = fs.Int("rounds", 0, "independent connections per domain (default: config, else 3)")
-		seed       = fs.Uint64("seed", 0, "shuffle seed (default: random; recorded in the task)")
-		conc       = fs.Int("concurrency", 0, "parallel probes (default: config, else 6)")
-		timeout    = fs.Duration("timeout", 0, "per-probe timeout (default: config, else 5s)")
-		envNote    = fs.String("env-note", "", "note about VPN/TUN/proxy on this machine, stored with the task")
-		exportDir  = fs.String("export", "", "also write report.txt/json/CSV into this directory (the .md goes to the working directory)")
-		cfgPath    = fs.String("config", client.DefaultConfigPath(), "client config written by `client enroll`")
+		sniFile     = fs.String("sni-file", "", "file with one SNI per line (default: the domain list saved by the menu)")
+		recordSplit = fs.Bool("tls-record-split", false, "experimental: split the first ClientHello into TLS records inside SNI; results do not prove the ordinary connection's egress")
+		showFullIP  = fs.Bool("show-full-ip", false, "show complete egress IPs in terminal and exports (default: masked)")
+		noBase      = fs.Bool("no-baseline", false, "skip the baseline")
+		rounds      = fs.Int("rounds", 0, "independent connections per domain (default: config, else 3)")
+		seed        = fs.Uint64("seed", 0, "shuffle seed (default: random; recorded in the task)")
+		conc        = fs.Int("concurrency", 0, "parallel probes (default: config, else 6)")
+		timeout     = fs.Duration("timeout", 0, "per-probe timeout (default: config, else 5s)")
+		envNote     = fs.String("env-note", "", "note about VPN/TUN/proxy on this machine, stored with the task")
+		exportDir   = fs.String("export", "", "also write report.txt/json/CSV into this directory (the .md goes to the working directory)")
+		cfgPath     = fs.String("config", client.DefaultConfigPath(), "client config written by `client enroll`")
 	)
 	fs.Var(&targets, "target", "observer ip:port to probe (repeatable, e.g. one IPv4 and one IPv6; each is compared separately)")
 	fs.Var(&snis, "sni", "SNI to test (repeatable)")
 	fs.Var(&baseline, "baseline", "neutral baseline SNI (repeatable; default from config)")
 	if err := fs.Parse(args); err != nil {
 		return err
+	}
+	if *recordSplit && len(snis) == 0 && *sniFile == "" {
+		return errors.New("分片实验请用 -sni 或 -sni-file 显式选择域名，避免直接测试整个默认清单")
 	}
 	cfg, err := client.LoadConfig(*cfgPath)
 	if err != nil {
@@ -212,6 +216,7 @@ func clientProbe(args []string) error {
 		Plan:        client.PlanSpec{ShowFullIP: showFullIP, Targets: tg, Domains: domains, Categories: selectedLib.ReportCategories(domains), Baseline: base, Rounds: firstNonZero(*rounds, cfg.Rounds), Seed: *seed},
 		Concurrency: firstNonZero(*conc, cfg.Concurrency), Timeout: cfg.Timeout(),
 		ProviderLabel: cfg.ProviderLabel, EnvNote: firstNonEmpty(*envNote, cfg.EnvNote), Version: version,
+		TLSRecordSplit: *recordSplit,
 	}
 	if *timeout > 0 {
 		opt.Timeout = *timeout
@@ -295,6 +300,9 @@ func runTask(ui *tui.UI, sess *clientSession, opt client.RunOptions) (server.Tas
 				ui.Printf("[出口网络归属] 来源 %s，%d 个出口 IP\n", v.Source, len(v.Items))
 			}
 		}
+	}
+	if opt.TLSRecordSplit {
+		ui.Styled("warning", report.FragmentExperimentNotice)
 	}
 	ui.Println("开始测试…（Ctrl+C 停止并保留已有结果，再按一次强制退出）")
 	var identityNotice sync.Once

@@ -39,3 +39,12 @@ func TestReportDirectorySharedByHistoryAndRun(t *testing.T) {
 		}
 	}
 }
+
+func TestFragmentExperimentNeedsExplicitDomainSelection(t *testing.T) {
+	if err := runClient([]string{"probe", "-tls-record-split"}); err == nil || !strings.Contains(err.Error(), "显式选择域名") {
+		t.Fatalf("fragmentation unexpectedly uses the default library: %v", err)
+	}
+	if err := runClient([]string{"probe", "-sni", "chatgpt.com", "-tls-record-split", "-h"}); !errors.Is(err, flag.ErrHelp) {
+		t.Fatalf("fragmentation flag is not accepted: %v", err)
+	}
+}

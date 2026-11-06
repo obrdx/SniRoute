@@ -27,13 +27,14 @@ import (
 // verify the observer by its pinned public key, then present the attempt
 // credential inside the encrypted channel.
 type ProbeSpec struct {
-	Target     string // observer ip:port
-	SNI        string
-	Pin        string // hex SHA-256 of the observer's SubjectPublicKeyInfo
-	Path       string // node path
-	AttemptID  string
-	Credential string
-	Timeout    time.Duration
+	Target         string // observer ip:port
+	SNI            string
+	Pin            string // hex SHA-256 of the observer's SubjectPublicKeyInfo
+	Path           string // node path
+	AttemptID      string
+	Credential     string
+	Timeout        time.Duration
+	TLSRecordSplit bool // experimental: split the first ClientHello inside SNI
 }
 
 // Probe outcomes reported to the observer as client events.
@@ -111,7 +112,11 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 	res.Stage = "tls"
 	pinFailed := false
 	rec = &recordConn{Conn: conn}
-	tc := tls.Client(rec, &tls.Config{
+	var tlsConn net.Conn = rec
+	if spec.TLSRecordSplit {
+		tlsConn = &helloSplitConn{Conn: rec}
+	}
+	tc := tls.Client(tlsConn, &tls.Config{
 		ServerName:         spec.SNI,
 		NextProtos:         []string{"http/1.1"},
 		MinVersion:         tls.VersionTLS12,
@@ -169,10 +174,11 @@ type recordConn struct {
 const maxRecorded = 32 << 10
 
 func (c *recordConn) Write(p []byte) (int, error) {
+	n, err := c.Conn.Write(p)
 	if room := maxRecorded - len(c.buf); room > 0 {
-		c.buf = append(c.buf, p[:min(len(p), room)]...)
+		c.buf = append(c.buf, p[:min(n, room)]...)
 	}
-	return c.Conn.Write(p)
+	return n, err
 }
 
 // helloDigest parses the recorded bytes as a ClientHello (reassembling TLS

@@ -2,6 +2,7 @@ package report
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -12,6 +13,31 @@ import (
 	"github.com/nyktios/sniroute/internal/analysis"
 	"github.com/nyktios/sniroute/internal/server"
 )
+
+func TestFragmentExperimentIsLabelledAndDoesNotChangeDefaultNotes(t *testing.T) {
+	v := sample()
+	v.Params = json.RawMessage(`{"client_hello_variant":"tls-record-sni-split"}`)
+	r := Build(v, t0)
+	var output bytes.Buffer
+	if err := WriteResults(&output, r); err != nil {
+		t.Fatal(err)
+	}
+	for _, text := range []string{output.String(), mdOf(t, r)} {
+		if !strings.Contains(strings.ReplaceAll(text, "\n", ""), FragmentExperimentNotice) {
+			t.Fatal("fragmented results lack the equivalence warning")
+		}
+	}
+	if r.Notes[len(r.Notes)-1] != FragmentExperimentNotice {
+		t.Fatal("JSON export lacks experimental scope")
+	}
+	v.Params = nil
+	normal := Build(v, t0)
+	for _, note := range normal.Notes {
+		if note == FragmentExperimentNotice {
+			t.Fatal("experiment changed default report notes")
+		}
+	}
+}
 
 func TestIdentityNoticeIsVisibleEvenWhenBaselineFails(t *testing.T) {
 	for _, outcome := range []string{"identity_mismatch", "tls_failed", "cancelled"} {

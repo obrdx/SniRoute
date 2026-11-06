@@ -19,6 +19,8 @@ import (
 // Version identifies the report layout.
 const Version = "report-v3"
 
+const FragmentExperimentNotice = "分片实验：仅将首个 ClientHello 在 SNI 内拆为 TLS records，完整握手内容不变，后续握手不改写。分片可能改变上游识别及出口选择；本结果只代表该握手变体，不能证明与普通访问同一域名的出口等价。"
+
 // ASNNote is shown when no egress-network lookup has been made for the task.
 const ASNNote = "未查询（尚未执行出口网络归属查询）"
 
@@ -177,7 +179,14 @@ func Build(v server.TaskView, now time.Time) Report {
 	r.Overview.ASN = describeASN(r.ASN)
 	r.Overview.Networks = distinctNetworks(r.Egress)
 	r.Categories = buildCategories(r)
+	if fragmentExperiment(r) {
+		r.Notes = append(append([]string(nil), r.Notes...), FragmentExperimentNotice)
+	}
 	return redactEgress(r)
+}
+
+func fragmentExperiment(r Report) bool {
+	return paramsOf(r)["client_hello_variant"] == "tls-record-sni-split"
 }
 
 func hasFact(a server.AttemptView) bool { return a.Observation != nil || len(a.Client) > 0 }
