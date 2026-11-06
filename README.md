@@ -75,8 +75,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/script
 在观测端菜单选择 **1 生成注册链接**，确认对外地址后得到一行：
 
 ```
-https://observer.example.com:8443/join#reg_xxxx.<证书指纹>.<节点名>
+https://observer.example.com:8443/join#<一次性凭证>.<证书指纹>.<Base64URL节点名>.<Base64URL服务商标签>
 ```
+
+上面仅展示链接结构；实际使用请完整复制观测端生成的链接，不要使用示例地址或自行拼接字段。节点名与服务商标签为空时，末尾字段会省略。
 
 - 凭证与证书指纹放在 URL fragment 中，浏览器、反向代理和访问日志都收不到。
 - 凭证**一次性**，默认 7 天有效；菜单 **2 查看 / 管理注册链接** 可重新显示或撤销未使用的链接。
@@ -188,13 +190,16 @@ SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh
 
 二进制必须匹配运行机器的系统与架构。
 
-**发布**：推送 `v*` 标签即由 GitHub Actions 自动完成——
+**发布**：打开 [Actions → Release](https://github.com/obrdx/SniRoute/actions/workflows/release.yml)，
+点击 **Run workflow**，选择发布分支，填写版本号（当前为 `1.0.0`，也接受 `v1.0.0`）。
+版本必须与源码 `internal/version/version.go` 中的 `Application` 一致；工作流不会修改版本。
+对应版本的标签或 Release 已存在就报错，禁止重复发布或覆盖。推送分支或标签不会自动发版。
 
-```sh
-git tag v0.1.0 && git push origin v0.1.0
-```
-
-工作流先跑 `go test -race ./...`，再为 linux / darwin × amd64 / arm64 交叉编译 `sniroute_{os}_{arch}` 四个二进制，附上 SHA256SUMS 并创建 GitHub Release。部署脚本不指定 `SR_BIN` 时自动获取最新 Release。
+工作流运行竞态测试、版本校验和 `go vet`，为 linux / darwin × amd64 / arm64
+交叉编译 `sniroute_{os}_{arch}` 四个二进制，附上 `SHA256SUMS`，然后创建正式 Release
+并设为 Latest。部署脚本不指定 `SR_BIN` 或 `SR_BIN_URL` 时，从
+[最新正式 Release](https://github.com/obrdx/SniRoute/releases/latest) 下载对应产物。
+具体下载地址见 [部署脚本说明](scripts/README.md#下载及参数)。
 
 开发常用命令：
 

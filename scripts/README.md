@@ -111,6 +111,19 @@ SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh --reports list
 其中 `{os}`、`{arch}` 会替换为平台值。`SR_SHA256` 可提供预期 SHA-256 校验和。
 下载失败时退出并清理，可使用 `SR_BIN` 离线运行。
 
+默认下载地址如下（已替换占位符，可直接下载）：
+
+| 系统 / 架构 | 二进制 |
+| --- | --- |
+| Linux amd64 | [sniroute_linux_amd64](https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_linux_amd64) |
+| Linux arm64 | [sniroute_linux_arm64](https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_linux_arm64) |
+| macOS amd64 | [sniroute_darwin_amd64](https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_darwin_amd64) |
+| macOS arm64 | [sniroute_darwin_arm64](https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_darwin_arm64) |
+
+校验文件：[SHA256SUMS](https://github.com/obrdx/SniRoute/releases/latest/download/SHA256SUMS)。
+脚本从 `main` 分支获取，二进制从 Latest Release 获取，两者更新独立。
+`SR_REPO` 可覆盖脚本内的默认仓库 `obrdx/SniRoute`；`SR_BIN_URL` 可直接覆盖二进制下载地址。
+
 服务端可覆盖 `SR_PREFIX`、`SR_ETC`、`SR_DATA`、`SR_UNIT_DIR`、`SR_INIT_DIR`、
 `SR_STATE_DIR`，这些目录需为不含空格、引号和路径回退段的绝对路径。
 新配置的监听可用 `SR_PROBE_ADDR` / `SR_CONTROL_ADDR` 覆盖；已有配置保持原值。
