@@ -75,6 +75,52 @@ class Launchers(unittest.TestCase):
     def assert_clean(self):
         self.assertEqual(list(self.tmp.iterdir()), [])
 
+    def test_download_urls_for_each_platform_and_custom_source(self):
+        tools = self.base / 'download-tools'
+        tools.mkdir()
+        curl = tools / 'curl'
+        curl.write_text('''#!/usr/bin/env python3
+import os, shutil, sys
+from pathlib import Path
+args = sys.argv[1:]
+Path(os.environ['DOWNLOAD_LOG']).write_text(args[-1])
+shutil.copyfile(os.environ['DOWNLOAD_SOURCE'], args[args.index('-o') + 1])
+''')
+        curl.chmod(0o700)
+        uname = tools / 'uname'
+        uname.write_text('''#!/bin/sh
+case "$1" in
+  -s) printf '%s\\n' "$TEST_OS" ;;
+  -m) printf '%s\\n' "$TEST_ARCH" ;;
+  *) exit 1 ;;
+esac
+''')
+        uname.chmod(0o700)
+        download_log = self.base / 'download-url'
+        self.env.pop('SR_BIN', None)
+        self.env.pop('SR_SHA256', None)
+        self.env.update(PATH=str(tools) + os.pathsep + self.env['PATH'],
+                        DOWNLOAD_SOURCE=str(self.binary), DOWNLOAD_LOG=str(download_log),
+                        SR_REPO='obrdx/SniRoute')
+        sources = [('', 'https://github.com/obrdx/SniRoute/releases/latest/download/sniroute_'),
+                   ('https://example.com/sniroute_{os}_{arch}', 'https://example.com/sniroute_')]
+        for role, mode in [('server', '--temp'), ('client', '--probe')]:
+            for system, target_os in [('Linux', 'linux'), ('Darwin', 'darwin')]:
+                for machine, target_arch in [('x86_64', 'amd64'), ('aarch64', 'arm64')]:
+                    for source, prefix in sources:
+                        with self.subTest(role=role, os=system, arch=machine, source=source):
+                            self.env.update(TEST_OS=system, TEST_ARCH=machine, SR_BIN_URL=source)
+                            result = self.run_script(role, mode)
+                            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                            self.assertEqual(download_log.read_text(), f'{prefix}{target_os}_{target_arch}')
+                            self.assert_clean()
+        self.env['SR_BIN_URL'] = 'https://example.com/fixed-binary'
+        for role, mode in [('server', '--temp'), ('client', '--probe')]:
+            result = self.run_script(role, mode)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(download_log.read_text(), self.env['SR_BIN_URL'])
+            self.assert_clean()
+
     def test_arguments_keep_spaces_and_globs(self):
         result = self.run_script('client', '--probe', '-label', 'a b', '-sni-file', '*.txt')
         self.assertEqual(result.returncode, 0, result.stderr)

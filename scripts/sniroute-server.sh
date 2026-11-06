@@ -36,7 +36,8 @@ REPO="${SR_REPO:-obrdx/SniRoute}"
 # 本脚本的规范地址：非 root 选「永久安装」时，用它下载后交给 sudo 重跑
 SCRIPT_URL="${SR_SCRIPT_URL:-https://raw.githubusercontent.com/${REPO}/main/scripts/sniroute-server.sh}"
 # 下载地址：{os} {arch} 会被替换成 linux/darwin 与 amd64/arm64
-BIN_URL_TEMPLATE="${SR_BIN_URL:-https://github.com/${REPO}/releases/latest/download/sniroute_{os}_{arch}}"
+BIN_URL_TEMPLATE="https://github.com/${REPO}/releases/latest/download/sniroute_{os}_{arch}"
+BIN_URL_TEMPLATE="${SR_BIN_URL:-$BIN_URL_TEMPLATE}"
 LOCAL_BIN="${SR_BIN:-}"
 BIN_SHA256="${SR_SHA256:-}"
 DL_TIMEOUT="${SR_DOWNLOAD_TIMEOUT:-300}"
@@ -362,7 +363,7 @@ resolve_bin() {
 		url=$(printf '%s' "$BIN_URL_TEMPLATE" | sed -e "s/{os}/$OS/g" -e "s/{arch}/$ARCH/g")
 		say "下载：$url"
 		fetch "$url" "$TMP_DIR/sniroute" || die "下载失败：$url
-  可以改用本地二进制：sh $0 --temp  前设置 SR_BIN=/path/to/sniroute
+  可以设置 SR_BIN=/path/to/sniroute 后重新运行本脚本，使用本地二进制。
   或把 SR_BIN_URL 指向你自己的下载地址。"
 		if [ -n "$BIN_SHA256" ]; then
 			sum=$(sha256_of "$TMP_DIR/sniroute") || die "系统没有 sha256sum/shasum，无法校验（去掉 SR_SHA256）"
