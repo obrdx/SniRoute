@@ -1,5 +1,8 @@
 # 部署与临时运行
 
+一行下载命令可直接在部署机器执行。下面引用 `scripts/…` 的本地命令须在已克隆仓库的根目录执行；
+`SR_BIN=/tmp/sniroute` 示例须先按“使用本地构建的二进制”生成对应平台的程序。
+
 ## 一行命令
 
 ```sh
@@ -68,7 +71,7 @@ sniroute
 sniroute status
 sniroute logs
 
-# 卸载保留配置与数据；加 --purge 会询问是否删除全部配置与历史数据
+# 卸载保留配置与数据；加 --purge 会询问是否删除观测端配置与数据
 sudo sh scripts/sniroute-server.sh --uninstall
 ```
 
@@ -144,5 +147,13 @@ python3 -m unittest discover -s scripts/tests -v
 配置中的 `probe_pin` 是注册时的缓存。每次任务使用**已验证的控制连接**下发的最新探测公钥指纹；二者不一致会显示提示。仅修改本地缓存不会导致探测身份校验失败。测试身份拒绝行为须让控制接口下发的任务指纹与探测端实际公钥不一致：应记录 `identity_mismatch`，且不发送探测凭证。
 
 客户端自动 Markdown 报告、历史菜单导出和 `reports export` 默认使用同一个 `report_dir`（未设置则为当前工作目录）。`-dir` 可覆盖命令行导出目录；导出后显示绝对路径。
+
+直接运行二进制时默认不会读取脚本的 `~/.sniroute/client.yaml`，请用 `-config` 指定。
+客户端脚本会自动传入这一路径，因此下面的命令使用同一份登记和本地历史数据：
+
+```sh
+SR_BIN=/tmp/sniroute sh scripts/sniroute-client.sh --reports list
+/tmp/sniroute client reports list -config "$HOME/.sniroute/client.yaml"
+```
 
 中断后可在节点仍有效的 15 分钟窗口内补交本地待发送证据，并查看本地部分报告；目前没有继续执行原任务未测项的入口，重新测试会创建新任务。

@@ -1,11 +1,12 @@
 # SniRoute
 
-服务商**出口分流与访问限制探测工具**。从被测机器出发，用不同的 SNI 连接同一个观测端，再访问真实网站，最终在一份报告里回答：
+服务商**出口分流探测工具**。从被测机器出发，用不同的 SNI 连接同一个受控观测端，结合基线、多轮结果和 ASN 对照，在报告里回答：
 
 1. 某个域名是否触发了**不同的出口**？
 2. 观测到的**出口 IP**（及 ASN）是什么？
-3. **真实网站**能否访问？失败发生在 DNS / TCP / TLS / HTTP 哪一层？
-4. 出现异常时，有多大把握认为与被测网络的**分流或阻断**有关？
+3. 出口差异是否稳定、是否与 SNI 相关，依据与限制是什么？
+
+当前只做受控出口探测，不执行真实网站访问或参考测试。
 
 Go 单二进制（`CGO_ENABLED=0` 静态编译）· SSH 终端编号菜单 · SQLite 存储。没有 Web 面板，没有浏览器界面。
 支持 Linux / macOS 的 amd64 与 arm64；在 Ubuntu、Debian、RHEL、CentOS、Alpine 上均可运行。
@@ -26,7 +27,7 @@ Go 单二进制（`CGO_ENABLED=0` 静态编译）· SSH 终端编号菜单 · SQ
 
 | 角色 | 部署位置 | 职责 |
 | --- | --- | --- |
-| **观测端**（服务端） | 独立于被测网络的服务器 | 接收探测、记录出口 IP、查询 ASN、执行参考测试 |
+| **观测端**（服务端） | 独立于被测网络的服务器 | 接收探测、记录出口 IP、查询出口网络归属、合并证据 |
 | **被测端**（客户端） | 要测的那台 VPS / 机器 | 发起探测、记录本地失败阶段、写出报告 |
 
 > 要测某台 VPS 的出口，客户端必须运行在**那台 VPS 上**；在本地机器上运行，测到的是本地网络的出口。
@@ -42,9 +43,7 @@ Go 单二进制（`CGO_ENABLED=0` 静态编译）· SSH 终端编号菜单 · SQ
 
 1. **基线**：用中性 SNI 探测同一个观测端 IP，在开始、中间、结束各穿插一次。
 2. **主探测**：固定观测端 IP，逐个切换域名的 SNI，每域名默认 3 次独立连接，顺序打乱。
-3. **真实访问**：用系统 DNS 依次检查 DNS → TCP → TLS → HTTP，分层记录失败位置。
-4. **参考测试**：对异常域名，由观测端从自己的网络再测一次作对照（仅限公网目标）。
-5. **判定与报告**：合并两端证据，按规则输出五个维度的结论，附依据与限制。
+3. **判定与报告**：合并两端证据，结合出口 IP、ASN 与失败阶段，按规则输出结论，附依据与限制。
 
 ## 快速开始
 
@@ -68,7 +67,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/script
 
 永久安装按系统选择守护方式：systemd（Ubuntu / Debian / RHEL / CentOS）→ OpenRC（Alpine）→ pid 文件后台模式（兜底，无开机自启）。当前不是 root 时，脚本会询问是否下载自身并用 `sudo` 重新运行。
 
-首次进入菜单只有一项「**初始化服务（推荐配置）**」，确认一次即可：自动生成自签证书与管理密钥，探测入口 `:443`，控制接口 `:8443`（`:443` 需要 root，可在自定义配置中改端口）。之后服务在后台运行，退出菜单或断开 SSH 都不影响。
+脚本首次运行会自动生成推荐配置与管理密钥，服务启动时自动生成自签证书。临时模式会启动服务并打开菜单；永久安装后输入 `sniroute` 打开菜单。控制接口默认为 `:8443`；探测入口 root 默认为 `:443`，脚本以非 root 临时运行时默认为 `:8444`。客户端会自动发现探测端口。直接运行原始二进制 `./sniroute server` 且尚无配置时，才需要选择「初始化服务（推荐配置）」。
+
+永久安装后，退出菜单或断开 SSH 不影响后台服务。临时模式退出时会停止本次服务；需要长期运行请选择永久安装。
 
 ### 2. 生成注册链接
 
@@ -101,7 +102,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/script
 0 退出
 ```
 
-客户端始终**临时运行**：程序副本在退出时清理，报告保留在当前目录，节点身份与待补交队列保留在 `~/.sniroute`，下次不需要重新注册。
+客户端脚本始终**临时运行**：程序副本在退出时清理，报告保留在当前目录，节点身份与待补交队列保留在 `~/.sniroute`。观测端会在客户端离线满 15 分钟后清理关联数据并使旧节点密钥失效，之后需用新链接重新注册；本地历史报告仍可查看。
 
 ### 4. 查看报告
 
@@ -109,52 +110,73 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/obrdx/SniRoute/main/script
 
 ## 日常使用
 
-- **选域名**：`2 选择要测试的域名` 支持 `q` 快速清单、`f` 完整清单与各分类，编号可组合（如 `1 3 q`），回车沿用上次选择。记住的是分类名而不是编号，域名库更新后仍然有效。
-- **开始测试**：先显示一次配置摘要（测试内容、观测端、规模、是否做真实访问、报告位置），确认后执行。
+- **选域名**：`2 选择要测试的域名` 中，`1`（或 `q`）选快速清单，`2`（或 `f`）选完整清单，`3` 进入内置分类选择，`4` 导入外置 JSON 清单。可组合输入（如 `1 4`），回车沿用上次选择。
+- **开始测试**：先询问是否展示完整出口 IP（默认脱敏），再显示配置摘要（测试内容、观测端、规模、并发、报告位置）并确认执行。
 - **中断**：第一次 `Ctrl+C` 是正常中断——停止新测试、取消在途连接、上报已有结果并取回部分报告；第二次强制退出。未执行的项目**不算阻断**。
-- **断线恢复**：未上传的事件存在本地 SQLite，下次进入时按 `attempt_id + event_id` 幂等补交。
-- **历史报告**：查看完整报告、域名综合、按出口 IP 分组、只看访问异常、单域名证据；导出 TXT / JSON / CSV / MD；刷新出口网络归属（新建 ASN 快照，不改写旧快照）。
-- **设置**：服务商标签与环境说明、探测目标、测试强度（轮数 / 并发 / 超时）、真实访问与参考测试开关、报告目录、域名库位置、重新登记。
+- **断线恢复**：未上传的事件存在本地 SQLite，下次进入时按 `attempt_id + event_id` 幂等补交；须在旧节点密钥仍有效的窗口内完成。
+- **历史报告**：在客户端查看完整报告、域名综合、按出口 IP 分组、只看探测异常、单域名证据；导出 TXT / JSON / CSV / MD；观测端仍保有任务时可刷新出口网络归属（新建 ASN 快照，不改写旧快照）。观测端只展示正在测试的实时连接，不提供历史报告菜单。
+- **设置**：服务商标签与环境说明、探测目标、测试强度（轮数 / 并发 / 超时）、报告目录、域名库位置、重新登记。
 
 ## 读懂报告
 
-Markdown 报告共八节：总览（冻结的测试条件、覆盖与证据、结论摘要）· 出口分组 · 出口网络分组 · 域名综合结果 · 判断依据与限制 · 真实网站访问明细 · 原始证据 · 说明。
+Markdown 报告先展示出口整理、分类探测结果、结果摘要与出口分布，再展示证据摘要、出口汇总、判断依据与限制、说明。完整证据保存在数据库，可从报告菜单查看单个域名，或导出 JSON。
 
-每个域名从五个**互不排斥**的维度给出结论：出口观察、受控探测状态、真实访问状态、干预判断、证据完整性。分流与访问异常可以同时存在。
+每个域名从四个**互不排斥**的维度给出结论：出口观察、受控探测状态、干预判断、证据完整性。已观察到出口与后续探测异常可以同时存在。
 
 解读时请记住这些边界：
 
 - 工具**直接确认**的只有一件事：从某被测节点、某时间、用特定目标 IP / 端口 / SNI / 地址族 / TLS 配置发起连接时，观测端**实际看到的来源 IP**。
-- **受控探测的出口 ≠ 真实网站看到的出口。** 报告中的「真实网站访问出口」始终写「未直接观测」，除非目标网站回传来源地址。
+- **受控探测的出口 ≠ 真实网站看到的出口。** 当前工具不直接观测真实网站访问出口。
 - 连接没有到达观测端、也没有可信回执时，出口记为**「未观测」**，而不是「无出口」。
 - 「没发现出口变化」只表示本次没有观测到差异，**不等于确定没有分流**。
 - 只有「认证回执」与「ClientHello 匹配」两种证据计入出口；「SNI 相同 + 时间接近」不作为归属依据。
-- HTTP 401 / 403 / 429 / 451 是应用层响应，**不是**服务商封锁的证据；没有阻断页指纹库，因此不会输出「明确阻断响应」。
 - 干预判断的**原因可信度上限为「中」**：单观测端、样本有限。
 - 未执行、已取消、上报丢失的尝试**不计为网络失败**。
 
 ## 命令参考
 
-交互菜单覆盖日常使用；以下命令用于脚本和定时任务。
+交互菜单覆盖日常使用。下面以仓库根目录运行 `go build -o sniroute ./cmd/sniroute`
+生成的**原始二进制** `./sniroute` 为例；需要注册的命令应先完成客户端登记。
 
 | 命令 | 作用 |
 | --- | --- |
-| `sniroute` | 总菜单（选择 client / server） |
-| `sniroute client` | 客户端菜单 |
-| `sniroute client enroll -link '<整行>'` | 非交互注册（或设置 `$SNIROUTE_REG_LINK`） |
-| `sniroute client probe` | 按记住的域名选择跑一次完整测试，并写 `.md` |
-| `sniroute client probe -sni a.example -sni b.example -rounds 3` | 指定域名与轮数 |
-| `sniroute client probe -no-web` | 跳过真实访问测试 |
-| `sniroute client probe -export DIR` | 同时把 TXT / JSON / CSV 写入 `DIR` |
-| `sniroute client reports list\|show ID\|export ID\|asn ID\|flush` | 历史任务、查看、导出、刷新 ASN、补交队列 |
-| `sniroute reports …` | 等同 `client reports` |
-| `sniroute server` | 观测端管理菜单 |
-| `sniroute server run` | 前台运行服务（适合 systemd） |
-| `sniroute server start\|stop\|restart\|status` | 后台服务控制（pid 文件） |
-| `sniroute server reports [list\|show ID\|export ID\|asn ID]` | 读数据库，查看所有节点的报告 |
-| `sniroute genkey` / `sniroute version` | 生成随机密钥 / 版本 |
+| `./sniroute` | 总菜单（选择 client / server） |
+| `./sniroute client` | 客户端菜单 |
+| `./sniroute client enroll -link '<整行注册链接>'` | 非交互注册（或设置 `$SNIROUTE_REG_LINK`） |
+| `./sniroute client probe` | 按记住的域名选择跑一次受控探测，并写 `.md` |
+| `./sniroute client probe -sni a.example -sni b.example -rounds 3` | 指定 SNI 与轮数；连接受控观测端，不访问这两个网站 |
+| `./sniroute client probe -show-full-ip` | 展示并导出完整出口 IP；不加此参数默认脱敏 |
+| `./sniroute client probe -export ./reports` | 额外导出 TXT / JSON / CSV 到 `./reports`；自动 Markdown 仍写入配置的报告目录 |
+| `./sniroute client reports list` | 列出客户端本地历史任务 |
+| `./sniroute client reports show TASK_ID` | 查看指定任务报告 |
+| `./sniroute client reports export TASK_ID -dir ./reports` | 导出 TXT / JSON / CSV / MD |
+| `./sniroute client reports asn TASK_ID` | 观测端仍保有任务时，刷新 ASN 快照 |
+| `./sniroute client reports flush` | 补交队列；须在节点密钥仍有效时执行 |
+| `./sniroute reports list` | 等同 `./sniroute client reports list` |
+| `./sniroute server` | 观测端管理菜单 |
+| `./sniroute server run` | 前台运行服务（适合 systemd，先初始化配置） |
+| `./sniroute server start` | 后台启动服务（先初始化配置） |
+| `./sniroute server stop` | 停止服务 |
+| `./sniroute server restart` | 重启服务 |
+| `./sniroute server status` | 查看服务状态 |
+| `./sniroute genkey` | 生成随机密钥 |
+| `./sniroute version` | 查看应用版本 |
 
-`sniroute <命令> -h` 查看完整参数。
+`TASK_ID` 和注册链接须替换为实际值。例如 `./sniroute client probe -h`、
+`./sniroute client reports export -h`、`./sniroute server run -h` 可查看参数。
+
+直接运行二进制与脚本的默认配置路径不同。脚本客户端使用 `~/.sniroute/client.yaml`；
+如要用原始二进制读取脚本已有的登记和报告，请显式指定：
+
+```sh
+./sniroute client -config "$HOME/.sniroute/client.yaml"
+./sniroute client reports list -config "$HOME/.sniroute/client.yaml"
+```
+
+服务端永久安装后的 `/usr/local/bin/sniroute` 是**启动器**：`sniroute` 打开服务端菜单，
+`sniroute start`、`sniroute stop`、`sniroute restart`、`sniroute status` 控制服务，
+`sniroute logs` 查看日志。这些顶层服务命令属于启动器；原始二进制使用上表中的
+`./sniroute server …`。客户端建议使用客户端脚本，避免混用服务端配置。
 
 ## 域名库
 
@@ -164,12 +186,16 @@ Markdown 报告共八节：总览（冻结的测试条件、覆盖与证据、�
 
 ## 隐私
 
-默认的 RIPEstat 查询会把观测端看到的**公网出口 IP** 发送给 RIPEstat（私网地址永不外发）。不想外发时：
+观测端默认向 RIPEstat 查询公网出口 IP 的 ASN，并向 IPinfo / GeoJS 查询归属地，
+私网地址永不外发。若要关闭这些外部查询，在实际使用的 `server.yaml` 中设置后重启服务：
 
-- 观测端菜单 **6 服务设置 → 4 出口网络（ASN）查询 → 3 关闭查询**；或
-- 在 `server.yaml` 中设置 `asn_source: none`。
+```yaml
+asn_source: none
+geo_sources: [none]
+```
 
-也可切换为 Team Cymru（DNS TXT 查询）。
+也可用 `asn_source: cymru` 切换为 Team Cymru（DNS TXT 查询）。当前服务端设置菜单
+只提供监听地址和管理密钥设置，ASN 与归属地来源通过配置文件调整。
 
 ## 构建与发布
 
