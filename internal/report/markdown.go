@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyktios/sniroute/internal/analysis"
 	"github.com/nyktios/sniroute/internal/server"
 )
 
@@ -138,6 +139,9 @@ func WriteMarkdown(w io.Writer, r Report) error {
 
 	if r.IPDisplay == "masked" {
 		fmt.Fprint(w, "> 出口 IP 已脱敏；出口编号用于区分不同 IP，完整证据保留在数据库。\n\n")
+	}
+	if identityMismatchCount(r) > 0 {
+		fmt.Fprintf(w, "> **端点身份异常提示**：%s\n\n", mdText(analysis.EndpointIdentityNotice))
 	}
 
 	writeMarkdownResults(w, r)

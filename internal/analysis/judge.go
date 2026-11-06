@@ -14,6 +14,10 @@ import (
 // rule set that produced them. Bump it whenever a rule changes.
 const RulesVersion = "rules-v2"
 
+// EndpointIdentityNotice explains an existing identity failure without claiming
+// that its cause, the proxy location or a real website's egress has been proved.
+const EndpointIdentityNotice = "探测端公钥不匹配：上游可能存在代理嗅探 SNI 并改写目的地（透明转发/劫持），也可能是目标地址、端口或观测端配置不一致。原因及位置未确定，不判封锁；未取得观测端匹配证据时，出口为“未观测”，不能用基线或 IP 检测网站的出口替代。"
+
 // ProbeStatus is the controlled-probe dimension (SNI probes to the observer).
 type ProbeStatus string
 
@@ -358,9 +362,9 @@ func judgeDomain(g Group, d DomainEgress, t, bt tally, failingDomains int, abort
 			hit("R04", concl, basis, []string{"仍不能区分服务商主动拒绝、上游干预，或该域名被分到了故障线路。", limSingle})
 		}
 		if t.n[kIdentity] > 0 {
-			hit("R08", "受控探测遇到的端点公钥与固定公钥不一致：可能存在目的地改写或 TLS 中间设备。已停止并未发送任何凭证；不判定为域名封锁。",
+			hit("R08", "受控探测遇到的端点公钥与固定公钥不一致：可能存在上游代理嗅探 SNI 后改写目的地（透明转发或劫持），或 TLS 中间设备。该次探测已停止并未发送任何凭证；不判定为域名封锁。",
 				[]string{fmt.Sprintf("%d 次身份不匹配", t.n[kIdentity])},
-				[]string{"也可能是观测端密钥变更后客户端未更新。"})
+				[]string{"也可能是探测目标地址、端口或观测端实例配置不一致，或任务期间探测密钥发生变化；仅凭公钥不匹配不能确定原因及代理位置。", "未取得观测端匹配证据时，出口为“未观测”；不能以基线或 IP 检测网站的出口替代该域名的出口。"})
 		}
 	}
 

@@ -242,6 +242,9 @@ func TestR08IdentityMismatchIsNotABlock(t *testing.T) {
 	if !strings.Contains(h.Conclusion, "不判定为域名封锁") || !strings.Contains(h.Conclusion, "未发送任何凭证") {
 		t.Errorf("conclusion: %s", h.Conclusion)
 	}
+	if !strings.Contains(h.Conclusion, "代理嗅探 SNI") || j.Egress != Unobserved {
+		t.Errorf("identity mismatch must explain possible proxy sniffing without inventing an egress: %+v", j)
+	}
 }
 
 // ---- real-site access rules ----------------------------------------------

@@ -218,11 +218,28 @@ func WriteResults(w io.Writer, r Report) error {
 	l.centered("https://github.com/obrdx/SniRoute", "muted")
 	l.printf("\n")
 	l.line(conditionLine(r), "muted")
+	if identityMismatchCount(r) > 0 {
+		l.section("端点身份异常提示")
+		l.line(analysis.EndpointIdentityNotice, "warning")
+	}
 	l.egressSummary(r)
 	l.domains(r)
 	l.summary(r)
 	l.distribution(r)
 	return l.err
+}
+
+func identityMismatchCount(r Report) int {
+	n := 0
+	for _, a := range r.Evidence {
+		for _, c := range a.Client {
+			if c.Outcome == "identity_mismatch" {
+				n++
+				break
+			}
+		}
+	}
+	return n
 }
 
 func incompleteAuthentication(r Report) int {

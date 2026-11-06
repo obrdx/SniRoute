@@ -8,9 +8,11 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
+	"github.com/nyktios/sniroute/internal/analysis"
 	"github.com/nyktios/sniroute/internal/client"
 	"github.com/nyktios/sniroute/internal/link"
 	"github.com/nyktios/sniroute/internal/report"
@@ -295,6 +297,7 @@ func runTask(ui *tui.UI, sess *clientSession, opt client.RunOptions) (server.Tas
 		}
 	}
 	ui.Println("开始测试…（Ctrl+C 停止并保留已有结果，再按一次强制退出）")
+	var identityNotice sync.Once
 	view, err := sess.runner.Run(ctx, opt, func(rep client.AttemptReport) {
 		kind := "域名"
 		if rep.Attempt.Kind == "baseline" {
@@ -316,6 +319,11 @@ func runTask(ui *tui.UI, sess *clientSession, opt client.RunOptions) (server.Tas
 			role = "danger"
 		}
 		ui.Styled(role, line)
+		if rep.Result.Outcome == client.OutcomeIdentityMismatch {
+			identityNotice.Do(func() {
+				ui.Styled("warning", analysis.EndpointIdentityNotice)
+			})
+		}
 	})
 	if err != nil {
 		if pending := sess.pendingCount(); pending > 0 {

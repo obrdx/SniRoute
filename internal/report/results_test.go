@@ -9,8 +9,38 @@ import (
 	"testing"
 	"unicode/utf8"
 
+	"github.com/nyktios/sniroute/internal/analysis"
 	"github.com/nyktios/sniroute/internal/server"
 )
+
+func TestIdentityNoticeIsVisibleEvenWhenBaselineFails(t *testing.T) {
+	for _, outcome := range []string{"identity_mismatch", "tls_failed", "cancelled"} {
+		t.Run(outcome, func(t *testing.T) {
+			v := server.TaskView{Status: server.TaskCompleted, Attempts: []server.AttemptView{
+				{SNI: "base.invalid", Target: T4, Kind: "baseline", State: server.StateUnobserved,
+					Client: []server.ClientEventView{{Stage: "tls", Outcome: "tls_failed", HelloSent: true}}},
+				{SNI: "d.example", Target: T4, Kind: "domain", State: server.StateUnobserved,
+					Client: []server.ClientEventView{{Stage: "tls", Outcome: outcome, HelloSent: true}}},
+			}}
+			r := Build(v, t0)
+			var terminal bytes.Buffer
+			if err := WriteResults(&terminal, r); err != nil {
+				t.Fatal(err)
+			}
+			for _, output := range []string{terminal.String(), mdOf(t, r)} {
+				if got := strings.Count(output, "端点身份异常提示"); (got > 0) != (outcome == "identity_mismatch") || got > 1 {
+					t.Fatalf("unexpected identity notice count %d: %s", got, output)
+				}
+				if outcome == "identity_mismatch" && !strings.Contains(strings.ReplaceAll(output, "\n", ""), analysis.EndpointIdentityNotice) {
+					t.Fatalf("missing complete explanation: %s", output)
+				}
+			}
+			if r.Overview.DistinctEgressIPs != 0 {
+				t.Fatal("diagnostic must not fabricate an exit")
+			}
+		})
+	}
+}
 
 func TestResultsWidthsPreserveIPv6AndLongHosts(t *testing.T) {
 	v := sample()
