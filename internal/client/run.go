@@ -15,13 +15,9 @@ import (
 
 // RunOptions configures one task run.
 type RunOptions struct {
-	Plan             PlanSpec
-	Concurrency      int // default 6
-	Timeout          time.Duration
-	TLSRecordSplit   bool // applies to this task only; never persisted as a default
-	TLSRecordSplitAt string
-	TCPWriteSplitAt  string
-	TCPWriteDelay    time.Duration
+	Plan        PlanSpec
+	Concurrency int // default 6
+	Timeout     time.Duration
 	// OnASN reports the outcome of the egress-network lookup the observer runs
 	// at the end of a task. Failure here never fails the run.
 	// OnProbePinRefresh explains when the authenticated task pin replaces the cached enrolment pin.
@@ -162,15 +158,6 @@ func (r *Runner) Watch(ctx context.Context, taskID string, every time.Duration, 
 // cancelled, no new attempts start; attempts never started are left without
 // client events, so they are not counted as network failures.
 func (r *Runner) Run(ctx context.Context, opt RunOptions, progress func(AttemptReport)) (server.TaskView, error) {
-	position, err := ResolveSplitPosition(opt.TLSRecordSplit, opt.TLSRecordSplitAt)
-	if err != nil {
-		return server.TaskView{}, err
-	}
-	if err := ValidateTCPWriteSplit(position, opt.TCPWriteSplitAt, opt.TCPWriteDelay); err != nil {
-		return server.TaskView{}, err
-	}
-	opt.TLSRecordSplitAt = position
-	opt.TLSRecordSplit = false // position is now authoritative
 	if opt.Concurrency <= 0 {
 		opt.Concurrency = DefaultConcurrency
 	}
@@ -248,9 +235,6 @@ func (r *Runner) Run(ctx context.Context, opt RunOptions, progress func(AttemptR
 		res := Probe(ctx, ProbeSpec{
 			Target: a.Target, SNI: a.SNI, Pin: created.ProbePin, Path: r.State.Path,
 			AttemptID: a.ID, Credential: a.Credential, Timeout: opt.Timeout,
-			TLSRecordSplit:   opt.TLSRecordSplit,
-			TLSRecordSplitAt: opt.TLSRecordSplitAt,
-			TCPWriteSplitAt:  opt.TCPWriteSplitAt, TCPWriteDelay: opt.TCPWriteDelay,
 		})
 		// Reporting must survive cancellation of the run itself, and
 		// survive a dropped connection (outbox).

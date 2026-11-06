@@ -2,7 +2,6 @@ package report
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -13,57 +12,6 @@ import (
 	"github.com/nyktios/sniroute/internal/analysis"
 	"github.com/nyktios/sniroute/internal/server"
 )
-
-func TestFragmentExperimentIsLabelledAndDoesNotChangeDefaultNotes(t *testing.T) {
-	v := sample()
-	v.Params = json.RawMessage(`{"client_hello_variant":"tls-record-sni-split"}`)
-	r := Build(v, t0)
-	var output bytes.Buffer
-	if err := WriteResults(&output, r); err != nil {
-		t.Fatal(err)
-	}
-	for _, text := range []string{output.String(), mdOf(t, r)} {
-		if !strings.Contains(strings.ReplaceAll(text, "\n", ""), FragmentExperimentNotice) {
-			t.Fatal("fragmented results lack the equivalence warning")
-		}
-	}
-	if r.Notes[len(r.Notes)-1] != FragmentExperimentNotice {
-		t.Fatal("JSON export lacks experimental scope")
-	}
-	v.Params = nil
-	normal := Build(v, t0)
-	for _, note := range normal.Notes {
-		if note == FragmentExperimentNotice {
-			t.Fatal("experiment changed default report notes")
-		}
-	}
-}
-
-func TestFragmentPositionsRemainDistinctInEveryReport(t *testing.T) {
-	for variant, label := range map[string]string{
-		"tls-record-before-sni": "SNI 扩展前",
-		"tls-record-sni-split":  "SNI 主机名内",
-		"tls-record-after-sni":  "SNI 扩展后",
-	} {
-		t.Run(variant, func(t *testing.T) {
-			v := sample()
-			v.Params = json.RawMessage(`{"client_hello_variant":"` + variant + `"}`)
-			r := Build(v, t0)
-			var terminal bytes.Buffer
-			if err := WriteResults(&terminal, r); err != nil {
-				t.Fatal(err)
-			}
-			for _, output := range []string{terminal.String(), mdOf(t, r)} {
-				if !strings.Contains(output, label) {
-					t.Fatalf("position not visible: %s", output)
-				}
-			}
-			if !bytes.Contains(r.Task.Params, []byte(variant)) || r.Notes[len(r.Notes)-1] != FragmentExperimentNotice {
-				t.Fatal("report discarded the mode or its limitations")
-			}
-		})
-	}
-}
 
 func TestIdentityNoticeIsVisibleEvenWhenBaselineFails(t *testing.T) {
 	for _, outcome := range []string{"identity_mismatch", "tls_failed", "cancelled"} {
@@ -175,33 +123,5 @@ func (brokenResultsWriter) Write([]byte) (int, error) { return 0, io.ErrClosedPi
 func TestResultsPropagatesOutputError(t *testing.T) {
 	if err := WriteResults(brokenResultsWriter{}, Build(sample(), t0)); !errors.Is(err, io.ErrClosedPipe) {
 		t.Fatal(err)
-	}
-}
-
-func TestTCPWriteReportsPreservePositionDelayAndScope(t *testing.T) {
-	v := sample()
-	v.Params = json.RawMessage(`{"client_hello_variant":"tcp-write-split","tcp_write_split_at":"after-sni","tcp_write_delay_ms":20}`)
-	r := Build(v, t0)
-	var output bytes.Buffer
-	if err := WriteResults(&output, r); err != nil {
-		t.Fatal(err)
-	}
-	for _, text := range []string{output.String(), mdOf(t, r)} {
-		for _, want := range []string{"TCP 分次写入", "after-sni", "20ms", TCPWriteExperimentNotice} {
-			if !strings.Contains(strings.ReplaceAll(text, "\n", ""), want) {
-				t.Fatalf("missing %s", want)
-			}
-		}
-		if strings.Contains(text, FragmentExperimentNotice) {
-			t.Fatal("TCP experiment mislabelled as record splitting")
-		}
-	}
-	if r.Notes[len(r.Notes)-1] != TCPWriteExperimentNotice {
-		t.Fatal("JSON lacks experiment scope")
-	}
-	for _, note := range Build(sample(), t0).Notes {
-		if note == TCPWriteExperimentNotice {
-			t.Fatal("default report changed")
-		}
 	}
 }

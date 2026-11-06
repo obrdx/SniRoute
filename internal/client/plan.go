@@ -178,11 +178,6 @@ func BuildPlan(spec PlanSpec) ([]server.PlannedAttempt, uint64, error) {
 
 // ParamsJSON freezes the test conditions for the task snapshot.
 func ParamsJSON(spec PlanSpec, seed uint64, opt RunOptions) json.RawMessage {
-	position, _ := ResolveSplitPosition(opt.TLSRecordSplit, opt.TLSRecordSplitAt)
-	variant := splitVariant(position)
-	if opt.TCPWriteSplitAt != "" {
-		variant = "tcp-write-split"
-	}
 	// The domain list itself is not repeated here: every attempt already
 	// carries its SNI, and a full-library run would push the frozen conditions
 	// past the observer's size limit for no extra information. The count is the
@@ -198,10 +193,6 @@ func ParamsJSON(spec PlanSpec, seed uint64, opt RunOptions) json.RawMessage {
 		"rounds": spec.Rounds, "seed": seed, "concurrency": opt.Concurrency, "timeout_ms": opt.Timeout.Milliseconds(), "sni_interval_ms": SNIProbeInterval.Milliseconds(),
 		"provider_label": opt.ProviderLabel, "env_note": opt.EnvNote, "proxy": "none (environment proxies ignored)",
 		"alpn": "http/1.1", "connection_reuse": false, "session_resumption": false,
-		"client_hello_variant": variant,
-		"tls_record_split_at":  position,
-		"tcp_write_split_at":   opt.TCPWriteSplitAt, "tcp_write_delay_ms": opt.TCPWriteDelay.Milliseconds(),
-		"tcp_nodelay": true,
 	})
 	return b
 }

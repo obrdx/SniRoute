@@ -27,17 +27,13 @@ import (
 // verify the observer by its pinned public key, then present the attempt
 // credential inside the encrypted channel.
 type ProbeSpec struct {
-	Target           string // observer ip:port
-	SNI              string
-	Pin              string // hex SHA-256 of the observer's SubjectPublicKeyInfo
-	Path             string // node path
-	AttemptID        string
-	Credential       string
-	Timeout          time.Duration
-	TLSRecordSplit   bool   // experimental: split the first ClientHello inside SNI
-	TLSRecordSplitAt string // explicit experiment position; empty keeps boolean compatibility
-	TCPWriteSplitAt  string
-	TCPWriteDelay    time.Duration
+	Target     string // observer ip:port
+	SNI        string
+	Pin        string // hex SHA-256 of the observer's SubjectPublicKeyInfo
+	Path       string // node path
+	AttemptID  string
+	Credential string
+	Timeout    time.Duration
 }
 
 // Probe outcomes reported to the observer as client events.
@@ -80,14 +76,6 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 			res.HelloSHA256 = rec.helloDigest()
 		}
 	}()
-	position, positionErr := ResolveSplitPosition(spec.TLSRecordSplit, spec.TLSRecordSplitAt)
-	if positionErr == nil {
-		positionErr = ValidateTCPWriteSplit(position, spec.TCPWriteSplitAt, spec.TCPWriteDelay)
-	}
-	if positionErr != nil {
-		res.Stage, res.Outcome, res.Error = "tls", OutcomeTLSFailed, positionErr.Error()
-		return res
-	}
 
 	if spec.Timeout <= 0 {
 		spec.Timeout = 5 * time.Second
@@ -123,19 +111,7 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 	res.Stage = "tls"
 	pinFailed := false
 	rec = &recordConn{Conn: conn}
-	var tlsConn net.Conn = rec
-	if position != SplitStandard {
-		tlsConn = &helloSplitConn{Conn: rec, position: position}
-	}
-	if spec.TCPWriteSplitAt != "" {
-		if tcp, ok := conn.(*net.TCPConn); ok {
-			if err := tcp.SetNoDelay(true); err != nil {
-				return fail(OutcomeTLSFailed, err)
-			}
-		}
-		tlsConn = &helloTCPWriteConn{Conn: rec, ctx: ctx, position: spec.TCPWriteSplitAt, delay: spec.TCPWriteDelay}
-	}
-	tc := tls.Client(tlsConn, &tls.Config{
+	tc := tls.Client(rec, &tls.Config{
 		ServerName:         spec.SNI,
 		NextProtos:         []string{"http/1.1"},
 		MinVersion:         tls.VersionTLS12,
@@ -193,11 +169,10 @@ type recordConn struct {
 const maxRecorded = 32 << 10
 
 func (c *recordConn) Write(p []byte) (int, error) {
-	n, err := c.Conn.Write(p)
 	if room := maxRecorded - len(c.buf); room > 0 {
-		c.buf = append(c.buf, p[:min(n, room)]...)
+		c.buf = append(c.buf, p[:min(len(p), room)]...)
 	}
-	return n, err
+	return c.Conn.Write(p)
 }
 
 // helloDigest parses the recorded bytes as a ClientHello (reassembling TLS
