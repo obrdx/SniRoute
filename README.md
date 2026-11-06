@@ -247,3 +247,4 @@ go test -race ./...
 - [scripts/README.md](scripts/README.md)：部署脚本参数、安装位置与清理边界
 - [AGENTS.md](AGENTS.md)：完整设计、判定规则与各阶段实现记录
 - [domains/README.md](domains/README.md)：域名库结构与裁剪说明
+- [experiments/quic/README.md](experiments/quic/README.md)：独立 QUIC/SNI 出口对照实验（UDP，需另行运行实验观测端）
