@@ -47,4 +47,17 @@ func TestFragmentExperimentNeedsExplicitDomainSelection(t *testing.T) {
 	if err := runClient([]string{"probe", "-sni", "chatgpt.com", "-tls-record-split", "-h"}); !errors.Is(err, flag.ErrHelp) {
 		t.Fatalf("fragmentation flag is not accepted: %v", err)
 	}
+	for _, position := range []string{client.SplitBeforeSNI, client.SplitInsideSNI, client.SplitAfterSNI} {
+		if err := runClient([]string{"probe", "-tls-record-split-at", position}); err == nil || !strings.Contains(err.Error(), "显式选择域名") {
+			t.Fatalf("%s unexpectedly uses the default library: %v", position, err)
+		}
+	}
+	for _, args := range [][]string{
+		{"probe", "-tls-record-split-at", "unknown"},
+		{"probe", "-tls-record-split", "-tls-record-split-at", "standard"},
+	} {
+		if err := runClient(args); err == nil || !strings.Contains(err.Error(), "分片位置") {
+			t.Fatalf("invalid mode reached config loading: %v", err)
+		}
+	}
 }

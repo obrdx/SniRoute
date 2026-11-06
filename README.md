@@ -152,6 +152,7 @@ Markdown 报告先展示出口整理、分类探测结果、结果摘要与出�
 | `./sniroute client probe -sni a.example -sni b.example -rounds 3` | 指定 SNI 与轮数；连接受控观测端，不访问这两个网站 |
 | `./sniroute client probe -show-full-ip` | 展示并导出完整出口 IP；不加此参数默认脱敏 |
 | `./sniroute client probe -sni chatgpt.com -tls-record-split` | 显式启用 TLS record 分片实验；须与普通模式分开对照，见[实验说明](docs/fragment-experiment.md) |
+| `./sniroute client probe -sni chatgpt.com -tls-record-split-at after-sni` | 选择 SNI 扩展后的 record 分片；另支持 `before-sni`、`inside-sni` 和普通模式 `standard` |
 | `./sniroute client probe -export ./reports` | 额外导出 TXT / JSON / CSV 到 `./reports`；自动 Markdown 仍写入配置的报告目录 |
 | `./sniroute client reports list` | 列出客户端本地历史任务 |
 | `./sniroute client reports show TASK_ID` | 查看指定任务报告 |

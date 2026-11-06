@@ -88,7 +88,7 @@ func conditionLine(r Report) string {
 	}
 	parts := []string{familyList(r.Overview.Targets)}
 	if fragmentExperiment(r) {
-		parts = append(parts, "实验：TLS record 分片")
+		parts = append(parts, "实验：TLS record 分片（"+fragmentPosition(r)+"）")
 	}
 	p := paramsOf(r)
 	if proxy, ok := p["proxy"].(string); ok && strings.HasPrefix(proxy, "none") {

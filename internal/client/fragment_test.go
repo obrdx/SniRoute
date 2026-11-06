@@ -39,6 +39,84 @@ func capturedHello(t *testing.T, sni string) []byte {
 	return ch.Raw
 }
 
+func TestSplitPositionsHaveExactBoundariesAndIdenticalHandshake(t *testing.T) {
+	const host = "www.google.com"
+	raw := capturedHello(t, host)
+	original, _ := probe.ReadClientHello(bytes.NewReader(raw), 0)
+	n := int(binary.BigEndian.Uint16(raw[3:5]))
+	if n+5 != len(raw) {
+		t.Fatal("fixture needs one initial record")
+	}
+	payload := raw[5:]
+	nameStart := bytes.Index(payload, []byte(host))
+	if nameStart < 9 {
+		t.Fatal("fixture has no server_name extension")
+	}
+	for position, expected := range map[string]int{
+		SplitBeforeSNI: nameStart - 9, // type, length, list length, name type, name length
+		SplitInsideSNI: nameStart + len(host)/2,
+		SplitAfterSNI:  nameStart + len(host),
+	} {
+		t.Run(position, func(t *testing.T) {
+			wire, err := splitHelloAt(raw, position)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if cut := int(binary.BigEndian.Uint16(wire[3:5])); cut != expected {
+				t.Fatalf("boundary %d, want %d", cut, expected)
+			}
+			var joined []byte
+			for offset := 0; offset < len(wire); {
+				size := int(binary.BigEndian.Uint16(wire[offset+3 : offset+5]))
+				joined = append(joined, wire[offset+5:offset+5+size]...)
+				offset += 5 + size
+			}
+			ch, err := probe.ReadClientHello(bytes.NewReader(wire), 0)
+			if err != nil || !bytes.Equal(joined, payload) || ch.Digest != original.Digest || len(wire) != len(raw)+5 {
+				t.Fatalf("variant changed the handshake: %+v %v", ch, err)
+			}
+		})
+	}
+	// When SNI is the last extension there is no legal nonempty remainder.
+	end := nameStart + len(host)
+	last := append([]byte(nil), payload[:end]...)
+	extLengthPos := 4 + 2 + 32
+	extLengthPos += 1 + int(payload[extLengthPos])
+	extLengthPos += 2 + int(binary.BigEndian.Uint16(payload[extLengthPos:extLengthPos+2]))
+	extLengthPos += 1 + int(payload[extLengthPos])
+	binary.BigEndian.PutUint16(last[extLengthPos:extLengthPos+2], uint16(end-extLengthPos-2))
+	bodyLen := len(last) - 4
+	last[1], last[2], last[3] = byte(bodyLen>>16), byte(bodyLen>>8), byte(bodyLen)
+	lastWire := append([]byte{22, 3, 1, byte(len(last) >> 8), byte(len(last))}, last...)
+	if _, err := probe.ReadClientHello(bytes.NewReader(lastWire), 0); err != nil {
+		t.Fatal("invalid final-SNI fixture:", err)
+	}
+	if _, err := splitHelloAt(lastWire, SplitAfterSNI); err == nil {
+		t.Fatal("after-sni silently used a different boundary")
+	}
+}
+
+func TestSplitPositionValidationBeforeNetworkOrTaskCreation(t *testing.T) {
+	for _, test := range []struct {
+		enabled     bool
+		input, want string
+	}{
+		{false, "", SplitStandard}, {true, "", SplitInsideSNI},
+		{false, SplitStandard, SplitStandard}, {false, SplitBeforeSNI, SplitBeforeSNI},
+		{false, SplitInsideSNI, SplitInsideSNI}, {false, SplitAfterSNI, SplitAfterSNI},
+	} {
+		if got, err := ResolveSplitPosition(test.enabled, test.input); err != nil || got != test.want {
+			t.Fatalf("resolve %+v: %s %v", test, got, err)
+		}
+	}
+	if _, err := ResolveSplitPosition(true, SplitStandard); err == nil {
+		t.Fatal("conflicting ordinary/fragment options accepted")
+	}
+	if _, err := (&Runner{}).Run(context.Background(), RunOptions{TLSRecordSplitAt: "unknown"}, nil); err == nil {
+		t.Fatal("invalid position reached task creation")
+	}
+}
+
 type fragmentSink struct {
 	net.Conn
 	bytes.Buffer
@@ -171,6 +249,45 @@ func TestFragmentedProbeAuthenticatesAndMatchesHelloWithoutCredentialsOnWrongPin
 	}
 }
 
+func TestAllPositionsAuthenticateOrKeepMatchedHelloOnWrongIdentity(t *testing.T) {
+	for _, position := range []string{SplitBeforeSNI, SplitInsideSNI, SplitAfterSNI} {
+		for _, wrongPin := range []bool{false, true} {
+			name := position + "/receipt"
+			if wrongPin {
+				name = position + "/wrong-pin"
+			}
+			t.Run(name, func(t *testing.T) {
+				pin := ""
+				if wrongPin {
+					pin = strings.Repeat("00", 32)
+				}
+				r := newRigPin(t, pin)
+				v, err := r.runner.Run(context.Background(), RunOptions{
+					Plan:             PlanSpec{Targets: []string{r.probeAddr}, Domains: []string{"www.google.com"}, Rounds: 1},
+					TLSRecordSplitAt: position, Timeout: 3 * time.Second,
+				}, nil)
+				if err != nil {
+					t.Fatal(err)
+				}
+				var params map[string]any
+				if json.Unmarshal(v.Params, &params) != nil || params["client_hello_variant"] != splitVariant(position) || params["tls_record_split_at"] != position {
+					t.Fatalf("position is not frozen: %s", v.Params)
+				}
+				a := v.Attempts[0]
+				want := server.StateAuthenticated
+				if wrongPin {
+					want = server.StateHelloMatched
+					if r.receipts.Load() != 0 {
+						t.Fatal("credential sent to untrusted endpoint")
+					}
+				}
+				if a.State != want || a.Observation == nil || a.Observation.SourceIP != "127.0.0.1" || !a.Client[0].HelloSent {
+					t.Fatalf("lost fragmented evidence: %+v", a)
+				}
+			})
+		}
+	}
+}
 func TestRecordSplitAgainstSingleRecordSniffingProxy(t *testing.T) {
 	// Model one possible implementation, not all transparent proxies: sniff
 	// only the first TLS record, redirect recognised SNI, otherwise preserve IP.

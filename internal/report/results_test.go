@@ -39,6 +39,32 @@ func TestFragmentExperimentIsLabelledAndDoesNotChangeDefaultNotes(t *testing.T) 
 	}
 }
 
+func TestFragmentPositionsRemainDistinctInEveryReport(t *testing.T) {
+	for variant, label := range map[string]string{
+		"tls-record-before-sni": "SNI 扩展前",
+		"tls-record-sni-split":  "SNI 主机名内",
+		"tls-record-after-sni":  "SNI 扩展后",
+	} {
+		t.Run(variant, func(t *testing.T) {
+			v := sample()
+			v.Params = json.RawMessage(`{"client_hello_variant":"` + variant + `"}`)
+			r := Build(v, t0)
+			var terminal bytes.Buffer
+			if err := WriteResults(&terminal, r); err != nil {
+				t.Fatal(err)
+			}
+			for _, output := range []string{terminal.String(), mdOf(t, r)} {
+				if !strings.Contains(output, label) {
+					t.Fatalf("position not visible: %s", output)
+				}
+			}
+			if !bytes.Contains(r.Task.Params, []byte(variant)) || r.Notes[len(r.Notes)-1] != FragmentExperimentNotice {
+				t.Fatal("report discarded the mode or its limitations")
+			}
+		})
+	}
+}
+
 func TestIdentityNoticeIsVisibleEvenWhenBaselineFails(t *testing.T) {
 	for _, outcome := range []string{"identity_mismatch", "tls_failed", "cancelled"} {
 		t.Run(outcome, func(t *testing.T) {

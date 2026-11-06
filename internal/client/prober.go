@@ -27,14 +27,15 @@ import (
 // verify the observer by its pinned public key, then present the attempt
 // credential inside the encrypted channel.
 type ProbeSpec struct {
-	Target         string // observer ip:port
-	SNI            string
-	Pin            string // hex SHA-256 of the observer's SubjectPublicKeyInfo
-	Path           string // node path
-	AttemptID      string
-	Credential     string
-	Timeout        time.Duration
-	TLSRecordSplit bool // experimental: split the first ClientHello inside SNI
+	Target           string // observer ip:port
+	SNI              string
+	Pin              string // hex SHA-256 of the observer's SubjectPublicKeyInfo
+	Path             string // node path
+	AttemptID        string
+	Credential       string
+	Timeout          time.Duration
+	TLSRecordSplit   bool   // experimental: split the first ClientHello inside SNI
+	TLSRecordSplitAt string // explicit experiment position; empty keeps boolean compatibility
 }
 
 // Probe outcomes reported to the observer as client events.
@@ -77,6 +78,11 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 			res.HelloSHA256 = rec.helloDigest()
 		}
 	}()
+	position, positionErr := ResolveSplitPosition(spec.TLSRecordSplit, spec.TLSRecordSplitAt)
+	if positionErr != nil {
+		res.Stage, res.Outcome, res.Error = "tls", OutcomeTLSFailed, positionErr.Error()
+		return res
+	}
 
 	if spec.Timeout <= 0 {
 		spec.Timeout = 5 * time.Second
@@ -113,8 +119,8 @@ func Probe(ctx context.Context, spec ProbeSpec) (res ProbeResult) {
 	pinFailed := false
 	rec = &recordConn{Conn: conn}
 	var tlsConn net.Conn = rec
-	if spec.TLSRecordSplit {
-		tlsConn = &helloSplitConn{Conn: rec}
+	if position != SplitStandard {
+		tlsConn = &helloSplitConn{Conn: rec, position: position}
 	}
 	tc := tls.Client(tlsConn, &tls.Config{
 		ServerName:         spec.SNI,

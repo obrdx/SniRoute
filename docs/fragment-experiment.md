@@ -5,7 +5,7 @@
 
 ## 准备
 
-使用包含 `-tls-record-split` 的源码构建实验二进制。已有正式 Release 不会随源码提交自动更新。
+使用包含 `-tls-record-split-at` 的源码构建实验二进制。已有正式 Release 不会随源码提交自动更新。
 应用版本保持 `1.0.0`，不能仅凭版本号区分；可用 `client probe -h` 确认是否包含实验参数。
 
 ```sh
@@ -54,14 +54,48 @@ CGO_ENABLED=0 go build -trimpath -o ./sniroute ./cmd/sniroute
 也可通过客户端脚本 `--probe` 透传这些参数，但必须用 `SR_BIN` 指向包含实验功能的本地程序。
 实验模式要求显式指定 `-sni` 或 `-sni-file`，不会直接使用菜单记住的整个默认域名库。
 
+## 分片位置对照
+
+用 `-tls-record-split-at` 显式选择模式，不需要同时添加旧的布尔开关：
+
+| 参数值 | TLS record 边界 | 快照中的 `client_hello_variant` |
+| --- | --- | --- |
+| `standard` | 保持原始 record 边界 | `standard` |
+| `before-sni` | SNI 扩展的类型字段之前 | `tls-record-before-sni` |
+| `inside-sni` | SNI 主机名中间，与旧开关相同 | `tls-record-sni-split` |
+| `after-sni` | 完整 SNI 扩展之后 | `tls-record-after-sni` |
+
+快照同时保存 `tls_record_split_at`，终端与 Markdown 的条件行也展示具体位置。
+旧的 `-tls-record-split` 继续等价于 `inside-sni`；不能与 `-tls-record-split-at standard` 同时使用。
+
+先用少量域名做交错对照。下面保持同一目标、域名、轮数、并发和顺序种子，仅切换分片位置：
+
+```sh
+for mode in standard before-sni standard inside-sni standard after-sni standard; do
+  printf '\n===== 握手模式：%s =====\n' "$mode"
+  ./sniroute client probe \
+    -config "$HOME/.sniroute/client.yaml" \
+    -target 198.51.100.10:443 \
+    -baseline probe.your-domain.tld \
+    -sni www.google.com -sni github.com \
+    -rounds 3 -concurrency 1 -seed 7 -show-full-ip \
+    -tls-record-split-at "$mode" || break
+done
+```
+
+同样需要替换示例观测端地址和自有基线域名。每个模式单独创建任务、保存报告，出口不跨模式合并。
+`after-sni` 保留完整 SNI 在前一个 record 中，是研究不同解析器处理差异的候选条件，
+但不能保证中间设备仍按该域名选择出口。若结果全都使用同一 IP，也不能把它认定为真实网站出口。
+
 ## 改变的内容
 
-- 仅在首个 ClientHello 的 SNI 主机名中间增加一个 TLS record 边界，不改变完整握手消息、SNI、ALPN、密码套件或公钥校验。
+- 仅在首个 ClientHello 的所选位置增加一个 TLS record 边界，不改变完整握手消息、SNI、ALPN、密码套件或公钥校验。
 - 基线与域名探测都使用同一种任务模式，每次仍建立独立连接，不复用连接或恢复会话。
 - 不控制 TCP 包边界，不增加分片间隔。即使多个 records 同处一个 TCP 包，TLS record 边界仍存在。
 - 后续记录原样传递，包括 HelloRetryRequest 之后可能出现的第二个 ClientHello。
 - ClientHello 摘要根据实际写出的字节重组计算；拆 record 不改变完整握手消息摘要的定义。
 - 分片无法生成时该次尝试失败，不静默切回普通模式；只有观测端固定公钥校验成功后才发送凭证。
+- 如果 SNI 扩展位于整个 ClientHello 末尾，没有剩余字节可放进下一个非空 record，`after-sni` 会明确失败；不添加填充或替换成其他分片位置。
 
 ## 解读结果
 
